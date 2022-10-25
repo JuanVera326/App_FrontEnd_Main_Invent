@@ -2,56 +2,71 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
 import { main_invent_images } from '../../../helpers/ImagesHelp';
 import { Header } from '../../layouts/header/Header';
+import { AiOutlineHome } from "react-icons/ai";
+import { ImProfile } from "react-icons/im";
+import { TbUserSearch } from "react-icons/tb";
+import { MdOutlineInventory } from "react-icons/md";
+import { Exception } from '../Not Found/Exception';
+import { GestionInventario } from "../../layouts/Views/GestionInventario/GestionInventario";
+import { GestionUsuarios } from "./../../layouts/Views/GestionUsuarios/GestionUsuarios";
+import { Inventario } from "./../../layouts/Views/Inventario/Inventario";
+import { Perfil } from "./../../layouts/Views/Perfil/Perfil";
 import "./Principal.css"
 
 export const Principal = () => {
 
   const [user_data, setuser_data] = useState(JSON.parse(localStorage.getItem("usuario")));
+  const [button_comp, setbutton_comp] = useState("home");
 
   return (
     <div>
-        <Header/>
+        {
+        ( !!user_data ) && 
+          <>
+            <Header/>
+                <div className='principal_comps'>
+                  <div className='profile_cont_temp'>
+                  <div className='profile_cont_child'>
+                        <img className="PFP" src={user_data.imagen} alt="imagenuser"></img>
+                      <div className="cont_text_profile">
+                        <div className='str_profile'>
+                          <h1 style={{color:"rgb(255, 203, 58)"}}>{user_data.nombre}</h1>
+                          <p>{user_data.cargo}</p>
+                        </div>
+                      </div>
+                      <nav className="menu">
+                        <ul>
+                          <li><Link onClick={ () => { setbutton_comp( "home" ) } } className={ ` a_principal ${( button_comp === "home" ) && "a_principal_active" } ` }><AiOutlineHome/> Inventario</Link></li>
+                          <li><Link onClick={ () => { setbutton_comp( "perfil" ) } } className={ ` a_principal ${( button_comp === "perfil" ) && "a_principal_active" } ` }><ImProfile/> Perfil</Link></li>
+                          { ( user_data.rol === 1 ) && <li><Link onClick={ () => { setbutton_comp( "usuarios_gest" ) } } className={ ` a_principal ${( button_comp === "usuarios_gest" ) && "a_principal_active" } ` }><TbUserSearch/>Gestion usuarios</Link></li> }
+                          { ( user_data.rol === 1 ) && <li><Link onClick={ () => { setbutton_comp( "inv_gest" ) } } className={ ` a_principal ${( button_comp === "inv_gest" ) && "a_principal_active" } ` }><MdOutlineInventory/>Gestion inventario</Link></li> }
+                        </ul>
+                      </nav>
+                    </div> 
+                  </div>
 
-        <div className='profile_cont_temp'>
-         <div className='profile_cont_child'>
-            <div className='PFP_cont'>
-              <img class="PFP" src={user_data.imagen} alt="imagenuser"></img>
-            </div>
-            <div className="cont_text_profile">
-              <div className='str_profile'>
-                <h1 style={{color:"rgb(255 198 28)"}}>{user_data.nombre}</h1>
-                <p>{user_data.cargo}</p>
-              </div>
-            </div>
-            <nav className="menu">
-              <ul>
-                <li><Link to="#" className='a_principal'><img src={main_invent_images("./images/principal/exportar.png")} className="img3"/> Inicio</Link></li>
-                <li><Link to="#" className='a_principal'><img src={main_invent_images("./images/principal/avatar.png")} className="img3"/>Perfil</Link></li>
-                <li><Link to="#" className='a_principal'><img src={main_invent_images("./images/principal/documentos.png")} className="img3"/>Gestion usuarios</Link></li>
-                <li><Link to="#" className='a_principal'><img src={main_invent_images("./images/principal/camion2.png")} className="img3"/>Gestion inventario</Link></li>
-              </ul>
-            </nav>
-          </div> 
-        </div>
-        <div className='principal_comps'></div>
-        <footer className='footer'>
-            <img className='img4' src={main_invent_images("./images/home/logoSena.png")}/> 
-            <div className="cont_text_header">
-                <h1 className='footer_text'>Main invent</h1>  
-                <p className='copyright'>SENA CEAI 2022</p>
-            </div>
-            {/* <div className="waveWrapper waveAnimation">
-              <div className="waveWrapperInner bgTop">
-                <div className="wave waveTop" style={{backgroundImage: "url('http://front-end-noobs.com/jecko/img/wave-top.png')"}}></div>
-              </div>
-              <div className="waveWrapperInner bgMiddle">
-                <div className="wave waveMiddle" style={{backgroundImage: "url('http://front-end-noobs.com/jecko/img/wave-mid.png')"}}></div>
-              </div>
-              <div className="waveWrapperInner bgBottom">
-                <div className="wave waveBottom" style={{backgroundImage: "url('http://front-end-noobs.com/jecko/img/wave-bot.png')"}}></div>
-              </div>
-            </div> */}
-        </footer>
+                  <div className="container_invents">
+                    
+                    { ( button_comp === "home" ) && <Inventario user={user_data}/> }
+                    { ( button_comp === "perfil" ) && <Perfil/> }
+                    { ( button_comp === "usuarios_gest" ) && <GestionUsuarios/> }
+                    { ( button_comp === "inv_gest" ) && <GestionInventario/> }
+
+                  </div>
+
+                </div>
+                <footer className='footer'>
+                    <img className='img4' src={main_invent_images("./images/home/logoSena.png")}/> 
+                    <div className="cont_text_header">
+                        <h1 className='footer_text'>Main invent</h1>  
+                        <p className='copyright'>SENA CEAI 2022</p>
+                    </div>
+                </footer>
+          </>
+        }
+        {
+          ( !user_data ) && <Exception/>
+        }
     </div>
   )
 }
