@@ -1,53 +1,75 @@
-.electricos_cont{
-    display: flex;
-    flex-direction: row;
-    width: 175vh;
+*{
+  margin: 0;
+  padding: 0;
+  color:rgb(223 222 223 / 1);
 }
-.cont1_electricos{
-    overflow: scroll;
+.electricos_cont{
+  padding: 2rem;
+  display: flex;
+  flex-direction: row;
+  overflow-x: scroll;
+  height: 21vh;
+  gap: 2rem;
+  background-color: rgb(56, 56, 56);
+}
+.electronicos_cont{
+  padding: 2rem;
+  display: flex;
+  flex-direction: row;
+  overflow-x: scroll;
+  height: 21vh;
+  gap: 2rem;
+  background-color: rgb(56, 56, 56);
+}
+.eleferre_cont{
+  padding: 2rem;
+  display: flex;
+  flex-direction: row;
+  overflow-x: scroll;
+  height: 21vh;
+  gap: 2rem;
+  background-color: rgb(56, 56, 56);
+}
+.moddev_cont{
+  padding: 2rem;
+  display: flex;
+  flex-direction: row;
+  overflow-x: scroll;
+  height: 21vh;
+  gap: 2rem;
+  background-color: rgb(56, 56, 56);
+}
+.otros_cont{
+  padding: 2rem;
+  display: flex;
+  flex-direction: row;
+  overflow-x: scroll;
+  height: 21vh;
+  gap: 2rem;
+  background-color: rgb(56, 56, 56);
 }
 .card{
-    display: flex;
-    flex-direction: row;
-    width: 80vh;
+  border-radius: 6px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+  background-color: rgb(0 46 77);
+  height: 15vh;
+  width: 65vh;
 }
-.img5{
-    width: 8vh;
+.txt{
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
-.cont_invent{
-    display: flex;
-    width: 100%;
-    flex-direction: column;
+.cont_img{
+  width: 315px;
+  height: 205px;
 }
-/* .loader_inv {
-    width: 360px;
-    height: 100px;
-    display: block;
-    position: relative;
-    background-image: linear-gradient(100deg, transparent, rgba(38, 50, 56, 0.5) 50%, transparent 80%), linear-gradient(#FFF 20px, transparent 0), linear-gradient(#FFF 20px, transparent 0), linear-gradient(#FFF 20px, transparent 0);
-    background-repeat: no-repeat;
-    background-size: 75px 100px,  125px 20px, 260px 20px, 260px 20px;
-    background-position: 0% 0, 120px 0, 120px 40px, 120px 80px;
-    box-sizing: border-box;
-    animation: animloader 1s linear infinite;
-  }
-  .loader_inv::after {
-    content: '';  
-    box-sizing: border-box;
-    width: 100px;
-    height: 100px;
-    border-radius: 8px;
-    background: #FFF;
-    position: absolute;
-    top: 0;
-    left: 0;
-  }
-  
-  @keyframes animloader {
-    0% {
-      background-position: 0% 0, 120px 0, 120px 40px, 120px 80px;
-    }
-    100% {
-      background-position: 100% 0, 120px 0, 120px 40px, 120px 80px;
-    }
-  } */
+.img_card{
+  border-radius: 6px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

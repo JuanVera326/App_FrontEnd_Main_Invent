@@ -1,11 +1,24 @@
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom';
 import { getItemsElectricos } from '../../../../helpers/api/ElectricosRequests';
+import { getItemsElectronicos } from '../../../../helpers/api/ElectronicosRequests';
+import { getItemsEleferre } from '../../../../helpers/api/ElementosFerreteriaRequest';
+import { getItemsModdev } from '../../../../helpers/api/ModdevRequest';
+import { getItemsOtros } from '../../../../helpers/api/OtrosRequest';
 import "./Inventario.css"
 
 export const Inventario = ( { user } ) => {
 
   const [items_electricos, setitems_electricos] = useState([]);
-  const [val_request, setval_request] = useState(0);
+  const [items_electronicos, setitems_electronicos] = useState([]);
+  const [items_eleferre, setitems_eleferre] = useState([]);
+  const [items_moddev, setitems_moddev] = useState([]);
+  const [items_otros, setitems_otros] = useState([]);
+  const [val_request_electricos, setval_request_electricos] = useState(0);
+  const [val_request_electronicos, setval_request_electronicos] = useState(0);
+  const [val_request_eleferre, setval_request_eleferre] = useState(0);
+  const [val_request_moddev, setval_request_moddev] = useState(0);
+  const [val_request_otros, setval_request_otros] = useState(0);
   const [loader, setloader] = useState(false);
 
   useEffect(() => {
@@ -13,10 +26,54 @@ export const Inventario = ( { user } ) => {
     getItemsElectricos().then((info) => {
       
       if (info.status === 200) {
-        setval_request(info.status);
+        setval_request_electricos(info.status);
         setitems_electricos( info.data );
       }else{
-        setval_request(info.status);
+        setval_request_electricos(info.status);
+      }
+        console.log(info.data);
+    });
+
+    getItemsElectronicos().then((info) => {
+      
+      if (info.status === 200) {
+        setval_request_electronicos(info.status);
+        setitems_electronicos( info.data );
+      }else{
+        setval_request_electronicos(info.status);
+      }
+        console.log(info.data);
+    });
+
+    getItemsEleferre().then((info) => {
+      
+      if (info.status === 200) {
+        setval_request_eleferre(info.status);
+        setitems_eleferre( info.data );
+      }else{
+        setval_request_eleferre(info.status);
+      }
+        console.log(info.data);
+    });
+
+    getItemsModdev().then((info) => {
+      
+      if (info.status === 200) {
+        setval_request_moddev(info.status);
+        setitems_moddev( info.data );
+      }else{
+        setval_request_moddev(info.status);
+      }
+        console.log(info.data);
+    });
+
+    getItemsOtros().then((info) => {
+      
+      if (info.status === 200) {
+        setval_request_otros(info.status);
+        setitems_otros( info.data );
+      }else{
+        setval_request_otros(info.status);
       }
         console.log(info.data);
     });
@@ -24,29 +81,198 @@ export const Inventario = ( { user } ) => {
   }, [user])
 
   return (
-    <div className='cont_invent'>
-        <div className="cont1_electricos">
-          <h2 style={{color:"white"}}>Electricos</h2>
-          <div className="electricos_cont">
-            {
-              items_electricos.map((item) => (
-                <div className='card'>
-                  <img className='img5' src={ item.imagen_parte_electricos } />
-                  <div className="cont_left_card">
-                  <h4 style={{color:"white"}}>{ item.nombre_parte_electricos }</h4>
-                    <p style={{color:"white"}}>{ item.tipo_parte_electricos }</p>
+    <div className='cont_invent'  style={{overflow:"scroll"}}>
+        <h1>Ítems Electricos</h1>
+        <br />
+        <div className="electricos_cont">
+           {
+            items_electricos.map((item) => (
+
+              <div className='card'>
+
+                <div className="cont_img">
+                  <img src={ item.imagen_parte_electricos } className="img_card" alt={ item.tipo_parte_electricos }/>
+                </div>
+
+                <div className="text_cont">
+                  <div className="txt">
+                    <h2>ID:</h2>
+                    <h2>{ item.id_parte_electricos }</h2>
+                  </div>
+                  <hr />
+                  <h2>{ item.nombre_parte_electricos }</h2>
+                  <hr />
+                  <div className="txt">
+                    <h2>Tipo:</h2>
+                    <h2 style={{color:"#ffc61b"}}>{ item.tipo_parte_electricos }</h2>
+                  </div>
+                  <br />
+                  <div className="txt">
+                    <Link className='btn btn_invent'>Ver Detalles</Link>
                   </div>
                 </div>
+
+              </div>
+
+            ))
+          }
+        </div>
+
+        <br />
+        <br />
+        <h1 style={{color:"white"}}>Ítems Electronicos</h1>
+        <br />
+        <div className="electronicos_cont">
+          {
+              items_electronicos.map((item) => (
+
+                <div className='card'>
+
+                  <div className="cont_img">
+                    <img src={ item.pinout_comp } className="img_card" alt={ item.tipo_parte_electricos }/>
+                  </div>
+
+                  <div className="text_cont">
+                    <div className="txt">
+                      <h2>ID:</h2>
+                      <h2>{ item.id_Comp }</h2>
+                    </div>
+                    <hr />
+                    <h2>{ item.nombre_comp }</h2>
+                    <hr />
+                    <div className="txt">
+                      <h2>Tipo:</h2>
+                      <h2 style={{color:"#ffc61b"}}>{ item.tipo_comp }</h2>
+                    </div>
+                    <br />
+                    <div className="txt">
+                      <Link className='btn btn_invent'>Ver Detalles</Link>
+                    </div>
+                  </div>
+
+                </div>
+
               ))
             }
-          </div>
         </div>
-        {/* <span className="loader_inv"></span> */}
-        <div className="electronicos cont"></div>
-        <div className="eleferre_cont"></div>
-        <div className="moddev_cont"></div>
-        <div className="otros_cont"></div>
-    </div>
 
+        <br />
+        <br />
+        <h1 style={{color:"white"}}>Ítems Elementos de Ferretería</h1>
+        <br />
+        <div className="eleferre_cont">
+        {
+              items_eleferre.map((item) => (
+
+                <div className='card'>
+
+                  <div className="cont_img">
+                    <img src={ item.imagen_parte_elementosferreteria } className="img_card" alt={ item.tipo_parte_electricos }/>
+                  </div>
+
+                  <div className="text_cont">
+                    <div className="txt">
+                      <h2>ID:</h2>
+                      <h2>{ item.id_parte_elementosferreteria }</h2>
+                    </div>
+                    <hr />
+                    <h2>{ item.nombre_parte_elementosferreteria }</h2>
+                    <hr />
+                    <div className="txt">
+                      <h2>Tipo:</h2>
+                      <h2 style={{color:"#ffc61b"}}>{ item.tipo_parte_elementosferreteria }</h2>
+                    </div>
+                    <br />
+                    <div className="txt">
+                      <Link className='btn btn_invent'>Ver Detalles</Link>
+                    </div>
+                  </div>
+
+                </div>
+
+              ))
+            }
+        </div>
+
+        <br />
+        <br />
+        <h1 style={{color:"white"}}>Ítems Módulos de Desarrollo</h1>
+        <br />
+        <div className="moddev_cont">
+
+        {
+              items_moddev.map((item) => (
+
+                <div className='card'>
+
+                  <div className="cont_img">
+                    <img src={ item.imagen_partemoddev } className="img_card" alt={ item.tipo_parte_electricos }/>
+                  </div>
+
+                  <div className="text_cont">
+                    <div className="txt">
+                      <h2>ID:</h2>
+                      <h2>{ item.id_parte_moddev }</h2>
+                    </div>
+                    <hr />
+                    <h2>{ item.nombre_partemoddev }</h2>
+                    <hr />
+                    <div className="txt">
+                      <h2>Tipo:</h2>
+                      <h2 style={{color:"#ffc61b"}}>{ item.tipo_parte_moddev }</h2>
+                    </div>
+                    <br />
+                    <div className="txt">
+                      <Link className='btn btn_invent'>Ver Detalles</Link>
+                    </div>
+                  </div>
+
+                </div>
+
+              ))
+            }
+
+        </div>
+
+        <br />
+        <br />
+        <h1 style={{color:"white"}}>Otros Ítems</h1>
+        <br />
+        <div className="otros_cont">
+
+        {
+              items_otros.map((item) => (
+
+                <div className='card'>
+
+                  <div className="cont_img">
+                    <img src={ item.imagen_parte_otros } className="img_card" alt={ item.tipo_parte_electricos }/>
+                  </div>
+
+                  <div className="text_cont">
+                    <div className="txt">
+                      <h2>ID:</h2>
+                      <h2>{ item.id_parte_otros }</h2>
+                    </div>
+                    <hr />
+                    <h2>{ item.nombre_parte_otros }</h2>
+                    <hr />
+                    <div className="txt">
+                      <h2>Tipo:</h2>
+                      <h2 style={{color:"#ffc61b"}}>{ item.tipo_parte_otros }</h2>
+                    </div>
+                    <br />
+                    <div className="txt">
+                      <Link className='btn btn_invent'>Ver Detalles</Link>
+                    </div>
+                  </div>
+
+                </div>
+
+              ))
+            }
+
+        </div>
+    </div>
   )
 }
