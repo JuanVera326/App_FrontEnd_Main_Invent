@@ -96,15 +96,15 @@ export const Inventario = ( { user } ) => {
 
                 <div className="text_cont">
                   <div className="txt">
-                    <h2>ID:</h2>
-                    <h2>{ item.id_parte_electricos }</h2>
+                    <h3>ID:</h3>
+                    <p>{ item.id_parte_electricos }</p>
                   </div>
                   <hr />
-                  <h2>{ item.nombre_parte_electricos }</h2>
+                  <p>{ item.nombre_parte_electricos }</p>
                   <hr />
                   <div className="txt">
-                    <h2>Tipo:</h2>
-                    <h2 style={{color:"#ffc61b"}}>{ item.tipo_parte_electricos }</h2>
+                    <h3>Tipo:</h3>
+                    <p style={{color:"#ffc61b"}}>{ item.tipo_parte_electricos }</p>
                   </div>
                   <br />
                   <div className="txt">
@@ -134,15 +134,15 @@ export const Inventario = ( { user } ) => {
 
                   <div className="text_cont">
                     <div className="txt">
-                      <h2>ID:</h2>
-                      <h2>{ item.id_Comp }</h2>
+                      <h3>ID:</h3>
+                      <p>{ item.id_Comp }</p>
                     </div>
                     <hr />
-                    <h2>{ item.nombre_comp }</h2>
+                    <p>{ item.nombre_comp }</p>
                     <hr />
                     <div className="txt">
-                      <h2>Tipo:</h2>
-                      <h2 style={{color:"#ffc61b"}}>{ item.tipo_comp }</h2>
+                      <h3>Tipo:</h3>
+                      <p style={{color:"#ffc61b"}}>{ item.tipo_comp }</p>
                     </div>
                     <br />
                     <div className="txt">
@@ -172,15 +172,15 @@ export const Inventario = ( { user } ) => {
 
                   <div className="text_cont">
                     <div className="txt">
-                      <h2>ID:</h2>
-                      <h2>{ item.id_parte_elementosferreteria }</h2>
+                      <h3>ID:</h3>
+                      <p>{ item.id_parte_elementosferreteria }</p>
                     </div>
                     <hr />
-                    <h2>{ item.nombre_parte_elementosferreteria }</h2>
+                    <p>{ item.nombre_parte_elementosferreteria }</p>
                     <hr />
                     <div className="txt">
-                      <h2>Tipo:</h2>
-                      <h2 style={{color:"#ffc61b"}}>{ item.tipo_parte_elementosferreteria }</h2>
+                      <h3>Tipo:</h3>
+                      <p style={{color:"#ffc61b"}}>{ item.tipo_parte_elementosferreteria }</p>
                     </div>
                     <br />
                     <div className="txt">
@@ -211,15 +211,15 @@ export const Inventario = ( { user } ) => {
 
                   <div className="text_cont">
                     <div className="txt">
-                      <h2>ID:</h2>
-                      <h2>{ item.id_parte_moddev }</h2>
+                      <h3>ID:</h3>
+                      <p>{ item.id_parte_moddev }</p>
                     </div>
                     <hr />
-                    <h2>{ item.nombre_partemoddev }</h2>
+                    <p>{ item.nombre_partemoddev }</p>
                     <hr />
                     <div className="txt">
-                      <h2>Tipo:</h2>
-                      <h2 style={{color:"#ffc61b"}}>{ item.tipo_parte_moddev }</h2>
+                      <h3>Tipo:</h3>
+                      <p style={{color:"#ffc61b"}}>{ item.tipo_parte_moddev }</p>
                     </div>
                     <br />
                     <div className="txt">
@@ -251,15 +251,15 @@ export const Inventario = ( { user } ) => {
 
                   <div className="text_cont">
                     <div className="txt">
-                      <h2>ID:</h2>
-                      <h2>{ item.id_parte_otros }</h2>
+                      <h3>ID:</h3>
+                      <p>{ item.id_parte_otros }</p>
                     </div>
                     <hr />
-                    <h2>{ item.nombre_parte_otros }</h2>
+                    <p>{ item.nombre_parte_otros }</p>
                     <hr />
                     <div className="txt">
-                      <h2>Tipo:</h2>
-                      <h2 style={{color:"#ffc61b"}}>{ item.tipo_parte_otros }</h2>
+                      <h3>Tipo:</h3>
+                      <p style={{color:"#ffc61b"}}>{ item.tipo_parte_otros }</p>
                     </div>
                     <br />
                     <div className="txt">

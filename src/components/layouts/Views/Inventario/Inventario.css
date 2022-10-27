@@ -55,8 +55,8 @@
   flex-direction: row;
   gap: 30px;
   background-color: rgb(0 46 77);
-  height: 15vh;
-  width: 65vh;
+  height: 11vh;
+  width: 22vh;
 }
 .txt{
   display: flex;
@@ -64,8 +64,8 @@
   gap: 10px;
 }
 .cont_img{
-  width: 315px;
-  height: 205px;
+  width: 213px;
+  height: 159px;
 }
 .img_card{
   border-radius: 6px;
