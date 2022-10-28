@@ -19,3 +19,20 @@ export const getItemsModdev = async() => {
     }
 
 };
+
+export const getItemsModdevByGeneralName = async( names ) => {
+
+    try {
+
+        const sendRequest = await axios.get(`${URL}/moddev/general/name/${names}`);
+        return sendRequest;
+
+    } catch (error) {
+
+        if ( error.response ) {
+            return error.response;
+        }
+
+    }
+
+};

@@ -19,3 +19,20 @@ export const getItemsEleferre = async() => {
     }
 
 };
+
+export const getItemsEleferreByGeneralName = async( names ) => {
+
+    try {
+
+        const sendRequest = await axios.get(`${URL}/eleferre/general/name/${names}`);
+        return sendRequest;
+
+    } catch (error) {
+
+        if ( error.response ) {
+            return error.response;
+        }
+
+    }
+
+};

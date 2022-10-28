@@ -19,7 +19,7 @@ export const Principal = () => {
   const [button_comp, setbutton_comp] = useState("home");
 
   return (
-    <div>
+    <div className='animate__animated animate__fadeIn'>
         {
         ( !!user_data ) && 
           <>
@@ -27,7 +27,9 @@ export const Principal = () => {
                 <div className='principal_comps'>
                   <div className='profile_cont_temp'>
                   <div className='profile_cont_child'>
-                        <img className="PFP" src={user_data.imagen} alt="imagenuser"></img>
+                  <div className='cont_image_profile'>
+                    <img className="PFP" src={user_data.imagen} alt="imagenuser"></img>
+                  </div>
                       <div className="cont_text_profile">
                         <div className='str_profile'>
                           <h1 style={{color:"rgb(255, 203, 58)"}}>{user_data.nombre}</h1>

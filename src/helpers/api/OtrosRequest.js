@@ -19,3 +19,20 @@ export const getItemsOtros = async() => {
     }
 
 };
+
+export const getItemsOtrosByGeneralName = async( names ) => {
+
+    try {
+
+        const sendRequest = await axios.get(`${URL}/otros/general/name/${names}`);
+        return sendRequest;
+
+    } catch (error) {
+
+        if ( error.response ) {
+            return error.response;
+        }
+
+    }
+
+};

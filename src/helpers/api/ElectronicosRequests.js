@@ -19,3 +19,20 @@ export const getItemsElectronicos = async() => {
     }
 
 };
+
+export const getItemsElectronicosByGeneralName = async( names ) => {
+
+    try {
+
+        const sendRequest = await axios.get(`${URL}/electronicos/general/name/${names}`);
+        return sendRequest;
+
+    } catch (error) {
+
+        if ( error.response ) {
+            return error.response;
+        }
+
+    }
+
+};
