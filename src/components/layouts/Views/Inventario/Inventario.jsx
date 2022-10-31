@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
-import { getItemsElectricos, getItemsElectricosByGeneralName } from '../../../../helpers/api/ElectricosRequests';
-import { getItemsElectronicos, getItemsElectronicosByGeneralName } from '../../../../helpers/api/ElectronicosRequests';
-import { getItemsEleferre, getItemsEleferreByGeneralName } from '../../../../helpers/api/ElementosFerreteriaRequest';
-import { getItemsModdev, getItemsModdevByGeneralName } from '../../../../helpers/api/ModdevRequest';
-import { getItemsOtros, getItemsOtrosByGeneralName } from '../../../../helpers/api/OtrosRequest';
+import { getItemsElectricos, getItemsElectricosByGeneralId, getItemsElectricosByGeneralName, getItemsElectricosByType } from '../../../../helpers/api/ElectricosRequests';
+import { getItemsElectronicos, getItemsElectronicosByGeneralId, getItemsElectronicosByGeneralName, getItemsElectronicosByType } from '../../../../helpers/api/ElectronicosRequests';
+import { getItemsEleferre, getItemsEleferreByGeneralId, getItemsEleferreByGeneralName, getItemsEleferreByType } from '../../../../helpers/api/ElementosFerreteriaRequest';
+import { getItemsModdev, getItemsModdevByGeneralId, getItemsModdevByGeneralName, getItemsModdevByType } from '../../../../helpers/api/ModdevRequest';
+import { getItemsOtros, getItemsOtrosByGeneralId, getItemsOtrosByGeneralName, getItemsOtrosByType } from '../../../../helpers/api/OtrosRequest';
 import { Input } from '../../../ui/Input/Input';
 import { VscSearch } from "react-icons/vsc";
 import { HiOutlineRefresh } from "react-icons/hi";
@@ -18,22 +18,27 @@ export const Inventario = ( { user } ) => {
   const [input_search_electricos, setinput_search_electricos] = useState("");
   const [items_electricos, setitems_electricos] = useState([]);
   const [val_request_electricos, setval_request_electricos] = useState(0);
+  const [selectFilterElectricos, setSelectFilterElectricos] = useState("");
 
   const [input_search_electronicos, setinput_search_electronicos] = useState("");
   const [items_electronicos, setitems_electronicos] = useState([]);
   const [val_request_electronicos, setval_request_electronicos] = useState(0);
+  const [selectFilterElectronicos, setSelectFilterElectronicos] = useState("");
 
   const [input_search_eleferre, setinput_search_eleferre] = useState("");
   const [items_eleferre, setitems_eleferre] = useState([]);
   const [val_request_eleferre, setval_request_eleferre] = useState(0);
+  const [selectFilterEleferre, setSelectFilterEleferre] = useState("");
 
   const [input_search_moddev, setinput_search_moddev] = useState("");
   const [items_moddev, setitems_moddev] = useState([]);
   const [val_request_moddev, setval_request_moddev] = useState(0);
+  const [selectFilterModdev, setSelectFilterModdev] = useState("");
 
   const [input_search_otros, setinput_search_otros] = useState("");
   const [items_otros, setitems_otros] = useState([]);
   const [val_request_otros, setval_request_otros] = useState(0);
+  const [selectFilterOtros, setSelectFilterOtros] = useState("");
 
   const searchByClick = ( e ) => {
     
@@ -74,38 +79,128 @@ export const Inventario = ( { user } ) => {
 
   const searchItemElectricos = ( e ) => {
 
-    getItemsElectricosByGeneralName( e ).then((info) => {
-      setitems_electricos( info.data ); 
-    })
+    switch ( selectFilterElectricos ) {
+      case "1":
+        getItemsElectricosByGeneralName( e ).then((info) => {
+          setitems_electricos( info.data ); 
+        })
+      break;
+
+      case "2":
+        getItemsElectricosByGeneralId( e ).then((info) => {
+          setitems_electricos( info.data ); 
+        })
+      break;
+
+      case "3":
+        getItemsElectricosByType( e ).then((info) => {
+          setitems_electricos( info.data ); 
+        })
+      break;
+    
+      default: break;
+    }
 
   }
 
   const searchItemElectronicos = ( e ) => {
     
-    getItemsElectronicosByGeneralName( e ).then((info) => {
-      setitems_electronicos( info.data ); 
-    })
+    switch ( selectFilterElectronicos ) {
+      case "1":
+        getItemsElectronicosByGeneralName( e ).then((info) => {
+          setitems_electronicos( info.data ); 
+        })
+      break;
+
+      case "2":
+        getItemsElectronicosByGeneralId( e ).then((info) => {
+          setitems_electronicos( info.data ); 
+        })
+      break;
+
+      case "3":
+        getItemsElectronicosByType( e ).then((info) => {
+          setitems_electronicos( info.data ); 
+        })
+      break;
+    
+      default: break;
+    }
   }
 
   const searchItemEleFerre = ( e ) => {
 
-    getItemsEleferreByGeneralName( e ).then((info) => {
-      setitems_eleferre( info.data ); 
-    })
+    switch ( selectFilterEleferre ) {
+      case "1":
+        getItemsEleferreByGeneralName( e ).then((info) => {
+          setitems_eleferre( info.data ); 
+        })
+      break;
+
+      case "2":
+        getItemsEleferreByGeneralId( e ).then((info) => {
+          setitems_eleferre( info.data ); 
+        })
+      break;
+
+      case "3":
+        getItemsEleferreByType( e ).then((info) => {
+          setitems_eleferre( info.data ); 
+        })
+      break;
+    
+      default: break;
+    }
   }
 
   const searchItemModDev = ( e ) => {
     
-    getItemsModdevByGeneralName( e ).then((info) => {
-      setitems_moddev( info.data ); 
-    })
+    switch ( selectFilterModdev ) {
+      case "1":
+        getItemsModdevByGeneralName( e ).then((info) => {
+          setitems_moddev( info.data ); 
+        })
+      break;
+
+      case "2":
+        getItemsModdevByGeneralId( e ).then((info) => {
+          setitems_moddev( info.data ); 
+        })
+      break;
+
+      case "3":
+        getItemsModdevByType( e ).then((info) => {
+          setitems_moddev( info.data ); 
+        })
+      break;
+    
+      default: break;
+    }
   }
 
   const searchItemOtros = ( e ) => {
     
-    getItemsOtrosByGeneralName( e ).then((info) => {
-      setitems_otros( info.data ); 
-    })
+    switch ( selectFilterOtros ) {
+      case "1":
+        getItemsOtrosByGeneralName( e ).then((info) => {
+          setitems_otros( info.data ); 
+        })
+      break;
+
+      case "2":
+        getItemsOtrosByGeneralId( e ).then((info) => {
+          setitems_otros( info.data ); 
+        })
+      break;
+
+      case "3":
+        getItemsOtrosByType( e ).then((info) => {
+          setitems_otros( info.data ); 
+        })
+      break;
+    
+      default: break;
+    }
   }
 
   const refreshRequest = () => { setgetAll(!getAll); }
@@ -168,7 +263,7 @@ export const Inventario = ( { user } ) => {
     });
 
   }, [ getAll ])
-
+  
   return (
     <div className='cont_invent'  style={{overflow:"scroll"}}>
         <HiOutlineRefresh title="Refresh" className="refresh_invent" onClick={refreshRequest} />
@@ -177,6 +272,13 @@ export const Inventario = ( { user } ) => {
           <div className="input-container input_inventario">
             <Input type={"text"} txt={"Buscar Electrico"} id={"electricos_items_search_image"} eventKeyPress={ handleKeyPress } eventChange={(e) => { setinput_search_electricos(e.target.value) }}/>
             <VscSearch style={{color:"rgb(85 85 85)",fontSize:"20px",cursor:"pointer"}} id={"electricos_items_search_image"} onClick={ searchByClick }/>
+            <div className="box_select">
+            <select id="select_filter" onChange={ ( e ) => { setSelectFilterElectricos( e.target.value ) } }>
+              <option value="1">Por Nombre Item</option>
+              <option value="2">Por ID Item</option>
+              <option value="3">Por Tipo Item</option>
+            </select>
+            </div>
           </div>
         </div>
         <br />
@@ -234,6 +336,13 @@ export const Inventario = ( { user } ) => {
           <div className="input-container input_inventario">
           <Input type={"text"} txt={"Buscar Electronicos"} id={"electronicos_items_search_image"} eventKeyPress={ handleKeyPress } eventChange={(e) => { setinput_search_electronicos(e.target.value) }}/>
             <VscSearch style={{color:"rgb(85 85 85)",fontSize:"20px",cursor:"pointer"}} id={"electronicos_items_search_image"} onClick={ searchByClick }/>
+
+            <select id="select_filter" onChange={ ( e ) => { setSelectFilterElectronicos( e.target.value ) } }>
+              <option value="1">Por Nombre parte fabricante Item</option>
+              <option value="2">Por ID Item</option>
+              <option value="3">Por Tipo Item</option>
+            </select>
+
           </div>
         </div>
         <br />
@@ -291,6 +400,13 @@ export const Inventario = ( { user } ) => {
           <div className="input-container input_inventario">
           <Input type={"text"} txt={"Buscar Elementos de ferreteria"} id={"eleferre_items_search_image"} eventKeyPress={ handleKeyPress } eventChange={(e) => { setinput_search_eleferre(e.target.value) }}/>
             <VscSearch style={{color:"rgb(85 85 85)",fontSize:"20px",cursor:"pointer"}} id={"eleferre_items_search_image"} onClick={ searchByClick }/>
+
+            <select id="select_filter" onChange={ ( e ) => { setSelectFilterEleferre( e.target.value ) } }>
+              <option value="1">Por Nombre Item</option>
+              <option value="2">Por ID Item</option>
+              <option value="3">Por Tipo Item</option>
+            </select>
+
           </div>
         </div>
         <br />
@@ -348,6 +464,13 @@ export const Inventario = ( { user } ) => {
           <div className="input-container input_inventario">
           <Input type={"text"} txt={"Buscar modulo de desarrollo"} id={"moddev_items_search_image"} eventKeyPress={ handleKeyPress } eventChange={(e) => { setinput_search_moddev(e.target.value) }}/>
             <VscSearch style={{color:"rgb(85 85 85)",fontSize:"20px",cursor:"pointer"}} id={"moddev_items_search_image"} onClick={ searchByClick }/>
+
+            <select id="select_filter" onChange={ ( e ) => { setSelectFilterModdev( e.target.value ) } }>
+              <option value="1">Por Nombre Item</option>
+              <option value="2">Por ID Item</option>
+              <option value="3">Por Tipo Item</option>
+            </select>
+
           </div>
         </div>
         <br />
@@ -407,6 +530,13 @@ export const Inventario = ( { user } ) => {
           <div className="input-container input_inventario">
           <Input type={"text"} txt={"Buscar Otros"} id={"otros_items_search_image"} eventKeyPress={ handleKeyPress } eventChange={(e) => { setinput_search_otros(e.target.value) }}/>
             <VscSearch style={{color:"rgb(85 85 85)",fontSize:"20px",cursor:"pointer"}} id={"otros_items_search_image"} onClick={ searchByClick }/>
+
+            <select id="select_filter" onChange={ ( e ) => { setSelectFilterOtros( e.target.value ) } }>
+              <option value="1">Por Nombre Item</option>
+              <option value="2">Por ID Item</option>
+              <option value="3">Por Tipo Item</option>
+            </select>
+
           </div>
         </div>
         <br />

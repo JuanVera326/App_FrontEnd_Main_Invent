@@ -36,3 +36,36 @@ export const getItemsEleferreByGeneralName = async( names ) => {
     }
 
 };
+export const getItemsEleferreByGeneralId = async( ids ) => {
+
+    try {
+
+        const sendRequest = await axios.get(`${URL}/eleferre/general/id/${ids}`);
+        return sendRequest;
+
+    } catch (error) {
+
+        if ( error.response ) {
+            return error.response;
+        }
+
+    }
+
+};
+
+
+export const getItemsEleferreByType = async( types ) => {
+
+    try {
+
+        const sendRequest = await axios.get(`${URL}/eleferre/type/${types}`);
+        return sendRequest;
+
+    } catch (error) {
+
+        if ( error.response ) {
+            return error.response;
+        }
+
+    }
+};

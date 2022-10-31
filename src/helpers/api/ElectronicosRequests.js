@@ -36,3 +36,36 @@ export const getItemsElectronicosByGeneralName = async( names ) => {
     }
 
 };
+export const getItemsElectronicosByGeneralId = async( ids ) => {
+
+    try {
+
+        const sendRequest = await axios.get(`${URL}/electronicos/general/id/${ids}`);
+        return sendRequest;
+
+    } catch (error) {
+
+        if ( error.response ) {
+            return error.response;
+        }
+
+    }
+
+};
+
+
+export const getItemsElectronicosByType = async( types ) => {
+
+    try {
+
+        const sendRequest = await axios.get(`${URL}/electronicos/type/${types}`);
+        return sendRequest;
+
+    } catch (error) {
+
+        if ( error.response ) {
+            return error.response;
+        }
+
+    }
+};

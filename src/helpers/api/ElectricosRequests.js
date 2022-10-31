@@ -37,3 +37,39 @@ export const getItemsElectricosByGeneralName = async( names ) => {
     }
 
 };
+
+
+export const getItemsElectricosByGeneralId = async( ids ) => {
+
+    try {
+
+        const sendRequest = await axios.get(`${URL}/electricos/general/id/${ids}`);
+        return sendRequest;
+
+    } catch (error) {
+
+        if ( error.response ) {
+            return error.response;
+        }
+
+    }
+
+};
+
+
+export const getItemsElectricosByType = async( types ) => {
+
+    try {
+
+        const sendRequest = await axios.get(`${URL}/electricos/type/${types}`);
+        return sendRequest;
+
+    } catch (error) {
+
+        if ( error.response ) {
+            return error.response;
+        }
+
+    }
+
+};

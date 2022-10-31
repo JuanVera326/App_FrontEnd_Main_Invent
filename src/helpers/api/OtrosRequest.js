@@ -36,3 +36,37 @@ export const getItemsOtrosByGeneralName = async( names ) => {
     }
 
 };
+
+export const getItemsOtrosByGeneralId = async( ids ) => {
+
+    try {
+
+        const sendRequest = await axios.get(`${URL}/otros/general/id/${ids}`);
+        return sendRequest;
+
+    } catch (error) {
+
+        if ( error.response ) {
+            return error.response;
+        }
+
+    }
+
+};
+
+
+export const getItemsOtrosByType = async( types ) => {
+
+    try {
+
+        const sendRequest = await axios.get(`${URL}/otros/type/${types}`);
+        return sendRequest;
+
+    } catch (error) {
+
+        if ( error.response ) {
+            return error.response;
+        }
+
+    }
+};

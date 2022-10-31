@@ -36,3 +36,37 @@ export const getItemsModdevByGeneralName = async( names ) => {
     }
 
 };
+
+export const getItemsModdevByGeneralId = async( ids ) => {
+
+    try {
+
+        const sendRequest = await axios.get(`${URL}/moddev/general/id/${ids}`);
+        return sendRequest;
+
+    } catch (error) {
+
+        if ( error.response ) {
+            return error.response;
+        }
+
+    }
+
+};
+
+
+export const getItemsModdevByType = async( types ) => {
+
+    try {
+
+        const sendRequest = await axios.get(`${URL}/moddev/type/${types}`);
+        return sendRequest;
+
+    } catch (error) {
+
+        if ( error.response ) {
+            return error.response;
+        }
+
+    }
+};
