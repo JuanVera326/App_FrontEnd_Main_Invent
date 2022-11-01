@@ -272,13 +272,12 @@ export const Inventario = ( { user } ) => {
           <div className="input-container input_inventario">
             <Input type={"text"} txt={"Buscar Electrico"} id={"electricos_items_search_image"} eventKeyPress={ handleKeyPress } eventChange={(e) => { setinput_search_electricos(e.target.value) }}/>
             <VscSearch style={{color:"rgb(85 85 85)",fontSize:"20px",cursor:"pointer"}} id={"electricos_items_search_image"} onClick={ searchByClick }/>
-            <div className="box_select">
+
             <select id="select_filter" onChange={ ( e ) => { setSelectFilterElectricos( e.target.value ) } }>
               <option value="1">Por Nombre Item</option>
               <option value="2">Por ID Item</option>
               <option value="3">Por Tipo Item</option>
             </select>
-            </div>
           </div>
         </div>
         <br />
