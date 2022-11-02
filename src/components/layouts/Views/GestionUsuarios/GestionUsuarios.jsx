@@ -6,8 +6,12 @@ import { Link } from 'react-router-dom';
 import { getItemsUsuarios } from '../../../../helpers/api/UsuariosRequest';
 import { Input } from '../../../ui/Input/Input';
 import "./GestionUsuarios.css";
+import { Modal } from '../../../pages/Modal/Modal';
 
 export const GestionUsuarios = () => {
+
+  const [modal, setmodal] = useState(false);
+  const [modal_obj, setmodal_obj] = useState({});
 
   const [user_data, setuser_data] = useState(JSON.parse(localStorage.getItem("usuario")));
   const [button_comp, setbutton_comp] = useState("home");
@@ -89,7 +93,7 @@ export const GestionUsuarios = () => {
 
                 <div className="text_cont">
                 <div className="txt">
-                    <h3>ID:</h3>
+                    <h3>Num. Documento:</h3>
                     <p>{ item.id }</p>
                   </div>
                   <div className="txt">
@@ -109,7 +113,12 @@ export const GestionUsuarios = () => {
                   <div className="txt">
                     <Link className='btn btn_invent'>Editar</Link>
                     <Link className='btn btn_invent'>Deshabilitar</Link>
-                    <Link className='btn btn_view'><IoMdEye/></Link>
+                    <Link className='btn btn_view' onClick={ () => {
+
+                     setmodal(true);
+                     setmodal_obj(item)
+
+                    }}><IoMdEye/></Link>
                   </div>
                 </div>
               </div>
@@ -118,6 +127,117 @@ export const GestionUsuarios = () => {
             }
     
             </div>
+            {
+                        ( modal ) &&
+                        <Modal close={ setmodal }>
+                            <div className='animate__animated animate__fadeInRight modal_details'>
+                            <div style={{ display:"flex", justifyContent:"center", alignItems:"center" }} className="row">
+                            <h2 className='modal_object_text'>Usuario</h2>
+                  </div>
+
+                  <div className="header_card_details">
+
+                    <div className="cont_img_details">
+                      <img src={ modal_obj.imagen } className="img_card"/>
+                    </div>
+                    </div>
+                    <div className='modal_objects'>
+                    <div className="cont_txt_details">
+                    </div>
+                    <hr />
+                    <br />        
+                    </div>
+                    <div className="div_text_details">
+                      <div className="row">
+                        <div className="name_detail">
+                            <h4 className='modal_object_text'>Nombre</h4>
+                          </div>
+
+                          <div className="contain_detail">
+                            <h3>{modal_obj.nombre}</h3>
+                          </div>
+                      </div>
+                    <div className="div_text_details">
+                      <div className="row">
+                        <div className="name_detail">
+                            <h4 className='modal_object_text'>Apellido</h4>
+                          </div>
+
+                          <div className="contain_detail">
+                            <h3>{modal_obj.apellido}</h3>
+                          </div>
+                      </div>
+                      <div className="div_text_details">
+                      <div className="row">
+                        <div className="name_detail">
+                            <h4 className='modal_object_text'>Edad</h4>
+                          </div>
+
+                          <div className="contain_detail">
+                            <h3>{modal_obj.edad}</h3>
+                          </div>
+                      </div>
+                      </div>
+                      <div className="div_text_details">
+                      <div className="row">
+                        <div className="name_detail">
+                            <h4 className='modal_object_text'>Numero documento</h4>
+                          </div>
+
+                          <div className="contain_detail">
+                            <h3>{modal_obj.id}</h3>
+                          </div>
+                      </div>
+                      </div>
+                      <div className="div_text_details">
+                      <div className="row">
+                        <div className="name_detail">
+                            <h4 className='modal_object_text'>Correo</h4>
+                          </div>
+
+                          <div className="contain_detail">
+                            <h3>{modal_obj.correo}</h3>
+                          </div>
+                      </div>
+                      </div>
+                      <div className="div_text_details">
+                      <div className="row">
+                        <div className="name_detail">
+                            <h4 className='modal_object_text'>Cargo</h4>
+                          </div>
+
+                          <div className="contain_detail">
+                            <h3>{modal_obj.cargo}</h3>
+                          </div>
+                      </div>
+                      </div>
+                      <div className="div_text_details">
+                      <div className="row">
+                        <div className="name_detail">
+                            <h4 className='modal_object_text'>Rol</h4>
+                          </div>
+
+                          <div className="contain_detail">
+                            <h3>{modal_obj.rol}</h3>
+                          </div>
+                      </div>
+                      </div>
+                      <div className="div_text_details">
+                      <div className="row">
+                        <div className="name_detail">
+                            <h4 className='modal_object_text'>Estado</h4>
+                          </div>
+
+                          <div className="contain_detail">
+                            <h3>{modal_obj.estado += ""}</h3>
+                          </div>
+                      </div>
+                      </div>
+                            </div>
+                            </div>
+                            </div>
+                            </Modal>
+            }
         </div>
       )
     }

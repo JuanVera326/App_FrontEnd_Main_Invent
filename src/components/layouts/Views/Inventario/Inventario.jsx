@@ -9,36 +9,39 @@ import { Input } from '../../../ui/Input/Input';
 import { VscSearch } from "react-icons/vsc";
 import { HiOutlineRefresh } from "react-icons/hi";
 import "./Inventario.css"
+import { Modal } from '../../../pages/Modal/Modal';
 
 export const Inventario = ( { user } ) => {
 
   const [loader, setloader] = useState(false);
   const [getAll, setgetAll] = useState(false);
+  const [modal, setmodal] = useState(false);
+  const [modal_obj, setmodal_obj] = useState({});
 
   const [input_search_electricos, setinput_search_electricos] = useState("");
   const [items_electricos, setitems_electricos] = useState([]);
   const [val_request_electricos, setval_request_electricos] = useState(0);
-  const [selectFilterElectricos, setSelectFilterElectricos] = useState("");
+  const [selectFilterElectricos, setSelectFilterElectricos] = useState("1");
 
   const [input_search_electronicos, setinput_search_electronicos] = useState("");
   const [items_electronicos, setitems_electronicos] = useState([]);
   const [val_request_electronicos, setval_request_electronicos] = useState(0);
-  const [selectFilterElectronicos, setSelectFilterElectronicos] = useState("");
+  const [selectFilterElectronicos, setSelectFilterElectronicos] = useState("1");
 
   const [input_search_eleferre, setinput_search_eleferre] = useState("");
   const [items_eleferre, setitems_eleferre] = useState([]);
   const [val_request_eleferre, setval_request_eleferre] = useState(0);
-  const [selectFilterEleferre, setSelectFilterEleferre] = useState("");
+  const [selectFilterEleferre, setSelectFilterEleferre] = useState("1");
 
   const [input_search_moddev, setinput_search_moddev] = useState("");
   const [items_moddev, setitems_moddev] = useState([]);
   const [val_request_moddev, setval_request_moddev] = useState(0);
-  const [selectFilterModdev, setSelectFilterModdev] = useState("");
+  const [selectFilterModdev, setSelectFilterModdev] = useState("1");
 
   const [input_search_otros, setinput_search_otros] = useState("");
   const [items_otros, setitems_otros] = useState([]);
   const [val_request_otros, setval_request_otros] = useState(0);
-  const [selectFilterOtros, setSelectFilterOtros] = useState("");
+  const [selectFilterOtros, setSelectFilterOtros] = useState("1");
 
   const searchByClick = ( e ) => {
     
@@ -319,7 +322,26 @@ export const Inventario = ( { user } ) => {
                       </div>
                       <br />
                       <div className="txt">
-                        <Link className='btn btn_invent'>Ver Detalles</Link>
+                        <Link className='btn btn_invent' onClick={ () => { 
+
+                          setmodal(true); 
+                          let obj_item = {
+
+                            nombre : item.nombre_parte_electricos,
+                            id : item.id_parte_electricos,
+                            imagen : item.imagen_parte_electricos,
+                            descp : item.descripcion_parte_electricos,
+                            tipo : item.tipo_parte_electricos,
+                            cant_disp : item.cantidad_disponible_electricos,
+                            cont_cons : item.cantidad_consumida_electricos, 
+                            ubicacion : item.ubicacion_parte_electricos,
+                            data_sht : item.datasheet_parte_electricos,
+
+                          }
+                          setmodal_obj(obj_item);
+   
+
+                          }}>Ver Detalles</Link>
                       </div>
                     </div>
     
@@ -382,7 +404,31 @@ export const Inventario = ( { user } ) => {
                     </div>
                     <br />
                     <div className="txt">
-                      <Link className='btn btn_invent'>Ver Detalles</Link>
+                      <Link className='btn btn_invent' onClick={  () => { 
+                        
+                        setmodal(true); 
+                        let obj_item = {
+
+                          id : item.id_Comp,
+                          nombre : item.nombre_comp,
+                          imagen : item.pinout_comp,
+                          descp : item.descripcion_comp,
+                          tipo : item.tipo_comp,
+                          encap : item.encampsulado_comp,
+                          cant_disp : item.cantidad_disponible_comp,
+                          cont_cons : item.cantidad_consumida_comp,
+                          ubicacion : item.ubicacion_comp,
+                          data_sht : item.datasheet_comp,
+                          num_part : item.numero_partefabricante_comp,
+                          esquema : item.esquematico_comp, 
+                          elemento: "Electronico"
+
+                        }
+                        setmodal_obj(obj_item);
+ 
+                      
+                    
+                      } }>Ver Detalles</Link>
                     </div>
                   </div>
 
@@ -446,7 +492,25 @@ export const Inventario = ( { user } ) => {
                   </div>
                   <br />
                   <div className="txt">
-                    <Link className='btn btn_invent'>Ver Detalles</Link>
+                    <Link className='btn btn_invent' onClick={  () => {
+                      
+                      setmodal(true); 
+                      let obj_item = {
+                      
+                        nombre : item.nombre_parte_elementosferreteria,
+                        id : item.id_parte_elementosferreteria,
+                        imagen : item.imagen_parte_elementosferreteria,
+                        descp : item.descripcion_parte_elementosferreteria,
+                        tipo : item.tipo_parte_elementosferreteria,
+                        cant_disp : item.cantidad_disponible_elementosferreteria,
+                        cont_cons : item.cantidad_consumida_elementosferreteria, 
+                        ubicacion : item.ubicacion_parte_elementosferreteria,
+                        data_sht : item.datasheet_parte_elementosferreteria,
+
+                      }
+                      setmodal_obj(obj_item);
+
+                    } }>Ver Detalles</Link>
                   </div>
                 </div>
 
@@ -511,7 +575,25 @@ export const Inventario = ( { user } ) => {
                   </div>
                   <br />
                   <div className="txt">
-                    <Link className='btn btn_invent'>Ver Detalles</Link>
+                  <Link className='btn btn_invent' onClick={  () => {
+                      
+                      setmodal(true); 
+                      let obj_item = {
+                      
+                        nombre : item.nombre_partemoddev,
+                        id : item.id_parte_moddev,
+                        imagen : item.imagen_partemoddev,
+                        descp : item.descripcion_parte_moddev,
+                        tipo : item.tipo_parte_moddev,
+                        cant_disp : item.cantidad_disponible_moddev,
+                        cont_cons : item.cantidad_consumida_moddev, 
+                        ubicacion : item.ubicacion_parte_moddev,
+                        data_sht : item.datasheet_parte_moddev,
+
+                      }
+                      setmodal_obj(obj_item);
+
+                    } }>Ver Detalles</Link>
                   </div>
                 </div>
 
@@ -576,7 +658,25 @@ export const Inventario = ( { user } ) => {
                   </div>
                   <br />
                   <div className="txt">
-                    <Link className='btn btn_invent'>Ver Detalles</Link>
+                  <Link className='btn btn_invent' onClick={  () => {
+                      
+                      setmodal(true); 
+                      let obj_item = {
+                      
+                        nombre : item.nombre_parte_otros,
+                        id : item.id_parte_otros,
+                        imagen : item.imagen_parte_otros,
+                        descp : item.descripcion_parte_otros,
+                        tipo : item.tipo_parte_otros,
+                        cant_disp : item.cantidad_disponible_otros,
+                        cont_cons : item.cantidad_consumida_otros, 
+                        ubicacion : item.ubicacion_parte_otros,
+                        data_sht : item.datasheet_parte_otros,
+
+                      }
+                      setmodal_obj(obj_item);
+
+                    } }>Ver Detalles</Link>
                   </div>
                 </div>
 
@@ -586,6 +686,121 @@ export const Inventario = ( { user } ) => {
         }
 
         </div>
+
+        {
+
+          ( modal ) &&
+            <Modal close={ setmodal }>
+                <div className='animate__animated animate__fadeInRight modal_details'>
+
+                  <div style={{ display:"flex", justifyContent:"center", alignItems:"center" }} className="row">
+                    <h2 className='modal_object_text'>ID:</h2><h3>{modal_obj.id}</h3>
+                  </div>
+
+                  <div className="header_card_details">
+
+                    <div className="cont_img_details">
+                      <img src={ modal_obj.imagen } className="img_card"/>
+                    </div>
+      
+                    {
+                      ( !!modal_obj.esquema ) && 
+                      <div className="cont_img_details">
+                        <img src={ modal_obj.esquema } className="img_card"/>
+                      </div>
+                    }
+
+                  </div>
+                   <div className='modal_objects'>
+                    <div className="cont_txt_details">
+                      <h1 style={{color:"#ffc61b"}}>{modal_obj.nombre}</h1>
+                    </div>
+                    <hr />
+                    <br />
+
+                    <div className="div_text_details">
+                      <div className="row">
+                        <div className="name_detail">
+                            <h4 className='modal_object_text'>TIPO: </h4>
+                          </div>
+
+                          <div className="contain_detail">
+                            <h3>{modal_obj.tipo}</h3>
+                          </div>
+                      </div>
+
+                      <div className="row">
+                        <div className="name_detail">
+                            <h4 className='modal_object_text'>CANT Disp.: </h4>
+                          </div>
+
+                          <div className="contain_detail">
+                            <h3>{modal_obj.cant_disp}</h3>
+                          </div>
+                      </div>
+
+                      <div className="row">
+                        <div className="name_detail">
+                            <h4 className='modal_object_text'>CANT Cons.: </h4>
+                          </div>
+
+                          <div className="contain_detail">
+                            <h3>{modal_obj.cont_cons}</h3>
+                          </div>
+                      </div>
+
+                      <div className="row">
+                        <div className="name_detail">
+                            <h4 className='modal_object_text'>UBICACION: </h4>
+                          </div>
+
+                          <div className="contain_detail">
+                            <h3>{modal_obj.ubicacion}</h3>
+                          </div>
+                      </div>
+
+                      <div className="row">
+                        <div className="name_detail">
+                            <h4 className='modal_object_text'>DT-SHEET: </h4>
+                          </div>
+
+                          <div className="contain_detail">
+                            <h3>{modal_obj.data_sht}</h3>
+                          </div>
+                      </div>
+
+                      {
+                        ( !!modal_obj.elemento ) &&
+
+                        <div className="row">
+                          <div className="name_detail">
+                              <h4 className='modal_object_text'>ENCAPSULADO: </h4>
+                            </div>
+
+                            <div className="contain_detail">
+                              <h3>{modal_obj.encap}</h3>
+                            </div>
+                        </div>
+
+                      }
+
+                      <div className="row">
+                        <div className="name_detail">
+                            <h4 className='modal_object_text'>DESCRIPCION: </h4>
+                          </div>
+
+                          <div className="contain_detail">
+                            <h3 style={{ padding:"10px",textAlign:"center" }}>{modal_obj.descp}</h3>
+                          </div>
+                      </div>
+
+                    </div>
+
+                </div>
+                </div>
+            </Modal>
+
+        }
     </div>
   )
 }
