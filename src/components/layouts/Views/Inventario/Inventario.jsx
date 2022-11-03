@@ -348,6 +348,10 @@ export const Inventario = ( { user } ) => {
                   </div>
                 ))
             }
+            {
+              ( items_electricos.length === 0 ) && <><h1>No encontrado</h1></>
+            }
+
         </div>
 
         <br />
@@ -436,6 +440,10 @@ export const Inventario = ( { user } ) => {
 
               ))
           }
+          {
+           ( items_electronicos.length === 0 ) && <><h1>No encontrado</h1></>
+          }
+
         </div>
 
         <br />
@@ -517,6 +525,9 @@ export const Inventario = ( { user } ) => {
               </div>
 
             ))
+        }
+        {
+          ( items_eleferre.length === 0 ) && <><h1>No encontrado</h1></>
         }
         </div>
 
@@ -601,6 +612,9 @@ export const Inventario = ( { user } ) => {
 
             ))
         }
+            {
+              ( items_moddev.length === 0 ) && <><h1>No encontrado</h1></>
+            }
 
         </div>
 
@@ -684,6 +698,9 @@ export const Inventario = ( { user } ) => {
 
             ))
         }
+            {
+              ( items_otros.length === 0 ) && <><h1>No encontrado</h1></>
+            }
 
         </div>
 

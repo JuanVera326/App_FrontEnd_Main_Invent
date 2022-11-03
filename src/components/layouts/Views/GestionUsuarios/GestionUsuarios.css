@@ -59,4 +59,9 @@
   100% { background-size: 10px 3px, 10px 3px, 10px 3px,  10px 10px, 10px 30px, 10px 50px}
 
 }
-    
+.cont_buttons_desha{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}

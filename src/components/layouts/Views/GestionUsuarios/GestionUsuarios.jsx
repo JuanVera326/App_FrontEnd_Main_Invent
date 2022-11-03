@@ -3,15 +3,24 @@ import { HiOutlineRefresh } from 'react-icons/hi';
 import { VscSearch } from 'react-icons/vsc';
 import { IoMdEye } from "react-icons/io";
 import { Link } from 'react-router-dom';
-import { getItemsUsuarios } from '../../../../helpers/api/UsuariosRequest';
+import { getItemsUsuarios, getItemsUsuariosByCargo, getItemsUsuariosById, getItemsUsuariosByName, usuariosPost, usuariosPut } from '../../../../helpers/api/UsuariosRequest';
 import { Input } from '../../../ui/Input/Input';
-import "./GestionUsuarios.css";
 import { Modal } from '../../../pages/Modal/Modal';
+import "./GestionUsuarios.css";
 
 export const GestionUsuarios = () => {
 
+  const [modal_edit, setmodal_edit] = useState(false)
+
+  const [loader_desha, setloader_desha] = useState(false);
+  const [msj_desha_rqst, setmsj_desha_rqst] = useState("");
+  const [action_desh, setaction_desh] = useState("");
+
   const [modal, setmodal] = useState(false);
   const [modal_obj, setmodal_obj] = useState({});
+
+  const [modal_desha, setmodaldesha] = useState(false);
+  const [modal_obj_desha, setmodal_obj_desha] = useState({});
 
   const [user_data, setuser_data] = useState(JSON.parse(localStorage.getItem("usuario")));
   const [button_comp, setbutton_comp] = useState("home");
@@ -20,12 +29,88 @@ export const GestionUsuarios = () => {
   const [input_search_usuarios, setinput_search_usuarios] = useState("");
   const [items_usuarios, setitems_usuarios] = useState([]);
   const [val_request_usuarios, setval_request_usuarios] = useState(0);
-  const [selectFilterUsuarios, setSelectFilterUsuarios] = useState("");
+  const [selectFilterUsuarios, setSelectFilterUsuarios] = useState("1");
   const [loader, setloader] = useState(true);
 
-  const handleKeyPress = () => {}
+  const handleKeyPress = ( e ) => {
 
-  const searchByClick = () => {}
+    if (e.key === "Enter" || e.keyCode === 13) {
+
+      if (!!input_search_usuarios) {
+
+        searchUsus(input_search_usuarios);
+        
+      }else if (input_search_usuarios == ""){
+
+        refreshRequest();
+
+      }
+    }
+  }
+  const searchByClick = () => { searchUsus(input_search_usuarios); }
+
+  const searchUsus = ( e ) => {
+
+    switch ( selectFilterUsuarios ) {
+      case "1":
+        getItemsUsuariosByName ( e ).then((info) => {
+          setitems_usuarios( info.data ); 
+        })
+      break;
+
+      case "2":
+        getItemsUsuariosById( e ).then((info) => {
+          setitems_usuarios( info.data ); 
+        })
+      break;
+
+      case "3":
+        getItemsUsuariosByCargo ( e ).then((info) => {
+          setitems_usuarios( info.data ); 
+        })
+      break;
+    
+      default: break;
+    }
+
+  }
+
+  const handleDeshaUsu = () => {
+
+    setloader_desha(true);
+
+    let obj_temp =  modal_obj_desha;
+
+    if ( action_desh === "Habilitar") {
+
+        obj_temp.estado = true;
+
+    }else if ( action_desh === "Deshabilitar" ) {
+
+        obj_temp.estado = false;
+
+    }
+
+    usuariosPut( obj_temp , obj_temp.id ).then((info) => {
+
+      if ( info.status == 202 ) {
+
+        setloader_desha(false);
+        setmodaldesha(false);
+        setgetAll(!getAll);
+
+      }else{
+
+        setmsj_desha_rqst("Hubo un error, Intente mas tarde.")
+        setloader_desha(false);
+        setTimeout(() => { window.location = "/principal"; }, 3500);
+
+      }
+      
+    });
+
+    setloader_desha(false);
+  }
 
   useEffect(() => {
 
@@ -56,9 +141,9 @@ export const GestionUsuarios = () => {
         <VscSearch style={{color:"rgb(85 85 85)",fontSize:"20px",cursor:"pointer"}} id={"usuarios_items_search_image"} onClick={ searchByClick }/>
 
         <select id="select_filter" onChange={ ( e ) => { setSelectFilterUsuarios( e.target.value ) } }>
-          <option value="1">Por Nombre Usuario</option>
-          <option value="2">Por ID Usuario</option>
-          <option value="3">Por Edad Usuario</option>
+          <option value="1">Por nombre de usuario</option>
+          <option value="2">Por ID de usuario</option>
+          <option value="3">Por cargo de usuario</option>
         </select>
       </div>
     </div>
@@ -70,14 +155,14 @@ export const GestionUsuarios = () => {
           ? 
            
             <>
-              <div className="card_usuarios"> <span class="loader_cards_usuarios"></span></div>
-              <div className="card_usuarios"> <span class="loader_cards_usuarios"></span></div>
-              <div className="card_usuarios"> <span class="loader_cards_usuarios"></span></div>
-              <div className="card_usuarios"> <span class="loader_cards_usuarios"></span></div>
-              <div className="card_usuarios"> <span class="loader_cards_usuarios"></span></div>
-              <div className="card_usuarios"> <span class="loader_cards_usuarios"></span></div>
-              <div className="card_usuarios"> <span class="loader_cards_usuarios"></span></div>
-              <div className="card_usuarios"> <span class="loader_cards_usuarios"></span></div>
+              <div className="card_usuarios"> <span className="loader_cards_usuarios"></span></div>
+              <div className="card_usuarios"> <span className="loader_cards_usuarios"></span></div>
+              <div className="card_usuarios"> <span className="loader_cards_usuarios"></span></div>
+              <div className="card_usuarios"> <span className="loader_cards_usuarios"></span></div>
+              <div className="card_usuarios"> <span className="loader_cards_usuarios"></span></div>
+              <div className="card_usuarios"> <span className="loader_cards_usuarios"></span></div>
+              <div className="card_usuarios"> <span className="loader_cards_usuarios"></span></div>
+              <div className="card_usuarios"> <span className="loader_cards_usuarios"></span></div>
             </>
 
           :  
@@ -93,7 +178,7 @@ export const GestionUsuarios = () => {
 
                 <div className="text_cont">
                 <div className="txt">
-                    <h3>Num. Documento:</h3>
+                    <h3>Documento:</h3>
                     <p>{ item.id }</p>
                   </div>
                   <div className="txt">
@@ -111,19 +196,21 @@ export const GestionUsuarios = () => {
                   </div>
                   <br />
                   <div className="txt">
-                    <Link className='btn btn_invent'>Editar</Link>
-                    <Link className='btn btn_invent'>Deshabilitar</Link>
-                    <Link className='btn btn_view' onClick={ () => {
-
-                     setmodal(true);
-                     setmodal_obj(item)
-
-                    }}><IoMdEye/></Link>
+                    <Link className='btn btn_invent' onClick={() => {setmodal_edit(true); setaction_desh("Editar")}}>Editar</Link>
+                    {
+                      ( item.rol === 1 ) ? <></> :( item.estado === false ) 
+                          ? <Link className='btn btn_invent' onClick={ () => {setmodal_obj_desha(item); setmodaldesha(true); setaction_desh("Habilitar"); } } >Habilitar</Link>
+                          : <Link className='btn btn_invent' onClick={ () => {setmodal_obj_desha(item); setmodaldesha(true); setaction_desh("Deshabilitar"); } } >Deshabilitar</Link>
+                    }
+                    <Link className='btn btn_view' onClick={ () => {setmodal(true); setmodal_obj(item);}}><IoMdEye/></Link>
                   </div>
                 </div>
               </div>
               
               ))
+            }
+            {
+              ( items_usuarios.length === 0 ) && <><h1>No encontrado</h1></>
             }
     
             </div>
@@ -132,7 +219,7 @@ export const GestionUsuarios = () => {
                         <Modal close={ setmodal }>
                             <div className='animate__animated animate__fadeInRight modal_details'>
                             <div style={{ display:"flex", justifyContent:"center", alignItems:"center" }} className="row">
-                            <h2 className='modal_object_text'>Usuario</h2>
+                            <h2 className='modal_object_text'>{ modal_obj.cargo }</h2>
                   </div>
 
                   <div className="header_card_details">
@@ -181,7 +268,7 @@ export const GestionUsuarios = () => {
                       <div className="div_text_details">
                       <div className="row">
                         <div className="name_detail">
-                            <h4 className='modal_object_text'>Numero documento</h4>
+                            <h4 className='modal_object_text'>Documento</h4>
                           </div>
 
                           <div className="contain_detail">
@@ -229,16 +316,72 @@ export const GestionUsuarios = () => {
                           </div>
 
                           <div className="contain_detail">
-                            <h3>{modal_obj.estado += ""}</h3>
+                            {
+                              ( !!modal_obj.estado ) 
+
+                              ? <h3 style={{ color:"rgb(38 201 64)" }}>{"Activo"}</h3>
+
+                              : <h3 style={{ color:"rgb(255 95 87)" }}>{"Inactivo"}</h3>
+                            }
                           </div>
                       </div>
                       </div>
-                            </div>
-                            </div>
-                            </div>
-                            </Modal>
+                    </div>
+                    </div>
+                    </div>
+              </Modal>
             }
+            {
+
+              ( !!modal_desha ) &&
+              <Modal close={setmodaldesha}>
+
+                <div className="animate__animated animate__fadeInRight cont_decision" style={{ zIndex:"10000" }}>
+                  <div>
+                      <h1>{ "¿Esta seguro de querer "}{action_desh}{" a " }{ modal_obj_desha.nombre }{ "?" }</h1>
+                      <br />
+                      {
+                        ( !!loader_desha )
+                        ?
+                          <>
+                              <span className="loader"></span>
+                          </>
+                        : 
+                          ( !!msj_desha_rqst )
+
+                          ?
+                            <div className="cont_buttons_desha">
+                              <h2 style={{ color:"rgb(26 200 252)" }}>{ msj_desha_rqst }</h2>
+                            </div> 
+                          :
+                            <div className="cont_buttons_desha">
+                              <Link className='btn btn_invent' onClick={ handleDeshaUsu }>Si</Link>
+                              <Link className='btn btn_invent' onClick={ () => { setmodaldesha(false); } }>Cancelar</Link>
+                            </div>
+                      }
+                  </div>
+                </div>
+
+              </Modal>
+
+            }
+              {
+             ( !!modal_edit ) &&
+        <Modal close={setmodal_edit}>
+
+      <div className="animate__animated animate__fadeInRight cont_decision" style={{ zIndex:"10000" }}></div>
+      <div>
+
+        
+      </div>
+
+
+    </Modal>
+
+  }
         </div>
       )
     }
+  
+
   
