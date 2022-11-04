@@ -2,15 +2,23 @@ import React, { useEffect, useState } from 'react'
 import { HiOutlineRefresh } from 'react-icons/hi';
 import { VscSearch } from 'react-icons/vsc';
 import { IoMdEye } from "react-icons/io";
+import { MdImageSearch } from "react-icons/md";
 import { Link } from 'react-router-dom';
 import { getItemsUsuarios, getItemsUsuariosByCargo, getItemsUsuariosById, getItemsUsuariosByName, usuariosPost, usuariosPut } from '../../../../helpers/api/UsuariosRequest';
 import { Input } from '../../../ui/Input/Input';
 import { Modal } from '../../../pages/Modal/Modal';
+import { ErrorMessage, Field, Form, Formik } from 'formik';
+import { useSendImage } from '../../../../helpers/image/useSendImage';
 import "./GestionUsuarios.css";
 
 export const GestionUsuarios = () => {
 
-  const [modal_edit, setmodal_edit] = useState(false)
+  const { myWidgetUser , urlImage } = useSendImage();
+  const [img_edit, setimg_edit] = useState("");
+  const [loader_edit, setloader_edit] = useState(false);
+
+  const [modal_edit, setmodal_edit] = useState(false);
+  const [modal_obj_edit, setmodal_obj_edit] = useState({});
 
   const [loader_desha, setloader_desha] = useState(false);
   const [msj_desha_rqst, setmsj_desha_rqst] = useState("");
@@ -18,6 +26,9 @@ export const GestionUsuarios = () => {
 
   const [modal, setmodal] = useState(false);
   const [modal_obj, setmodal_obj] = useState({});
+
+  const [modal_regist, setmodal_regist ] = useState(false);
+  const [modal_objs_regist, setmodal_obj_regist] = useState({});
 
   const [modal_desha, setmodaldesha] = useState(false);
   const [modal_obj_desha, setmodal_obj_desha] = useState({});
@@ -128,15 +139,20 @@ export const GestionUsuarios = () => {
     })
     
   }, [ getAll ])
+
+  useEffect(() => {  setimg_edit(urlImage); console.log(urlImage); }, [ urlImage ]);
   
   const refreshRequest = () => { setgetAll(!getAll); }
 
   return (
-    <div className='cont_invent'  style={{overflow:"scroll"}}>
+    <div className='cont_invent'>
+
     <HiOutlineRefresh title="Refresh" className="refresh_invent" onClick={refreshRequest} />
     <div className="input_title_cont">
       <h1>Gestion de usuarios</h1>
+
       <div className="input-container input_inventario">
+
         <Input type={"text"} txt={"Buscar Usuario"} id={"usuarios_items_search_image"} eventKeyPress={ handleKeyPress } eventChange={(e) => { setinput_search_usuarios(e.target.value) }}/>
         <VscSearch style={{color:"rgb(85 85 85)",fontSize:"20px",cursor:"pointer"}} id={"usuarios_items_search_image"} onClick={ searchByClick }/>
 
@@ -146,6 +162,7 @@ export const GestionUsuarios = () => {
           <option value="3">Por cargo de usuario</option>
         </select>
       </div>
+      <Link className='btn btn_invent create_btn' onClick={() => {setmodal_regist(true);}}>Crear usuario</Link>
     </div>
     <br />
     <div className="usuarios_cont">
@@ -196,7 +213,7 @@ export const GestionUsuarios = () => {
                   </div>
                   <br />
                   <div className="txt">
-                    <Link className='btn btn_invent' onClick={() => {setmodal_edit(true); setaction_desh("Editar")}}>Editar</Link>
+                    <Link className='btn btn_invent' onClick={() => {setmodal_edit(true); setmodal_obj_edit(item); setimg_edit(item.imagen);}}>Editar</Link>
                     {
                       ( item.rol === 1 ) ? <></> :( item.estado === false ) 
                           ? <Link className='btn btn_invent' onClick={ () => {setmodal_obj_desha(item); setmodaldesha(true); setaction_desh("Habilitar"); } } >Habilitar</Link>
@@ -366,19 +383,184 @@ export const GestionUsuarios = () => {
 
             }
               {
-             ( !!modal_edit ) &&
-        <Modal close={setmodal_edit}>
+                ( !!modal_edit ) &&
 
-      <div className="animate__animated animate__fadeInRight cont_decision" style={{ zIndex:"10000" }}></div>
-      <div>
+                <Modal close={setmodal_edit}>
+                    <div className="animate__animated animate__fadeInRight cont_decision" style={{ zIndex:"10000" }}>
+                        
+                        <div className="form_cont_edit_users">
+                        <h1>Actualizar usuario</h1>
+                          
+                          {
+                            ( !!loader_edit ) && <span className='loader'></span>
+                          }
+                          <div className="image_edit">
+                            <div className="cont_img_details" title='Sube tu imagen' onClick={ () => { myWidgetUser.open(); } }>
+                              <img src={ img_edit } className="img_card"/>
+                            </div>
+                          </div>
 
-        
-      </div>
+                        <br />
 
+                        <Formik
 
-    </Modal>
+                          initialValues={{
+                            id: modal_obj_edit.id,
+                            nombre: "",
+                            apellido: "",
+                            cargo: "",
+                            imagen: "",
+                            edad: "",
+                            rol: 2,
+                            password: "",
+                            correo: modal_obj_edit.correo,
+                            estado: modal_obj_edit.estado
+                          }}
 
-  }
+                          validate = {(valores) => {
+
+                            let errors = {};
+
+                            if (!valores.nombre.trim()) { errors.nombre = "Nombres erroneos" }
+                            else if (!/^[A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]+$/.test(valores.nombre)) { errors.nombre = "Nombres erroneos" }
+
+                            else if (!valores.apellido.trim()) { errors.apellido = "Apellidos erroneos" }
+                            else if (!/^[A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]+$/.test(valores.apellido)) { errors.apellido = "Apellidos erroneos" }
+
+                            else if (!valores.correo.trim()) { errors.correo = "Correo erroneo" }
+                            else if (!/^(\w+[/./-]?){1,}@[a-z]+[/.]\w{2,}$/.test(valores.correo)) { errors.correo = "Correo erroneo" }
+
+                            else if (!valores.cargo.trim()) { errors.cargo = "Cargo erroneo" }
+                            else if (!/^[A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]+$/.test(valores.cargo)) { errors.cargo = "Cargo erroneo" }
+
+                            else if (!valores.password.trim()) {errors.password = "Contraseña necesaria"}
+                            
+                            return errors;
+                          }}
+
+                          onSubmit={( valores, {resetForm} ) => {
+                            
+                            setloader_edit(true);
+                            valores.imagen = img_edit;
+
+                            usuariosPut( valores, valores.id ).then( (info) => {
+
+                              if (info.status == 202) {
+                                
+                                setloader_edit(false);
+                                setmodal_edit(false);
+                                refreshRequest();
+                                resetForm();
+
+                              }else{
+
+                                setmsj_desha_rqst("Hubo un error, intentalo mas tarde.");
+                                setloader_edit(false);
+                                setmodal_edit(false);
+                                refreshRequest();
+                                setTimeout(() => { window.location = "/principal"; }, 3500);
+                              }
+
+                            } )
+
+                          }}>
+
+                          {({ errors }) => ( 
+
+                              <Form className='form1'>
+                                <hr />
+                                <br />
+                                <p>{ modal_obj_edit.nombre }</p>
+                                <ErrorMessage  name='nombre' component={() => (<p className='warn__password-user'>{errors.nombre}</p>)} />
+                                <div className="input-container input_inventario">
+                                  <Field 
+                                    type='text'
+                                    placeholder='Nuevo nombre' 
+                                    name='nombre'
+                                    id="nombre"
+                                  />
+                                </div>
+                                <p>{ modal_obj_edit.apellido }</p>
+                                <ErrorMessage  name='apellido' component={() => (<p className='warn__password-user'>{errors.apellido}</p>)} />
+                                <div className="input-container input_inventario">
+                                  <Field 
+                                    type='text'
+                                    placeholder='Nuevo apellido' 
+                                    name='apellido'
+                                    id="apellido"
+                                  />
+                                </div>
+                               
+                                <p>{ modal_obj_edit.cargo }</p>
+                                <ErrorMessage  name='cargo' component={() => (<p className='warn__password-user'>{errors.cargo}</p>)} />
+                                <div className="input-container input_inventario">
+                                  <Field 
+                                    type='text'
+                                    placeholder='Nuevo cargo' 
+                                    name='cargo'
+                                    id="cargo"
+                                  />
+                                </div>
+            
+                                <p>{ modal_obj_edit.edad }</p>
+                                <div className="input-container input_inventario">
+                                  <Field 
+                                    type='number'
+                                    max={"99"}
+                                    placeholder='Nueva edad' 
+                                    name='edad'
+                                    id="edad"
+                                  />
+                                </div>
+                                
+                                <ErrorMessage  name='password' component={() => (<p className='warn__password-user'>{errors.password}</p>)} />
+                                <div className="input-container input_inventario">
+                                  <Field 
+                                    type='password'
+                                    placeholder='Nueva contraseña' 
+                                    name='password'
+                                    id="password"
+                                  />
+                                </div>
+
+                                <div style={{ width:"100%",display:"flex",justifyContent:"center",gap:"10px" }}>
+                                  <Input type={"submit"} txt={"Actualizar"} style={"btn btn_invent"}/>
+                                  <Link className='btn btn_invent'  style={{ fontSize:"13px",width:"6vh" }} onClick={ () => { setmodal_edit(false); } } >Cancelar</Link>
+                                </div>
+                                {
+                                  ( !!msj_desha_rqst ) && 
+                                  <div className="cont_buttons_desha">
+                                    <h2 style={{ color:"rgb(26 200 252)" }}>{ msj_desha_rqst }</h2>
+                                  </div>
+                                }
+                        
+                              </Form> 
+
+                          )}
+
+                          </Formik>
+                        </div>
+                    </div>
+                </Modal>
+
+              }
+             { 
+             ( !!modal_regist ) &&
+
+             <Modal close={setmodal_regist}>
+                    <div className="animate__animated animate__fadeInRight cont_decision" style={{ zIndex:"10000" }}>
+                        
+                        <div className="form_cont_edit_users">
+                        <h1>Crear usuario</h1>
+                          
+                          {
+                            ( !!loader_edit ) && <span className='loader'></span>
+                          }
+
+                          </div>
+                          </div>
+             </Modal>
+                }
         </div>
       )
     }

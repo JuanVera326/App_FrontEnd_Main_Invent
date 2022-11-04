@@ -65,3 +65,45 @@
     justify-content: center;
     gap: 30px;
 }
+/* Formulario Edicion */
+
+.form_cont_edit_users{
+    min-width: 30vh;
+    min-height: 45vh;
+    padding: 5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 6px;
+    background-color: rgb(0 64 106);
+}
+.warn__password-user{
+    color: rgb(246, 83, 83);
+}
+.form1{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.image_edit img{ z-index: 10; }
+.image_edit img:hover{
+    transition: 0.5s;
+    z-index: 1;
+    filter: brightness(50%);
+}
+.icon_edit_image{
+    z-index: 0;
+    font-size: 70px;
+    position: absolute;
+    left: 300px;
+    top: 250px;
+}
+.create_btn{
+
+height: 20px;
+
+
+
+}

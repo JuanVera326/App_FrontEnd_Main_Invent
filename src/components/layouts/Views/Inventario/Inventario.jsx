@@ -268,7 +268,7 @@ export const Inventario = ( { user } ) => {
   }, [ getAll ])
   
   return (
-    <div className='cont_invent'  style={{overflow:"scroll"}}>
+    <div className='cont_invent'>
         <HiOutlineRefresh title="Refresh" className="refresh_invent" onClick={refreshRequest} />
         <div className="input_title_cont">
           <h1>Ítems Electricos</h1>
@@ -451,7 +451,7 @@ export const Inventario = ( { user } ) => {
         <div className="input_title_cont">
           <h1>Ítems Elementos ferreteria</h1>
           <div className="input-container input_inventario">
-          <Input type={"text"} txt={"Buscar Elementos de ferreteria"} id={"eleferre_items_search_image"} eventKeyPress={ handleKeyPress } eventChange={(e) => { setinput_search_eleferre(e.target.value) }}/>
+            <Input type={"text"} txt={"Buscar Elementos de ferreteria"} id={"eleferre_items_search_image"} eventKeyPress={ handleKeyPress } eventChange={(e) => { setinput_search_eleferre(e.target.value) }}/>
             <VscSearch style={{color:"rgb(85 85 85)",fontSize:"20px",cursor:"pointer"}} id={"eleferre_items_search_image"} onClick={ searchByClick }/>
 
             <select id="select_filter" onChange={ ( e ) => { setSelectFilterEleferre( e.target.value ) } }>
