@@ -20,6 +20,38 @@ export const getItemsUsuarios = async() => {
 
 };
 
+export const usuariosPost = async( obj ) => {
+
+    try {
+        
+        const sendRequest = await axios({
+            url : `${URL}/usuarios/${KEY}`,
+            method : 'POST',
+            headers : {
+                "Content-Type":"application/json",
+            },
+            data : obj
+            
+        }).catch( function( error ) {
+
+            if ( error.response ) {
+                return error.response;
+            }
+
+        });
+                
+        return sendRequest;
+
+    } catch (error) {
+
+        if ( error.response ) {
+            return error.response;
+        }
+
+    }
+
+};
+
 export const usuariosPut = async( obj , id ) => {
 
     try {

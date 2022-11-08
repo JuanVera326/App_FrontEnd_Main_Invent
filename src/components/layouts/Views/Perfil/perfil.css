@@ -1,0 +1,20 @@
+.card_perfil{
+    border-radius: 6px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    background-color: rgb(0 64 106);
+    height: 53vh;
+    width: 40vh;
+    margin-top: 160px;
+}
+.perfil_cont{
+   display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.cont_img_profile{
+    width: 300px;
+    height: 300px;
+}

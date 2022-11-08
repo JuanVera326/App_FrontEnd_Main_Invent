@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { HiOutlineRefresh } from 'react-icons/hi';
 import { VscSearch } from 'react-icons/vsc';
 import { IoMdEye } from "react-icons/io";
+import { FaFileUpload } from "react-icons/fa";
 import { MdImageSearch } from "react-icons/md";
 import { Link } from 'react-router-dom';
 import { getItemsUsuarios, getItemsUsuariosByCargo, getItemsUsuariosById, getItemsUsuariosByName, usuariosPost, usuariosPut } from '../../../../helpers/api/UsuariosRequest';
@@ -58,7 +59,7 @@ export const GestionUsuarios = () => {
       }
     }
   }
-  const searchByClick = () => { searchUsus(input_search_usuarios); }
+  const searchByClick = () => { if ( !!input_search_usuarios ) { searchUsus(input_search_usuarios); } }
 
   const searchUsus = ( e ) => {
 
@@ -108,12 +109,14 @@ export const GestionUsuarios = () => {
 
         setloader_desha(false);
         setmodaldesha(false);
+        setimg_edit("");
         setgetAll(!getAll);
 
       }else{
 
         setmsj_desha_rqst("Hubo un error, Intente mas tarde.")
         setloader_desha(false);
+        setimg_edit("");
         setTimeout(() => { window.location = "/principal"; }, 3500);
 
       }
@@ -140,7 +143,7 @@ export const GestionUsuarios = () => {
     
   }, [ getAll ])
 
-  useEffect(() => {  setimg_edit(urlImage); console.log(urlImage); }, [ urlImage ]);
+  useEffect(() => {  setimg_edit(urlImage); }, [ urlImage ]);
   
   const refreshRequest = () => { setgetAll(!getAll); }
 
@@ -213,11 +216,13 @@ export const GestionUsuarios = () => {
                   </div>
                   <br />
                   <div className="txt">
-                    <Link className='btn btn_invent' onClick={() => {setmodal_edit(true); setmodal_obj_edit(item); setimg_edit(item.imagen);}}>Editar</Link>
+                    
                     {
                       ( item.rol === 1 ) ? <></> :( item.estado === false ) 
-                          ? <Link className='btn btn_invent' onClick={ () => {setmodal_obj_desha(item); setmodaldesha(true); setaction_desh("Habilitar"); } } >Habilitar</Link>
-                          : <Link className='btn btn_invent' onClick={ () => {setmodal_obj_desha(item); setmodaldesha(true); setaction_desh("Deshabilitar"); } } >Deshabilitar</Link>
+                          ? <><Link className='btn btn_invent' onClick={() => {setmodal_edit(true); setmodal_obj_edit(item); setimg_edit(item.imagen);}}>Editar</Link>
+                            <Link className='btn btn_invent' onClick={ () => {setmodal_obj_desha(item); setmodaldesha(true); setaction_desh("Habilitar"); } } >Habilitar</Link></>
+                          : <><Link className='btn btn_invent' onClick={() => {setmodal_edit(true); setmodal_obj_edit(item); setimg_edit(item.imagen);}}>Editar</Link>
+                            <Link className='btn btn_invent' onClick={ () => {setmodal_obj_desha(item); setmodaldesha(true); setaction_desh("Deshabilitar"); } } >Deshabilitar</Link></>
                     }
                     <Link className='btn btn_view' onClick={ () => {setmodal(true); setmodal_obj(item);}}><IoMdEye/></Link>
                   </div>
@@ -232,11 +237,11 @@ export const GestionUsuarios = () => {
     
             </div>
             {
-                        ( modal ) &&
-                        <Modal close={ setmodal }>
-                            <div className='animate__animated animate__fadeInRight modal_details'>
-                            <div style={{ display:"flex", justifyContent:"center", alignItems:"center" }} className="row">
-                            <h2 className='modal_object_text'>{ modal_obj.cargo }</h2>
+              ( modal ) &&
+              <Modal close={ setmodal }>
+                  <div className='animate__animated animate__fadeInRight modal_details'>
+                  <div style={{ display:"flex", justifyContent:"center", alignItems:"center" }} className="row">
+                  <h2 className='modal_object_text'>{ modal_obj.cargo }</h2>
                   </div>
 
                   <div className="header_card_details">
@@ -450,6 +455,7 @@ export const GestionUsuarios = () => {
                                 setloader_edit(false);
                                 setmodal_edit(false);
                                 refreshRequest();
+                                setimg_edit("");
                                 resetForm();
 
                               }else{
@@ -457,6 +463,7 @@ export const GestionUsuarios = () => {
                                 setmsj_desha_rqst("Hubo un error, intentalo mas tarde.");
                                 setloader_edit(false);
                                 setmodal_edit(false);
+                                setimg_edit("");
                                 refreshRequest();
                                 setTimeout(() => { window.location = "/principal"; }, 3500);
                               }
@@ -552,13 +559,203 @@ export const GestionUsuarios = () => {
                         
                         <div className="form_cont_edit_users">
                         <h1>Crear usuario</h1>
-                          
-                          {
-                            ( !!loader_edit ) && <span className='loader'></span>
-                          }
+                            
+                        {
+                          ( !!loader_edit ) && <span className='loader'></span>
+                        }
+                          <div className='form2'>
 
+                          <Formik
+                          initialValues={{
+                            id: "",
+                            nombre: "",
+                            apellido: "",
+                            cargo: "",
+                            imagen: "",
+                            edad: "",
+                            rol: 2,
+                            password: "",
+                            correo: "",
+                            estado: ""
+                          }}
+
+                          validate = {(valores) => {
+
+                            let errors = {};
+
+                            if (!valores.id.trim()) { errors.id = "Id Vacío" }
+                            else if ( !/^\d+$/.test( valores.id ) ) { errors.id = "Id solo admite numeros" }
+
+                            else if (!valores.nombre.trim()) { errors.nombre = "Nombres erroneos" }
+                            else if (!/^[A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]+$/.test(valores.nombre)) { errors.nombre = "Nombres erroneos" }
+
+                            else if (!valores.apellido.trim()) { errors.apellido = "Apellidos erroneos" }
+                            else if (!/^[A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]+$/.test(valores.apellido)) { errors.apellido = "Apellidos erroneos" }
+
+                            else if (!valores.correo.trim()) { errors.correo = "Correo erroneo" }
+                            else if (!/^(\w+[/./-]?){1,}@[a-z]+[/.]\w{2,}$/.test(valores.correo)) { errors.correo = "Correo erroneo" }
+
+                            else if (!valores.cargo.trim()) { errors.cargo = "Cargo erroneo" }
+                            else if (!/^[A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]+$/.test(valores.cargo)) { errors.cargo = "Cargo erroneo" }
+
+                            else if (valores.estado === "none" || valores.estado === "") { errors.estado = "Estado invalido" }
+                            else if (!valores.password.trim()) {errors.password = "Contraseña necesaria"}
+                            
+                            return errors;
+                          }}
+
+                          onSubmit={( valores, {resetForm} ) => {
+
+                            valores.imagen = img_edit;
+                            console.log(valores);
+                            setloader_edit(true);
+
+                            usuariosPost( valores ).then( (info) => {
+                              if (info.status == 202) {
+                                
+                                setloader_edit(false);
+                                setmodal_regist(false);
+                                refreshRequest();
+                                setimg_edit("");
+                                resetForm();
+
+                              }else{
+
+                                setmsj_desha_rqst("Hubo un error, intentalo mas tarde.");
+                                setloader_edit(false);
+                                setmodal_regist(false);
+                                setimg_edit("");
+                                refreshRequest();
+                                setTimeout(() => { window.location = "/principal"; }, 3500);
+                              }
+                            } )
+
+                          }}>
+
+                          {({ errors }) => ( 
+
+                                <Form className='form1'>
+
+                                  {
+                                    ( !!img_edit ) 
+
+                                    ?
+                                      <div className="img_regist">
+                                        <div className="cont_img_details" title='Sube tu imagen' onClick={ () => { myWidgetUser.open(); } }>
+                                          <img src={ img_edit } className="img_card"/>
+                                        </div>
+                                      </div>
+
+                                    :
+                                      <div id='img_rsg' title='Subir imagen' onClick={ () => { myWidgetUser.open(); } }>
+                                          <FaFileUpload fontSize={"140px"}/>
+                                      </div>
+                                  }
+
+                                  <hr />
+                                  <br />
+                                
+                                <ErrorMessage  name='nombre' component={() => (<p className='warn__password-user'>{errors.nombre}</p>)} />
+                                <div className="input-container input_inventario">
+                                  <Field 
+                                    type='text'
+                                    placeholder='Nombre' 
+                                    name='nombre'
+                                    id="nombre"
+                                  />
+                                </div>
+
+                                <ErrorMessage  name='apellido' component={() => (<p className='warn__password-user'>{errors.apellido}</p>)} />
+                                <div className="input-container input_inventario">
+                                  <Field 
+                                    type='text'
+                                    placeholder='Apellido' 
+                                    name='apellido'
+                                    id="apellido"
+                                  />
+                                </div>
+
+                                <ErrorMessage  name='id' component={() => (<p className='warn__password-user'>{errors.id}</p>)} />
+                                <div className="input-container input_inventario">
+                                  <Field 
+                                    type='text'
+                                    placeholder='Numero de documento' 
+                                    name='id'
+                                    id="id"
+                                  />
+                                </div>
+
+                                <ErrorMessage  name='cargo' component={() => (<p className='warn__password-user'>{errors.cargo}</p>)} />
+                                <div className="input-container input_inventario">
+                                  <Field 
+                                    type='text'
+                                    placeholder='Cargo' 
+                                    name='cargo'
+                                    id="cargo"
+                                  />
+                                </div>
+                                
+                                <ErrorMessage  name='password' component={() => (<p className='warn__password-user'>{errors.edad}</p>)} />
+                                <div className="input-container input_inventario">
+                                  <Field 
+                                    type='number'
+                                    max={"99"}
+                                    placeholder='Edad' 
+                                    name='edad'
+                                    id="edad"
+                                  />
+                                </div>
+                                
+                                <ErrorMessage  name='password' component={() => (<p className='warn__password-user'>{errors.password}</p>)} />
+                                <div className="input-container input_inventario">
+                                  <Field 
+                                    type='password'
+                                    placeholder='Contraseña' 
+                                    name='password'
+                                    id="password"
+                                  />
+                                </div>
+
+                                <ErrorMessage  name='correo' component={() => (<p className='warn__password-user'>{errors.correo}</p>)} />
+                                <div className="input-container input_inventario">
+                                  <Field 
+                                    type='text'
+                                    placeholder='Correo' 
+                                    name='correo'
+                                    id="correo"
+                                  />
+                                </div>
+
+                                <ErrorMessage  name='estado' component={() => (<p className='warn__password-user'>{errors.estado}</p>)} />
+                                <div className="input-container input_inventario estado_regist">
+                                  <h3 style={{ fontWeight:"lighter" }} id='estado'>{ "Estado" }</h3>
+                                  <Field as="select" name="estado" id="select_filter" autofocus="true">
+                                      <option value="none">Seleccione el estado</option>
+                                      <option value="true">Activo</option>
+                                      <option value="false">Deshabilitado</option>
+                                  </Field>
+                                </div>
+
+
+                                <div style={{ width:"100%",display:"flex",justifyContent:"center",gap:"10px" }}>
+                                  <Input type={"submit"} txt={"Actualizar"} style={"btn btn_invent"}/>
+                                  <Link className='btn btn_invent'  style={{ fontSize:"13px",width:"6vh" }} onClick={ () => { setmodal_regist(false); } } >Cancelar</Link>
+                                </div>
+
+                                {
+                                  ( !!msj_desha_rqst ) && 
+                                  <div className="cont_buttons_desha">
+                                    <h2 style={{ color:"rgb(26 200 252)" }}>{ msj_desha_rqst }</h2>
+                                  </div>
+                                }
+
+                              </Form> 
+
+                              )}
+                          </Formik>
                           </div>
-                          </div>
+                      </div>
+                      </div>
              </Modal>
                 }
         </div>

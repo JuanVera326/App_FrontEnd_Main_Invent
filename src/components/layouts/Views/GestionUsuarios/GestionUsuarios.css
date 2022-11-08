@@ -6,6 +6,7 @@
     border-radius: 6px;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
 }
 .btn_view{
     width: 1rem;
@@ -101,9 +102,28 @@
     top: 250px;
 }
 .create_btn{
-
-height: 20px;
-
-
-
+    height: 20px;
+}
+.img_regist{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.estado_regist{
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+#img_rsg:hover{ filter: brightness(100%); transition: 0.2s; }
+#img_rsg{
+    width:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center
+    ;padding:1rem;
+    filter:brightness(50%);
+    cursor:pointer;
+    transition:0.2s;
 }
