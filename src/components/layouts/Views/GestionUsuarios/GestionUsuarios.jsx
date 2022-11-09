@@ -218,7 +218,7 @@ export const GestionUsuarios = () => {
                   <div className="txt">
                     
                     {
-                      ( item.rol === 1 ) ? <></> :( item.estado === false ) 
+                      ( item.rol === 1 ) ? <Link className='btn btn_invent' onClick={() => {setmodal_edit(true); setmodal_obj_edit(item); setimg_edit(item.imagen);}}>Editar</Link> :( item.estado === false ) 
                           ? <><Link className='btn btn_invent' onClick={() => {setmodal_edit(true); setmodal_obj_edit(item); setimg_edit(item.imagen);}}>Editar</Link>
                             <Link className='btn btn_invent' onClick={ () => {setmodal_obj_desha(item); setmodaldesha(true); setaction_desh("Habilitar"); } } >Habilitar</Link></>
                           : <><Link className='btn btn_invent' onClick={() => {setmodal_edit(true); setmodal_obj_edit(item); setimg_edit(item.imagen);}}>Editar</Link>
@@ -246,7 +246,7 @@ export const GestionUsuarios = () => {
 
                   <div className="header_card_details">
 
-                    <div className="cont_img_details">
+                    <div className="cont_img_details animate__animated animate__fadeInRight">
                       <img src={ modal_obj.imagen } className="img_card"/>
                     </div>
                     </div>
@@ -399,7 +399,7 @@ export const GestionUsuarios = () => {
                           {
                             ( !!loader_edit ) && <span className='loader'></span>
                           }
-                          <div className="image_edit">
+                          <div className="image_edit animate__animated animate__fadeInRight">
                             <div className="cont_img_details" title='Sube tu imagen' onClick={ () => { myWidgetUser.open(); } }>
                               <img src={ img_edit } className="img_card"/>
                             </div>

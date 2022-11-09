@@ -39,9 +39,10 @@ export const Principal = () => {
                       <nav className="menu">
                         <ul>
                           <li><Link onClick={ () => { setbutton_comp( "home" ) } } className={ ` a_principal ${( button_comp === "home" ) && "a_principal_active" } ` }><AiOutlineHome/> Inventario</Link></li>
-                          <li><Link onClick={ () => { setbutton_comp( "perfil" ) } } className={ ` a_principal ${( button_comp === "perfil" ) && "a_principal_active" } ` }><ImProfile/> Perfil</Link></li>
+                          
                           { ( user_data.rol === 1 ) && <li><Link onClick={ () => { setbutton_comp( "usuarios_gest" ) } } className={ ` a_principal ${( button_comp === "usuarios_gest" ) && "a_principal_active" } ` }><TbUserSearch/>Gestion usuarios</Link></li> }
                           { ( user_data.rol === 1 ) && <li><Link onClick={ () => { setbutton_comp( "inv_gest" ) } } className={ ` a_principal ${( button_comp === "inv_gest" ) && "a_principal_active" } ` }><MdOutlineInventory/>Gestion inventario</Link></li> }
+                          { ( user_data.rol === 2 ) && <li><Link onClick={ () => { setbutton_comp( "perfil" ) } } className={ ` a_principal ${( button_comp === "perfil" ) && "a_principal_active" } ` }><ImProfile/> Perfil</Link></li> }
                         </ul>
                       </nav>
                     </div> 

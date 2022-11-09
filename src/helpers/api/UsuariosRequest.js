@@ -118,6 +118,23 @@ export const getItemsUsuariosById = async( id ) => {
 
 };
 
+export const getItemsUsuariosByIdSpecify = async( id ) => {
+
+    try {
+
+        const sendRequest = await axios.get(`${URL}/usuarios/${id}`);
+        return sendRequest;
+
+    } catch (error) {
+
+        if ( error.response ) {
+            return error.response;
+        }
+
+    }
+
+};
+
 
 export const getItemsUsuariosByCargo = async( cargo ) => {
 
