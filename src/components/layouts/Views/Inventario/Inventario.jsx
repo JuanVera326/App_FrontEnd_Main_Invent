@@ -8,8 +8,8 @@ import { getItemsOtros, getItemsOtrosByGeneralId, getItemsOtrosByGeneralName, ge
 import { Input } from '../../../ui/Input/Input';
 import { VscSearch } from "react-icons/vsc";
 import { HiOutlineRefresh } from "react-icons/hi";
-import "./Inventario.css"
 import { Modal } from '../../../pages/Modal/Modal';
+import "./Inventario.css"
 
 export const Inventario = ( { user } ) => {
 
@@ -291,12 +291,12 @@ export const Inventario = ( { user } ) => {
               ? 
                
                 <>
-                  <div  className="card"> <span class="loader_cards"></span></div>
-                  <div className="card"> <span class="loader_cards"></span></div>
-                  <div className="card"> <span class="loader_cards"></span></div>
-                  <div className="card"> <span class="loader_cards"></span></div>
-                  <div className="card"> <span class="loader_cards"></span></div>
-                  <div className="card"> <span class="loader_cards"></span></div>
+                  <div className="card"> <span className="loader_cards"></span></div>
+                  <div className="card"> <span className="loader_cards"></span></div>
+                  <div className="card"> <span className="loader_cards"></span></div>
+                  <div className="card"> <span className="loader_cards"></span></div>
+                  <div className="card"> <span className="loader_cards"></span></div>
+                  <div className="card"> <span className="loader_cards"></span></div>
                 </>
 
               :  

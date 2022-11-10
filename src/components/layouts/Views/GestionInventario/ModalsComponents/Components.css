@@ -1,0 +1,97 @@
+.cont_gest_electricos{
+    width: 135vh;
+    background-color: rgb(0 46 77);
+    height: 80vh;
+    border-radius: 6px;
+    padding: 3rem;
+}
+.input_gest_electricos{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+.cont_table_electricos_items{
+    width: 100%;
+    height: 90%;
+    overflow-y: scroll;
+}
+.cont_img_rows{
+    width: 80px;
+    height: 80px;
+}
+.row_items{
+    width: 98%;
+    background-color: rgb(2, 71, 118);
+    height: 5rem;
+    border-radius: 6px;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+.buttons_gest_electric{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+.cont_default_row{
+    width: 25vh;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+.items_rows{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+}
+.names_rows{
+    width: 100%;
+    /* border-bottom: solid 5px rgb(255, 203, 58); */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+}
+.loader_cont{
+    width: 98%;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.loader_rows {
+    width: 8px;
+    height: 48px;
+    display: inline-block;
+    position: relative;
+    border-radius: 4px;
+    box-sizing: border-box;
+    animation: animloader_rows 1s linear infinite alternate;
+  }
+  
+  @keyframes animloader_rows {
+    0% {
+      box-shadow: 20px 0 rgba(255, 255, 255, 0), 40px 0 rgba(255, 255, 255, 0), 60px 0 rgba(255, 255, 255, 0), 80px 0 rgba(255, 255, 255, 0), 100px 0 rgba(255, 255, 255, 0);
+    }
+    20% {
+      box-shadow: 20px 0 white, 40px 0 rgba(255, 255, 255, 0), 60px 0 rgba(255, 255, 255, 0), 80px 0 rgba(255, 255, 255, 0), 100px 0 rgba(255, 255, 255, 0);
+    }
+    40% {
+      box-shadow: 20px 0 white, 40px 0 white, 60px 0 rgba(255, 255, 255, 0), 80px 0 rgba(255, 255, 255, 0), 100px 0 rgba(255, 255, 255, 0);
+    }
+    60% {
+      box-shadow: 20px 0 white, 40px 0 white, 60px 0 white, 80px 0 rgba(255, 255, 255, 0), 100px 0 rgba(255, 255, 255, 0);
+    }
+    80% {
+      box-shadow: 20px 0 white, 40px 0 white, 60px 0 white, 80px 0 white, 100px 0 rgba(255, 255, 255, 0);
+    }
+    100% {
+      box-shadow: 20px 0 white, 40px 0 white, 60px 0 white, 80px 0 white, 100px 0 white;
+    }
+  }
+      
