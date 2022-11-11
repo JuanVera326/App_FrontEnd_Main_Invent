@@ -27,17 +27,17 @@ export const GestionInventario = () => {
 
                 <div className="sec_ref_btn">
 
-                      <Link onClick={ () => { setmodal_type("electricos"); setmodal_op(true); } } className={"btn btn_ref_gest_invent"}>
+                      <Link onClick={ () => { setmodal_type("electricos"); setmodal_op(true); } } className={"btn btn_ref_gest_invent animate__animated animate__zoomIn"}>
                         <img className='img_btn_gest_invent' src={ main_invent_images("./images/gestion_inventario/planta-de-energia.png") }/>
                         <h2>Electricos</h2>
                       </Link>
 
-                      <Link onClick={ () => { setmodal_type("electronicos"); setmodal_op(true); } } className={"btn btn_ref_gest_invent"}>
+                      <Link onClick={ () => { setmodal_type("electronicos"); setmodal_op(true); } } className={"btn btn_ref_gest_invent animate__animated animate__zoomIn"}>
                         <img className='img_btn_gest_invent' src={ main_invent_images("./images/gestion_inventario/chip-de-computadora.png") }/>
                         <h2>Electronicos</h2>
                       </Link>
 
-                      <Link onClick={ () => { setmodal_type("eleferre"); setmodal_op(true); } } className={"btn btn_ref_gest_invent"}>
+                      <Link onClick={ () => { setmodal_type("eleferre"); setmodal_op(true); } } className={"btn btn_ref_gest_invent animate__animated animate__zoomIn"}>
                         <img className='img_btn_gest_invent' src={ main_invent_images("./images/gestion_inventario/llave-inglesa.png") }/>
                         <h2>Elementos Ferreteria</h2>
                       </Link>
@@ -46,12 +46,12 @@ export const GestionInventario = () => {
 
                 <div className="sec_ref_btn">
 
-                      <Link onClick={ () => { setmodal_type("moddev"); setmodal_op(true); } } className={"btn btn_ref_gest_invent"}>
+                      <Link onClick={ () => { setmodal_type("moddev"); setmodal_op(true); } } className={"btn btn_ref_gest_invent animate__animated animate__zoomIn"}>
                         <img className='img_btn_gest_invent' src={ main_invent_images("./images/gestion_inventario/tarjeta-madre.png") }/>
                         <h2>Modulos de Desarrollo</h2>
                       </Link>
 
-                      <Link onClick={ () => { setmodal_type("otros"); setmodal_op(true); } } className={"btn btn_ref_gest_invent"}>
+                      <Link onClick={ () => { setmodal_type("otros"); setmodal_op(true); } } className={"btn btn_ref_gest_invent animate__animated animate__zoomIn"}>
                         <img className='img_btn_gest_invent' src={ main_invent_images("./images/gestion_inventario/caja-de-carton.png") }/>
                         <h2>Otros Varios</h2>
                       </Link>

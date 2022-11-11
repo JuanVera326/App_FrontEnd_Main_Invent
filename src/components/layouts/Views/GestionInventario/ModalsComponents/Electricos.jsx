@@ -1,9 +1,11 @@
+import { ErrorMessage, Field, Form, Formik } from 'formik';
 import React, { useEffect, useState } from 'react';
 import { HiOutlineRefresh } from 'react-icons/hi';
 import { IoMdEye } from 'react-icons/io';
 import { VscSearch } from 'react-icons/vsc';
 import { Link } from 'react-router-dom';
-import { getItemsElectricos, getItemsElectricosByGeneralId, getItemsElectricosByGeneralName, getItemsElectricosByType } from '../../../../../helpers/api/ElectricosRequests';
+import { electricos_put, getItemsElectricos, getItemsElectricosByGeneralId, getItemsElectricosByGeneralName, getItemsElectricosByType } from '../../../../../helpers/api/ElectricosRequests';
+import { useSendImage } from '../../../../../helpers/image/useSendImage';
 import { Modal } from '../../../../pages/Modal/Modal';
 import { Input } from '../../../../ui/Input/Input';
 import "./Components.css";
@@ -15,7 +17,10 @@ export const Electricos = ( { mdl , evt } ) => {
 
   const [modal_edit, setmodal_edit] = useState(false);
   const [modal_obj_edit, setmodal_obj_edit] = useState({});
+  const [loader_edit, setloader_edit] = useState(false);
   const [img_edit, setimg_edit] = useState("");
+  const [msj_desha_rqst, setmsj_desha_rqst] = useState("");
+  const { myWidgetElectrics , urlImage } = useSendImage();
 
   const [modal, setmodal] = useState(mdl);
   const [selectFilterElectricos, setSelectFilterElectricos] = useState("1");
@@ -83,7 +88,10 @@ export const Electricos = ( { mdl , evt } ) => {
 
   }, [ getAll ])
 
-  useEffect(() => { setmodal(mdl); }, [mdl])
+  useEffect(() => { setmodal(mdl); }, [mdl]);
+
+  useEffect(() => {  setimg_edit(urlImage); }, [ urlImage ]);
+
   
   return (
     <div>
@@ -177,7 +185,7 @@ export const Electricos = ( { mdl , evt } ) => {
                                                             </div>
 
                                                             <div className="cont_default_row" style={{ borderRight:"solid 5px rgb(255, 203, 58)", paddingRight:"20px", width:"35vh", justifyContent:"space-around "}}>
-                                                              <Link className='btn btn_invent create_btn' onClick={() => { setmodal_edit(true); }}>Editar Item</Link>
+                                                              <Link className='btn btn_invent create_btn' onClick={() => { setmodal_edit(true); setmodal_obj_edit(item); setimg_edit(item.imagen_parte_electricos); }}>Editar Item</Link>
                                                               <Link className='btn btn_view' onClick={ () => { 
 
                                                                               setmodal_detail(true); 
@@ -318,7 +326,7 @@ export const Electricos = ( { mdl , evt } ) => {
  
                        <div className="row">
                          <div className="name_detail">
-                             <h4 className='modal_object_text'>DESCRIPCION: </h4>
+                             <h2 className='modal_object_text'>DESCRIPCION: </h2>
                            </div>
  
                            <div className="contain_detail">
@@ -340,13 +348,14 @@ export const Electricos = ( { mdl , evt } ) => {
                 <div className="animate__animated animate__fadeInRight cont_decision" style={{ zIndex:"10000" }}>
                     
                     <div className="form_cont_edit_users">
-                    <h1>Editar electrico</h1>
+                    <h4 className='modal_object_text' style={{ color:"rgb(255, 203, 58)" }}>{modal_obj_edit.id_parte_electricos}</h4>
+                    <h1>Editar Ítem Electrico</h1>
                       
                       {
-                        ( !!loader_edit ) && <span className='loader'></span>
+                        ( !!loader_edit ) && <span className="loader_rows"></span>
                       }
                       <div className="image_edit animate__animated animate__fadeInRight">
-                        <div className="cont_img_details" title='Sube tu imagen' onClick={ () => { myWidgetUser.open(); } }>
+                        <div className="cont_img_details" title='Sube tu imagen' onClick={ () => { myWidgetElectrics.open(); } }>
                           <img src={ img_edit } className="img_card"/>
                         </div>
                       </div>
@@ -394,27 +403,29 @@ export const Electricos = ( { mdl , evt } ) => {
                         setloader_edit(true);
                         valores.imagen = img_edit;
 
-                        // usuariosPut( valores, valores.id ).then( (info) => {
+                        console.log(valores);
 
-                        //   if (info.status == 202) {
+                        electricos_put( valores, valores.id ).then( (info) => {
+
+                          if (info.status == 202) {
                             
-                        //     setloader_edit(false);
-                        //     setmodal_edit(false);
-                        //     refreshRequest();
-                        //     setimg_edit("");
-                        //     resetForm();
+                            setloader_edit(false);
+                            setmodal_edit(false);
+                            refreshRequest();
+                            setimg_edit("");
+                            resetForm();
 
-                        //   }else{
+                          }else{
 
-                        //     setmsj_desha_rqst("Hubo un error, intentalo mas tarde.");
-                        //     setloader_edit(false);
-                        //     setmodal_edit(false);
-                        //     setimg_edit("");
-                        //     refreshRequest();
-                        //     setTimeout(() => { window.location = "/principal"; }, 3500);
-                        //   }
+                            setmsj_desha_rqst("Hubo un error, intentalo mas tarde.");
+                            setloader_edit(false);
+                            setmodal_edit(false);
+                            setimg_edit("");
+                            refreshRequest();
+                            setTimeout(() => { window.location = "/principal"; }, 3500);
+                          }
 
-                        // } )
+                        } )
 
                       }}>
 
@@ -423,76 +434,80 @@ export const Electricos = ( { mdl , evt } ) => {
                           <Form className='form1'>
                             <hr />
                             <br />
-                            <p>{ modal_obj_edit.nombre_parte_electricos }</p>
+                            <p style={{ maxWidth:"30vh", color:"rgb(255, 203, 58)" }}>{ modal_obj_edit.nombre_parte_electricos }</p>
                             <ErrorMessage  name='nombre' component={() => (<p className='warn__password-user'>{errors.nombre_parte_electricos}</p>)} />
                             <div className="input-container input_inventario">
                               <Field 
                                 type='text'
-                                placeholder='Nombre' 
+                                placeholder='Nuev@ Nombre' 
                                 name='nombre'
                                 id="nombre"
                               />
                               </div>
-                              <p>{ modal_obj_edit.descripcion_parte_electricos }</p>
+                              <p style={{ maxWidth:"30vh", color:"rgb(255, 203, 58)" }}>{ modal_obj_edit.descripcion_parte_electricos }</p>
                             <ErrorMessage  name='nombre' component={() => (<p className='warn__password-user'>{errors.descripcion_parte_electricos}</p>)} />
                             <div className="input-container input_inventario">
                               <Field 
-                                type='text'
-                                placeholder='Descripcion' 
+                                as="textarea"
+                                max="180"
+                                style={{ resize: "none", backgroundColor: "rgb(2, 71, 118)",borderRadius:"6px",width:"28vh",padding:"1rem", color:"color:rgb(223 222 223 / 1)" }} 
+                                placeholder='Nuev@ Descripcion' 
                                 name='descripcion'
                                 id="descripcion"
                               />
                               </div>
-                              <p>{ modal_obj_edit.tipo_parte_electricos }</p>
+                              <p style={{ maxWidth:"30vh", color:"rgb(255, 203, 58)" }}>{ modal_obj_edit.tipo_parte_electricos }</p>
                             <ErrorMessage  name='nombre' component={() => (<p className='warn__password-user'>{errors.tipo_parte_electricos}</p>)} />
                             <div className="input-container input_inventario">
                               <Field 
                                 type='text'
-                                placeholder='Tipo' 
+                                placeholder='Nuev@ Tipo'
                                 name='tipo'
                                 id="tipo"
                               />
                               </div>
-                              <p>{ modal_obj_edit.cantidad_consumida_electricos }</p>
+                              <p style={{ maxWidth:"30vh", color:"rgb(255, 203, 58)" }}>{ modal_obj_edit.cantidad_consumida_electricos }</p>
                             <ErrorMessage  name='nombre' component={() => (<p className='warn__password-user'>{errors.cantidad_consumida_electricos }</p>)} />
                             <div className="input-container input_inventario">
                               <Field 
                                 type='text'
-                                placeholder='Cantidad consumida' 
+                                placeholder='Nuev@ Cantidad consumida' 
                                 name='cant_cons'
                                 id="cant_cons"
                               />
                               </div>
-                              <p>{ modal_obj_edit.cantidad_disponible_electricos }</p>
+                              <p style={{ maxWidth:"30vh", color:"rgb(255, 203, 58)" }}>{ modal_obj_edit.cantidad_disponible_electricos }</p>
                             <ErrorMessage  name='nombre' component={() => (<p className='warn__password-user'>{errors.cantidad_disponible_electricos}</p>)} />
                             <div className="input-container input_inventario">
                               <Field 
                                 type='text'
-                                placeholder='Cantidad disponible' 
+                                placeholder='Nuev@ Cantidad disponible' 
                                 name='cant_disp'
                                 id="cant_disp"
                               />
                               </div>
-                              <p>{ modal_obj_edit.ubicacion_parte_electricos }</p>
+                              <p style={{ maxWidth:"30vh", color:"rgb(255, 203, 58)" }}>{ modal_obj_edit.ubicacion_parte_electricos }</p>
                             <ErrorMessage  name='ubicacion' component={() => (<p className='warn__password-user'>{errors.ubicacion}</p>)} />
                             <div className="input-container input_inventario">
                               <Field 
-                                type='text'
-                                placeholder='Ubicacion' 
+                                placeholder='Nuev@ Ubicacion'
                                 name='ubicacion'
                                 id="ubicacion"
                               />
-                              </div>
-                              <p>{ modal_obj_edit.datasheet_parte_electricos }</p>
+                            </div>
+                              
                             <ErrorMessage  name='data_sheet' component={() => (<p className='warn__password-user'>{errors.data_sht}</p>)} />
                             <div className="input-container input_inventario">
-                              
-                              <Link className='btn btn_invent'  style={{ fontSize:"13px",width:"6vh" }} onClick={ () => {  } }></Link> 
-                              </div>
+                              <p style={{ maxWidth:"30vh", color:"rgb(255, 203, 58)"}}>{ modal_obj_edit.datasheet_parte_electricos }</p>
+                            </div>
+
+                            <Link className='btn btn_invent'  style={{ fontSize:"13px",width:"6vh",marginBottom:"20px"}} onClick={ () => {  } }>Subir PDF</Link>
+
                             <div style={{ width:"100%",display:"flex",justifyContent:"center",gap:"10px" }}>
                               <Input type={"submit"} txt={"Actualizar"} style={"btn btn_invent"}/>
                               <Link className='btn btn_invent'  style={{ fontSize:"13px",width:"6vh" }} onClick={ () => { setmodal_edit(false); } } >Cancelar</Link>
                             </div>
+
                             {
                               ( !!msj_desha_rqst ) && 
                               <div className="cont_buttons_desha">

@@ -82,128 +82,173 @@ export const Inventario = ( { user } ) => {
 
   const searchItemElectricos = ( e ) => {
 
-    switch ( selectFilterElectricos ) {
-      case "1":
-        getItemsElectricosByGeneralName( e ).then((info) => {
-          setitems_electricos( info.data ); 
-        })
-      break;
+    if ( e === "" ) {
+      
+      setgetAll(!getAll);
 
-      case "2":
-        getItemsElectricosByGeneralId( e ).then((info) => {
-          setitems_electricos( info.data ); 
-        })
-      break;
+    }else{
 
-      case "3":
-        getItemsElectricosByType( e ).then((info) => {
-          setitems_electricos( info.data ); 
-        })
-      break;
-    
-      default: break;
+      switch ( selectFilterElectricos ) {
+        case "1":
+          getItemsElectricosByGeneralName( e ).then((info) => {
+            setitems_electricos( info.data ); 
+          })
+        break;
+  
+        case "2":
+          console.log("Entra a ID electricos");
+          getItemsElectricosByGeneralId( e ).then((info) => {
+            setitems_electricos( info.data ); 
+          })
+        break;
+  
+        case "3":
+          getItemsElectricosByType( e ).then((info) => {
+            setitems_electricos( info.data ); 
+          })
+        break;
+      
+        default: break;
+      }
+
     }
 
   }
 
   const searchItemElectronicos = ( e ) => {
-    
-    switch ( selectFilterElectronicos ) {
-      case "1":
-        getItemsElectronicosByGeneralName( e ).then((info) => {
-          setitems_electronicos( info.data ); 
-        })
-      break;
 
-      case "2":
-        getItemsElectronicosByGeneralId( e ).then((info) => {
-          setitems_electronicos( info.data ); 
-        })
-      break;
+    if ( e === "" ) {
+      
+      setgetAll(!getAll);
 
-      case "3":
-        getItemsElectronicosByType( e ).then((info) => {
-          setitems_electronicos( info.data ); 
-        })
-      break;
+    }else{
     
-      default: break;
+      switch ( selectFilterElectronicos ) {
+        case "1":
+          getItemsElectronicosByGeneralName( e ).then((info) => {
+            setitems_electronicos( info.data ); 
+          })
+        break;
+
+        case "2":
+          getItemsElectronicosByGeneralId( e ).then((info) => {
+            setitems_electronicos( info.data ); 
+          })
+        break;
+
+        case "3":
+          getItemsElectronicosByType( e ).then((info) => {
+            setitems_electronicos( info.data ); 
+          })
+        break;
+      
+        default: break;
+      }
+
     }
+
   }
 
   const searchItemEleFerre = ( e ) => {
 
-    switch ( selectFilterEleferre ) {
-      case "1":
-        getItemsEleferreByGeneralName( e ).then((info) => {
-          setitems_eleferre( info.data ); 
-        })
-      break;
+    if ( e === "" ) {
+      
+      setgetAll(!getAll);
 
-      case "2":
-        getItemsEleferreByGeneralId( e ).then((info) => {
-          setitems_eleferre( info.data ); 
-        })
-      break;
+    }else{
 
-      case "3":
-        getItemsEleferreByType( e ).then((info) => {
-          setitems_eleferre( info.data ); 
-        })
-      break;
-    
-      default: break;
+      switch ( selectFilterEleferre ) {
+        case "1":
+          getItemsEleferreByGeneralName( e ).then((info) => {
+            setitems_eleferre( info.data ); 
+          })
+        break;
+
+        case "2":
+          getItemsEleferreByGeneralId( e ).then((info) => {
+            setitems_eleferre( info.data ); 
+          })
+        break;
+
+        case "3":
+          getItemsEleferreByType( e ).then((info) => {
+            setitems_eleferre( info.data ); 
+          })
+        break;
+      
+        default: break;
+      }
+
     }
+
   }
 
   const searchItemModDev = ( e ) => {
-    
-    switch ( selectFilterModdev ) {
-      case "1":
-        getItemsModdevByGeneralName( e ).then((info) => {
-          setitems_moddev( info.data ); 
-        })
-      break;
 
-      case "2":
-        getItemsModdevByGeneralId( e ).then((info) => {
-          setitems_moddev( info.data ); 
-        })
-      break;
+    if ( e === "" ) {
+      
+      setgetAll(!getAll);
 
-      case "3":
-        getItemsModdevByType( e ).then((info) => {
-          setitems_moddev( info.data ); 
-        })
-      break;
+    }else{
     
-      default: break;
+      switch ( selectFilterModdev ) {
+        case "1":
+          getItemsModdevByGeneralName( e ).then((info) => {
+            setitems_moddev( info.data ); 
+          })
+        break;
+
+        case "2":
+          getItemsModdevByGeneralId( e ).then((info) => {
+            setitems_moddev( info.data ); 
+          })
+        break;
+
+        case "3":
+          getItemsModdevByType( e ).then((info) => {
+            setitems_moddev( info.data ); 
+          })
+        break;
+      
+        default: break;
+      }
+    
     }
+
   }
 
   const searchItemOtros = ( e ) => {
-    
-    switch ( selectFilterOtros ) {
-      case "1":
-        getItemsOtrosByGeneralName( e ).then((info) => {
-          setitems_otros( info.data ); 
-        })
-      break;
 
-      case "2":
-        getItemsOtrosByGeneralId( e ).then((info) => {
-          setitems_otros( info.data ); 
-        })
-      break;
+    if ( e === "" ) {
+      
+      setgetAll(!getAll);
 
-      case "3":
-        getItemsOtrosByType( e ).then((info) => {
-          setitems_otros( info.data ); 
-        })
-      break;
+    }else{
     
-      default: break;
+      switch ( selectFilterOtros ) {
+        case "1":
+          getItemsOtrosByGeneralName( e ).then((info) => {
+            setitems_otros( info.data ); 
+          })
+        break;
+
+        case "2":
+          getItemsOtrosByGeneralId( e ).then((info) => {
+            setitems_otros( info.data ); 
+          })
+        break;
+
+        case "3":
+          getItemsOtrosByType( e ).then((info) => {
+            setitems_otros( info.data ); 
+          })
+        break;
+      
+        default: break;
+      }
+
     }
+    
   }
 
   const refreshRequest = () => { setgetAll(!getAll); }
