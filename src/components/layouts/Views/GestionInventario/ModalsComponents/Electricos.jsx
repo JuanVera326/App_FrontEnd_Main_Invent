@@ -15,6 +15,8 @@ export const Electricos = ( { mdl , evt } ) => {
   const [modal_obj, setmodal_obj] = useState({});
   const [modal_detail, setmodal_detail] = useState(false);
 
+  const [modal_crear, setmodal_crear] = useState(false);
+
   const [modal_edit, setmodal_edit] = useState(false);
   const [modal_obj_edit, setmodal_obj_edit] = useState({});
   const [loader_edit, setloader_edit] = useState(false);
@@ -72,6 +74,8 @@ export const Electricos = ( { mdl , evt } ) => {
 
   }
 
+  const refreshRequest = () => { setgetAll(!getAll); }
+
   useEffect(() => {
 
     getItemsElectricos().then((info) => {
@@ -125,7 +129,7 @@ export const Electricos = ( { mdl , evt } ) => {
 
                             <div className="buttons_gest_electric">
 
-                                    <Link className='btn btn_invent create_btn' onClick={() => {}}>Crear Item</Link>
+                                    <Link className='btn btn_invent create_btn' onClick={() => { setmodal_crear(true); }}>Crear Item</Link>
                                     
                                     <Link className='btn btn_invent create_btn' onClick={() => { setmodal(!mdl); evt(!mdl); }}>Cerrar</Link>
 
@@ -523,6 +527,16 @@ export const Electricos = ( { mdl , evt } ) => {
                     </div>
                 </div>
             </Modal>
+            }
+
+            {
+              ( !!modal_crear ) &&
+
+                <Modal close={ setmodal_crear }>
+                    <div className="animate__animated animate__fadeInRight cont_crear_item" style={{ zIndex:"10000" }} >
+                      <h1>Crear item</h1>
+                    </div>
+                </Modal>
             }
 
     </div>

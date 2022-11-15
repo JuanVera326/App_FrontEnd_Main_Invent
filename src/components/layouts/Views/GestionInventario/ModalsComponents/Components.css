@@ -56,6 +56,14 @@
     align-items: center;
     gap: 2rem;
 }
+/* Modal Item Crear */
+
+.cont_crear_item{
+    width: 50vh;
+    height: 90vh;
+    background-color: rgb(2, 71, 118);
+    border-radius: 6px;
+}
 .loader_cont{
     width: 98%;
     height: 90%;
