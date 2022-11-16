@@ -32,6 +32,8 @@ export const Electricos = ( { mdl , evt } ) => {
   const [val_request_electricos, setval_request_electricos] = useState(0);
   const [getAll, setgetAll] = useState(true);
 
+  const [file, setfile] = useState(null);
+
   const handleKeyPress = ( e ) => {
 
     if (e.key === "Enter" || e.keyCode === 13) {
@@ -202,8 +204,8 @@ export const Electricos = ( { mdl , evt } ) => {
                                                                                 tipo : item.tipo_parte_electricos,
                                                                                 cant_disp : item.cantidad_disponible_electricos,
                                                                                 cont_cons : item.cantidad_consumida_electricos, 
-                                                                                ubicacion : item.ubicacion_parte_electricos,
-                                                                                data_sht : item.datasheet_parte_electricos,
+                                                                                ubicacion : item.ubicacion_parte_electricos
+                                                                                // data_sht : item.datasheet_parte_electricos,
 
                                                                               }
                                                                               setmodal_obj(obj_item);
@@ -309,7 +311,7 @@ export const Electricos = ( { mdl , evt } ) => {
                            </div>
  
                            <div className="contain_detail">
-                             <h3>{modal_obj.data_sht}</h3>
+                             {/* <h3>{modal_obj.data_sht}</h3> */}
                            </div>
                        </div>
  
@@ -377,8 +379,8 @@ export const Electricos = ( { mdl , evt } ) => {
                         cant_disp: "",
                         cont_cons: "",
                         rol: 2,
-                        ubicacion : "",
-                        data_sht: ""
+                        ubicacion : ""
+                        // data_sht: ""
                       }}
 
                       validate = {(valores) => {
@@ -502,10 +504,8 @@ export const Electricos = ( { mdl , evt } ) => {
                               
                             <ErrorMessage  name='data_sheet' component={() => (<p className='warn__password-user'>{errors.data_sht}</p>)} />
                             <div className="input-container input_inventario">
-                              <p style={{ maxWidth:"30vh", color:"rgb(255, 203, 58)"}}>{ modal_obj_edit.datasheet_parte_electricos }</p>
+                              {/* <p style={{ maxWidth:"30vh", color:"rgb(255, 203, 58)"}}>{ modal_obj_edit.datasheet_parte_electricos }</p> */}
                             </div>
-
-                            <Link className='btn btn_invent'  style={{ fontSize:"13px",width:"6vh",marginBottom:"20px"}} onClick={ () => {  } }>Subir PDF</Link>
 
                             <div style={{ width:"100%",display:"flex",justifyContent:"center",gap:"10px" }}>
                               <Input type={"submit"} txt={"Actualizar"} style={"btn btn_invent"}/>
@@ -535,6 +535,24 @@ export const Electricos = ( { mdl , evt } ) => {
                 <Modal close={ setmodal_crear }>
                     <div className="animate__animated animate__fadeInRight cont_crear_item" style={{ zIndex:"10000" }} >
                       <h1>Crear item</h1>
+                      <form onSubmit={ async(e) => { 
+
+                          e.preventDefault();
+                          const f = new FormData();
+
+                          console.log(file);
+                          f.append("file",file[0]);
+
+                          console.log(f);
+
+                       } }>
+
+                      <Input className='btn btn_invent' type={"file"} style={{ fontSize:"13px",width:"6vh",marginBottom:"20px"}} eventChange={ (e) => { setfile(e.target.files); } } >Subir PDF</Input>
+
+                      <Input type={"submit"} txt={"Actualizar"} style={"btn btn_invent"}/>
+
+                      </form>
+
                     </div>
                 </Modal>
             }
