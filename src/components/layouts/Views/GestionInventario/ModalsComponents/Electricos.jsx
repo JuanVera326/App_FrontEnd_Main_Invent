@@ -8,6 +8,8 @@ import { electricos_put, getItemsElectricos, getItemsElectricosByGeneralId, getI
 import { useSendImage } from '../../../../../helpers/image/useSendImage';
 import { Modal } from '../../../../pages/Modal/Modal';
 import { Input } from '../../../../ui/Input/Input';
+import { Button } from '../../../../ui/Buttons/Button';
+import { doc_post } from '../../../../../helpers/api/DocsRequest';
 import "./Components.css";
 
 export const Electricos = ( { mdl , evt } ) => {
@@ -33,6 +35,15 @@ export const Electricos = ( { mdl , evt } ) => {
   const [getAll, setgetAll] = useState(true);
 
   const [file, setfile] = useState(null);
+
+  const getFile = () => {
+    const formData = new FormData();
+    formData.set("file" , file[0]);
+
+    doc_post( formData,"prueba",1 ).then( info => {
+      console.log(info);
+    })
+  }
 
   const handleKeyPress = ( e ) => {
 
@@ -83,7 +94,6 @@ export const Electricos = ( { mdl , evt } ) => {
     getItemsElectricos().then((info) => {
       setloader(true);
       if (info.status === 200) {
-        console.log(info.data);
         setval_request_electricos(info.status);
         setitems_electricos( info.data );
         setloader(false);
@@ -535,23 +545,11 @@ export const Electricos = ( { mdl , evt } ) => {
                 <Modal close={ setmodal_crear }>
                     <div className="animate__animated animate__fadeInRight cont_crear_item" style={{ zIndex:"10000" }} >
                       <h1>Crear item</h1>
-                      <form onSubmit={ async(e) => { 
 
-                          e.preventDefault();
-                          const f = new FormData();
+                    
+                        <Input className='btn btn_invent' type={"file"} style={{ fontSize:"13px",width:"6vh",marginBottom:"20px"}} eventChange={ (e) => { setfile(e.target.files); } } name={"file"}>Subir PDF</Input>
 
-                          console.log(file);
-                          f.append("file",file[0]);
-
-                          console.log(f);
-
-                       } }>
-
-                      <Input className='btn btn_invent' type={"file"} style={{ fontSize:"13px",width:"6vh",marginBottom:"20px"}} eventChange={ (e) => { setfile(e.target.files); } } >Subir PDF</Input>
-
-                      <Input type={"submit"} txt={"Actualizar"} style={"btn btn_invent"}/>
-
-                      </form>
+                        <Button type={"submit"} style={"btn btn_invent"} text={"Actualizar"} event={ getFile }/>
 
                     </div>
                 </Modal>

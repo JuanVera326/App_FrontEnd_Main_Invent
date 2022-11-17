@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const URL = "http://localhost:9090/api";
-const KEY = "aHR0cHM6Ly93d3cueW91dHViZS5jb20vd2F0Y2g/dj1kUXc0dzlXZ1hjUQ==";
+const KEY = "bWF0aWFzLm1hL25zZnc=";
 
 export const getItemsElectricos = async() => {
 

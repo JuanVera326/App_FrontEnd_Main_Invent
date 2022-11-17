@@ -1,19 +1,19 @@
 import axios from "axios";
 
 const URL = "http://localhost:9090/api";
-const KEY = "aHR0cHM6Ly93d3cueW91dHViZS5jb20vd2F0Y2g/dj1kUXc0dzlXZ1hjUQ==";
+const KEY = "bWF0aWFzLm1hL25zZnc=";
 
-export const dos_post = async( doc , names , id ) => {
+export const doc_post = async( doc , names , id ) => {
 
     try {
         
         const sendRequest = await axios({
-            url : `${URL}/files/${names}/${id}/${KEY}`,
+            url : `${URL}/files/${id}/${names}/${KEY}`,
             method : 'POST',
             headers : {
                 "Content-Type":"multipart/form-data",
             },
-            data : obj
+            data : doc
             
         }).catch( function( error ) {
 
