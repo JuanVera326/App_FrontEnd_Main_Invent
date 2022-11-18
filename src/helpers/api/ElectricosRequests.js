@@ -104,3 +104,34 @@ export const electricos_put = async( obj , id ) => {
     }
 
 };
+export const electricos_post = async( obj ) => {
+
+    try {
+        
+        const sendRequest = await axios({
+            url : `${URL}/api/electricos/${KEY}`,
+            method : 'POST',
+            headers : {
+                "Content-Type":"application/json",
+            },
+            data : obj
+            
+        }).catch( function( error ) {
+
+            if ( error.response ) {
+                return error.response;
+            }
+
+        });
+                
+        return sendRequest;
+
+    } catch (error) {
+
+        if ( error.response ) {
+            return error.response;
+        }
+
+    }
+
+};

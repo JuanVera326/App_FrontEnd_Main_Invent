@@ -4,7 +4,7 @@ import { HiOutlineRefresh } from 'react-icons/hi';
 import { IoMdEye } from 'react-icons/io';
 import { VscSearch } from 'react-icons/vsc';
 import { Link } from 'react-router-dom';
-import { electricos_put, getItemsElectricos, getItemsElectricosByGeneralId, getItemsElectricosByGeneralName, getItemsElectricosByType } from '../../../../../helpers/api/ElectricosRequests';
+import { electricos_post, electricos_put, getItemsElectricos, getItemsElectricosByGeneralId, getItemsElectricosByGeneralName, getItemsElectricosByType } from '../../../../../helpers/api/ElectricosRequests';
 import { useSendImage } from '../../../../../helpers/image/useSendImage';
 import { Modal } from '../../../../pages/Modal/Modal';
 import { Input } from '../../../../ui/Input/Input';
@@ -546,10 +546,134 @@ export const Electricos = ( { mdl , evt } ) => {
                     <div className="animate__animated animate__fadeInRight cont_crear_item" style={{ zIndex:"10000" }} >
                       <h1>Crear item</h1>
 
-                    
-                        <Input className='btn btn_invent' type={"file"} style={{ fontSize:"13px",width:"6vh",marginBottom:"20px"}} eventChange={ (e) => { setfile(e.target.files); } } name={"file"}>Subir PDF</Input>
 
-                        <Button type={"submit"} style={"btn btn_invent"} text={"Actualizar"} event={ getFile }/>
+                          {
+                            ( !!loader_edit ) && <span className='loader'></span>
+                          }
+
+                <Formik
+
+                  initialValues={{
+                    nombre_parte_electricos: "",
+                    tipo_parte_electricos: "",
+                    cantidad_disponible_electricos: "",
+                    cantidad_consumida_electricos: "",
+                    ubicacion_parte_electricos: "",
+                    descripcion_parte_electricos: "",
+                    datasheet_parte_electricos: "",
+                  }}
+
+                  validate = {(valores) => {
+
+                    let errors = {};
+
+                    if (!valores.nombre_parte_electricos.trim()) { errors.nombre_parte_electricos = "Datos erroneos" }
+                    else if (!/^[A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]+$/.test(valores.nombre_parte_electricos)) { errors.nombre_parte_electricos = "Datos erroneos" }
+
+                    if (!valores.tipo_parte_electricos.trim()) { errors.tipo_parte_electricos = "Datos erroneos" }
+                    else if (!/^[A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]+$/.test(valores.tipo_parte_electricos)) { errors.tipo_parte_electricos = "Datos erroneos" }
+                    
+                    if (!valores.cantidad_disponible_electricos.trim()) { errors.cantidad_disponible_electricos = "Datos erroneos" }
+                    else if (!/^[A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]+$/.test(valores.cantidad_disponible_electricos)) { errors.cantidad_disponible_electricos = "Datos erroneos" }
+                    
+                    if (!valores.cantidad_consumida_electricos.trim()) { errors.cantidad_consumida_electricos = "Datos erroneos" }
+                    else if (!/^[A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]+$/.test(valores.cantidad_consumida_electricos)) { errors.cantidad_consumida_electricos = "Datos erroneos" }
+                    
+                    if (!valores.ubicacion_parte_electricos.trim()) { errors.ubicacion_parte_electricos = "Datos erroneos" }
+                    else if (!/^[A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]+$/.test(valores.ubicacion_parte_electricos)) { errors.ubicacion_parte_electricos = "Datos erroneos" }
+
+                    if (!valores.descripcion_parte_electricos.trim()) { errors.descripcion_parte_electricos = "Datos erroneos" }
+                    else if (!/^[A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]+$/.test(valores.descripcion_parte_electricos)) { errors.descripcion_parte_electricos = "Datos erroneos" }
+                    return errors;
+                  }}
+
+                  onSubmit={( valores, {resetForm} ) => {
+                    
+                    setloader_edit(true);
+                    valores.imagen = img_edit;
+
+                    electricos_post( valores  ).then( (info) => {
+
+                      if (info.status == 202) {
+                        
+                        setloader_edit(false);
+                        setmodal_edit(false);
+                        refreshRequest();
+                        setimg_edit("");
+                        resetForm();
+
+                      }else{
+
+                        setmsj_desha_rqst("Hubo un error, intentalo mas tarde.");
+                        setloader_edit(false);
+                        setmodal_edit(false);
+                        setimg_edit("");
+                        refreshRequest();
+                        setTimeout(() => { window.location = "/principal"; }, 3500);
+                      }
+
+                    } )
+
+                  }}>
+                      {({errors}) => (
+                          <Form className='form1'>
+                          <div className="input-container input_inventario">
+                                  <Field 
+                                    type='text'
+                                    placeholder='Nombre' 
+                                    name='nombre_parte_electricos'
+                                    id="nombre"
+                                  />
+                                </div>
+
+                                <div className="input-container input_inventario">
+                                  <Field 
+                                    type='text'
+                                    placeholder='Tipo' 
+                                    name='tipo_parte_electricos'
+                                    id="tipo"
+                                  />
+                                </div>
+                                <div className="input-container input_inventario">
+                                  <Field 
+                                    type='text'
+                                    placeholder='Cantidad disponible' 
+                                    name='cantidad_disponible_electricos'
+                                    id="cant_disp"
+                                  />
+                                </div>
+                                <div className="input-container input_inventario">
+                                  <Field 
+                                    type='text'
+                                    placeholder='Cantidad consumida' 
+                                    name='cantidad_consumida_electricos'
+                                    id="cant_cons"
+                                  />
+                                </div>
+                                <div className="input-container input_inventario">
+                                  <Field 
+                                    type='text'
+                                    placeholder='Ubicacion' 
+                                    name='ubicacion_parte_electricos'
+                                    id="ubicacion"
+                                  />
+                                </div>
+                                <div className="input-container input_inventario">
+                                  <Field 
+                                    type='text'
+                                    placeholder='Descripcion' 
+                                    name='descripcion_parte_electricos'
+                                    id="descripcion"
+                                    />
+                                </div>
+                                <div className="input-container input_inventario"> 
+                        <Input className='btn btn_invent' type={"file"} style={{ fontSize:"13px",width:"6vh",marginBottom:"20px"}} eventChange={ (e) => { setfile(e.target.files); } } name={"file"}>Subir PDF</Input>
+                       <Button type={"submit"} style={"btn btn_invent"} text={"Actualizar"} event={ getFile }/>
+                               </div>
+                          </Form>
+                        )}
+                      </Formik>
+
 
                     </div>
                 </Modal>
