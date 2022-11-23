@@ -11,6 +11,7 @@ import { Input } from '../../../../ui/Input/Input';
 import { Button } from '../../../../ui/Buttons/Button';
 import { doc_post } from '../../../../../helpers/api/DocsRequest';
 import "./Components.css";
+import { FaFileUpload } from 'react-icons/fa';
 
 export const Electricos = ( { mdl , evt } ) => {
 
@@ -215,7 +216,6 @@ export const Electricos = ( { mdl , evt } ) => {
                                                                                 cant_disp : item.cantidad_disponible_electricos,
                                                                                 cont_cons : item.cantidad_consumida_electricos, 
                                                                                 ubicacion : item.ubicacion_parte_electricos
-                                                                                // data_sht : item.datasheet_parte_electricos,
 
                                                                               }
                                                                               setmodal_obj(obj_item);
@@ -320,9 +320,6 @@ export const Electricos = ( { mdl , evt } ) => {
                              <h4 className='modal_object_text'>DT-SHEET: </h4>
                            </div>
  
-                           <div className="contain_detail">
-                             {/* <h3>{modal_obj.data_sht}</h3> */}
-                           </div>
                        </div>
  
                        {
@@ -544,7 +541,7 @@ export const Electricos = ( { mdl , evt } ) => {
 
                 <Modal close={ setmodal_crear }>
                     <div className="animate__animated animate__fadeInRight cont_crear_item" style={{ zIndex:"10000" }} >
-                      <h1>Crear item</h1>
+                      <h1 style={{ width:"100%",display:"flex",justifyContent:"center",gap:"10px", color:"rgb(255, 203, 58)", marginTop:"45px" }}>Crear item</h1>
 
 
                           {
@@ -616,8 +613,29 @@ export const Electricos = ( { mdl , evt } ) => {
 
                   }}>
                       {({errors}) => (
-                          <Form className='form1'>
+                          <Form className='form2'>
+                       
+                       {
+                                    ( !!img_edit ) 
+
+                                    ?
+                                      <div className="img_regist">
+                                        <div className="cont_img_details" title='Sube tu imagen' onClick={ () => { myWidgetElectrics.open(); } }>
+                                          <img src={ img_edit } className="img_card"/>
+                                        </div>
+                                      </div>
+
+                                    :
+                                      <div id='img_rsg' title='Subir imagen' onClick={ () => { myWidgetElectrics.open(); } }>
+                                          <FaFileUpload fontSize={"140px"}/>
+                                      </div>
+                                  }
+
+                                  
+                                  <br />
+
                           <div className="input-container input_inventario">
+                          <hr />
                                   <Field 
                                     type='text'
                                     placeholder='Nombre' 
