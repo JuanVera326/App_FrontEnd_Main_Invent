@@ -60,7 +60,7 @@
 
 .cont_crear_item{
     width: 50vh;
-    height: 90vh;
+    height: 65vh;
     background-color: rgb(2, 71, 118);
     border-radius: 6px;
 }
@@ -110,4 +110,70 @@
     justify-content: center;
     align-items: center;
     margin-top: 100px;
+}
+.modal_registar{
+    width: 30vh;
+}
+.upload_btn{
+    height: 4rem;
+    gap: 20px;
+}
+
+
+.file-input{
+    margin-bottom: 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.file-input label{
+    display: block;
+    position: relative;
+    width: 200px;
+    height: 50px;
+    border-radius: 25px;
+    background: rgb(31 ,136 ,173);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform .2s ease-out;
+    z-index: 0;
+    
+
+}
+
+.file{
+  opacity: 0;
+  width: 0.1px;
+  height: 0.1px;
+  position: sticky;
+  
+}
+input:hover + label,
+input:focus + label {
+  transform: scale(1.02);
+}
+input:focus + label {
+  outline: 1px solid #000;
+  outline: -webkit-focus-ring-color auto 2px;
+}
+.file-name {
+  font-size: 1rem;
+  color: rgb(255, 203, 58);
+  z-index: 2;
+  margin-top: 50px;
+}
+.input:hover + label,
+input:focus + label {
+  transform: scale(1.02);
+}
+input:focus + label {
+  outline: 1px solid #000;
+  outline: -webkit-focus-ring-color auto 2px;
 }

@@ -36,6 +36,7 @@ export const Electricos = ( { mdl , evt } ) => {
   const [getAll, setgetAll] = useState(true);
 
   const [file, setfile] = useState(null);
+  const [nameFile, setnameFile] = useState("");
 
   const getFile = () => {
     const formData = new FormData();
@@ -109,6 +110,10 @@ export const Electricos = ( { mdl , evt } ) => {
 
   useEffect(() => {  setimg_edit(urlImage); }, [ urlImage ]);
 
+  useEffect(() => { if (file !== null) { setnameFile( "Archivo subido: \n" + file[0].name ); } }, [ file ]);
+
+  useEffect(() => { if (modal_crear === false) { setfile(null); setnameFile(""); setimg_edit(""); } }, [ modal_crear ]);
+  
   
   return (
     <div>
@@ -541,7 +546,7 @@ export const Electricos = ( { mdl , evt } ) => {
 
                 <Modal close={ setmodal_crear }>
                     <div className="animate__animated animate__fadeInRight cont_crear_item" style={{ zIndex:"10000" }} >
-                      <h1 style={{ width:"100%",display:"flex",justifyContent:"center",gap:"10px", color:"rgb(255, 203, 58)", marginTop:"45px" }}>Crear item</h1>
+                      <h1 style={{ width:"100%",display:"flex",justifyContent:"center",gap:"10px", color:"rgb(255, 203, 58)", marginTop:"45px" }}>Crear item Electrico</h1>
 
 
                           {
@@ -652,6 +657,7 @@ export const Electricos = ( { mdl , evt } ) => {
                                     id="tipo"
                                   />
                                 </div>
+
                                 <div className="input-container input_inventario">
                                   <Field 
                                     type='text'
@@ -660,6 +666,7 @@ export const Electricos = ( { mdl , evt } ) => {
                                     id="cant_disp"
                                   />
                                 </div>
+
                                 <div className="input-container input_inventario">
                                   <Field 
                                     type='text'
@@ -668,6 +675,7 @@ export const Electricos = ( { mdl , evt } ) => {
                                     id="cant_cons"
                                   />
                                 </div>
+
                                 <div className="input-container input_inventario">
                                   <Field 
                                     type='text'
@@ -676,6 +684,7 @@ export const Electricos = ( { mdl , evt } ) => {
                                     id="ubicacion"
                                   />
                                 </div>
+
                                 <div className="input-container input_inventario">
                                   <Field 
                                     type='text'
@@ -684,10 +693,19 @@ export const Electricos = ( { mdl , evt } ) => {
                                     id="descripcion"
                                     />
                                 </div>
-                                <div className="input-container input_inventario"> 
-                        <Input className='btn btn_invent' type={"file"} style={{ fontSize:"13px",width:"6vh",marginBottom:"20px"}} eventChange={ (e) => { setfile(e.target.files); } } name={"file"}>Subir PDF</Input>
-                       <Button type={"submit"} style={"btn btn_invent"} text={"Actualizar"} event={ getFile }/>
-                               </div>
+
+                     
+                                  <div className='file-input'>
+                                      <h2>{ "Datasheet: (Opcional)" }</h2><br />
+                                      <Input type="file" id="file" style={"file"} eventChange={ (e) => { setfile(e.target.files); } } name={"file"}></Input>
+                                      <label for="file">Subir archivo</label>
+                                      <p class="file-name">{ nameFile }</p>
+                                  </div>
+                                
+                                  <div className="buttons_gest_electric modal_registar">
+                                    <Button type={"button"} style={"btn upload_btn"} text={"Subir Archivo"} event={ getFile }/>
+                                    <Button type={"submit"} style={"btn upload_btn"} text={"Enviar Registro"}/>
+                                  </div>
                           </Form>
                         )}
                       </Formik>
