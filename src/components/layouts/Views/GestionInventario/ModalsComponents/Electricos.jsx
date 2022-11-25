@@ -37,13 +37,18 @@ export const Electricos = ( { mdl , evt } ) => {
 
   const [file, setfile] = useState(null);
   const [nameFile, setnameFile] = useState("");
+  const [fileRequest, setfileRequest] = useState({});
 
   const getFile = () => {
     const formData = new FormData();
     formData.set("file" , file[0]);
 
     doc_post( formData,"prueba",1 ).then( info => {
-      console.log(info);
+
+      if (info.status === 202) {
+        setfileRequest(info.data);  
+      }
+
     })
   }
 
@@ -556,13 +561,15 @@ export const Electricos = ( { mdl , evt } ) => {
                 <Formik
 
                   initialValues={{
+                    id_parte_electricos : "",
                     nombre_parte_electricos: "",
+                    imagen_parte_electricos: img_edit,
                     tipo_parte_electricos: "",
                     cantidad_disponible_electricos: "",
                     cantidad_consumida_electricos: "",
                     ubicacion_parte_electricos: "",
                     descripcion_parte_electricos: "",
-                    datasheet_parte_electricos: "",
+                    datasheet_parte_electricos: fileRequest.id_doc,
                   }}
 
                   validate = {(valores) => {
@@ -586,6 +593,7 @@ export const Electricos = ( { mdl , evt } ) => {
 
                     if (!valores.descripcion_parte_electricos.trim()) { errors.descripcion_parte_electricos = "Datos erroneos" }
                     else if (!/^[A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]+$/.test(valores.descripcion_parte_electricos)) { errors.descripcion_parte_electricos = "Datos erroneos" }
+
                     return errors;
                   }}
 
@@ -639,8 +647,9 @@ export const Electricos = ( { mdl , evt } ) => {
                                   
                                   <br />
 
-                          <div className="input-container input_inventario">
-                          <hr />
+                            <ErrorMessage  name='nombre' component={() => (<p className='warn__password-user'>{errors.nombre_parte_electricos}</p>)} />
+                            <div className="input-container input_inventario">
+                            <hr />
                                   <Field 
                                     type='text'
                                     placeholder='Nombre' 
@@ -649,6 +658,17 @@ export const Electricos = ( { mdl , evt } ) => {
                                   />
                                 </div>
 
+                                <ErrorMessage  name='nombre' component={() => (<p className='warn__password-user'>{errors.id_parte_electricos}</p>)} />
+                                <div className="input-container input_inventario">
+                                  <Field 
+                                    type='text'
+                                    placeholder='ID' 
+                                    name='id_parte_electricos'
+                                    id="id"
+                                  />
+                                </div>
+                                
+                                <ErrorMessage  name='nombre' component={() => (<p className='warn__password-user'>{errors.tipo_parte_electricos}</p>)} />
                                 <div className="input-container input_inventario">
                                   <Field 
                                     type='text'
@@ -657,7 +677,8 @@ export const Electricos = ( { mdl , evt } ) => {
                                     id="tipo"
                                   />
                                 </div>
-
+                                
+                                <ErrorMessage  name='nombre' component={() => (<p className='warn__password-user'>{errors.cantidad_disponible_electricos}</p>)} />
                                 <div className="input-container input_inventario">
                                   <Field 
                                     type='text'
@@ -666,7 +687,8 @@ export const Electricos = ( { mdl , evt } ) => {
                                     id="cant_disp"
                                   />
                                 </div>
-
+                                
+                                <ErrorMessage  name='nombre' component={() => (<p className='warn__password-user'>{errors.cantidad_consumida_electricos}</p>)} />
                                 <div className="input-container input_inventario">
                                   <Field 
                                     type='text'
@@ -675,7 +697,8 @@ export const Electricos = ( { mdl , evt } ) => {
                                     id="cant_cons"
                                   />
                                 </div>
-
+                                
+                                <ErrorMessage  name='nombre' component={() => (<p className='warn__password-user'>{errors.ubicacion_parte_electricos}</p>)} />
                                 <div className="input-container input_inventario">
                                   <Field 
                                     type='text'
@@ -684,17 +707,19 @@ export const Electricos = ( { mdl , evt } ) => {
                                     id="ubicacion"
                                   />
                                 </div>
-
+                                
+                                <ErrorMessage  name='nombre' component={() => (<p className='warn__password-user'>{errors.descripcion_parte_electricos}</p>)} />
                                 <div className="input-container input_inventario">
-                                  <Field 
-                                    type='text'
-                                    placeholder='Descripcion' 
-                                    name='descripcion_parte_electricos'
-                                    id="descripcion"
-                                    />
+                                <Field 
+                                  as="textarea"
+                                  max="180"
+                                  style={{ resize: "none", backgroundColor: "rgb(2, 71, 118)",borderRadius:"6px",width:"28vh",padding:"1rem", color:"color:rgb(223 222 223 / 1)" }} 
+                                  placeholder='Descripcion' 
+                                  name='descripcion_parte_electricos'
+                                  id="descripcion"
+                                />
                                 </div>
-
-                     
+                                
                                   <div className='file-input'>
                                       <h2>{ "Datasheet: (Opcional)" }</h2><br />
                                       <Input type="file" id="file" style={"file"} eventChange={ (e) => { setfile(e.target.files); } } name={"file"}></Input>
