@@ -4,7 +4,7 @@ import { HiOutlineRefresh } from 'react-icons/hi';
 import { IoMdEye } from 'react-icons/io';
 import { VscSearch } from 'react-icons/vsc';
 import { Link } from 'react-router-dom';
-import { electricos_post, electricos_put, getItemsElectricos, getItemsElectricosByGeneralId, getItemsElectricosByGeneralName, getItemsElectricosByType } from '../../../../../helpers/api/ElectricosRequests';
+import { electricos_post, electricos_put, getItemsElectricos, getItemsElectricosByGeneralId, getItemsElectricosByGeneralName, getItemsElectricosByType, getTypesItemsElectricos } from '../../../../../helpers/api/ElectricosRequests';
 import { useSendImage } from '../../../../../helpers/image/useSendImage';
 import { Modal } from '../../../../pages/Modal/Modal';
 import { Input } from '../../../../ui/Input/Input';
@@ -38,12 +38,17 @@ export const Electricos = ( { mdl , evt } ) => {
   const [file, setfile] = useState(null);
   const [nameFile, setnameFile] = useState("");
   const [fileRequest, setfileRequest] = useState({});
+  const [name_file_param, setname_file_param] = useState("");
+  const [id_file_param, setfirst] = useState("");
+
+  const [type_select, settype_select] = useState(false);
+  const [types, settypes] = useState([]);
 
   const getFile = () => {
     const formData = new FormData();
     formData.set("file" , file[0]);
 
-    doc_post( formData,"prueba",1 ).then( info => {
+    doc_post( formData,name_file_param,id_file_param ).then( info => {
 
       if (info.status === 202) {
         setfileRequest(info.data);  
@@ -106,6 +111,14 @@ export const Electricos = ( { mdl , evt } ) => {
         setloader(false);
       }else{
         setval_request_electricos(info.status);
+      }
+    });
+
+    getTypesItemsElectricos().then((info) => {
+      if (info.status === 200) {
+        settypes(info.data);
+      }else{
+        settypes(["Error al obtener tipos"])
       }
     });
 
@@ -239,7 +252,7 @@ export const Electricos = ( { mdl , evt } ) => {
                                                     ))
                                                 }
                                                 {
-                                                  ( items_electricos.length === 0 ) && <><h1>No encontrado</h1></>
+                                                  ( items_electricos.length === 0 ) && <><h1>Vacio</h1></>
                                                 }
 
                                           </div>
@@ -426,8 +439,6 @@ export const Electricos = ( { mdl , evt } ) => {
                         setloader_edit(true);
                         valores.imagen = img_edit;
 
-                        console.log(valores);
-
                         electricos_put( valores, valores.id ).then( (info) => {
 
                           if (info.status == 202) {
@@ -576,59 +587,65 @@ export const Electricos = ( { mdl , evt } ) => {
 
                     let errors = {};
 
-                    if (!valores.nombre_parte_electricos.trim()) { errors.nombre_parte_electricos = "Datos erroneos" }
-                    else if (!/^[A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]+$/.test(valores.nombre_parte_electricos)) { errors.nombre_parte_electricos = "Datos erroneos" }
+                    if (!valores.nombre_parte_electricos.trim()) { errors.nombre_parte_electricos = "Nombre erroneo" }
 
-                    if (!valores.tipo_parte_electricos.trim()) { errors.tipo_parte_electricos = "Datos erroneos" }
-                    else if (!/^[A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]+$/.test(valores.tipo_parte_electricos)) { errors.tipo_parte_electricos = "Datos erroneos" }
+                    else if (valores.tipo_parte_electricos === "" || valores.tipo_parte_electricos === "none") { errors.tipo_parte_electricos = "Tipo erroneo" }
                     
-                    if (!valores.cantidad_disponible_electricos.trim()) { errors.cantidad_disponible_electricos = "Datos erroneos" }
-                    else if (!/^[A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]+$/.test(valores.cantidad_disponible_electricos)) { errors.cantidad_disponible_electricos = "Datos erroneos" }
-                    
-                    if (!valores.cantidad_consumida_electricos.trim()) { errors.cantidad_consumida_electricos = "Datos erroneos" }
-                    else if (!/^[A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]+$/.test(valores.cantidad_consumida_electricos)) { errors.cantidad_consumida_electricos = "Datos erroneos" }
-                    
-                    if (!valores.ubicacion_parte_electricos.trim()) { errors.ubicacion_parte_electricos = "Datos erroneos" }
-                    else if (!/^[A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]+$/.test(valores.ubicacion_parte_electricos)) { errors.ubicacion_parte_electricos = "Datos erroneos" }
+                    else if (!valores.cantidad_disponible_electricos.trim()) { errors.cantidad_disponible_electricos = "Cant Disp. erroneos" }
 
-                    if (!valores.descripcion_parte_electricos.trim()) { errors.descripcion_parte_electricos = "Datos erroneos" }
-                    else if (!/^[A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]+$/.test(valores.descripcion_parte_electricos)) { errors.descripcion_parte_electricos = "Datos erroneos" }
+                    else if (!/^\d+$/.test(valores.cantidad_disponible_electricos)) { errors.cantidad_disponible_electricos = "Cant Disp. erroneo" }
+                    
+                    else if (!valores.cantidad_consumida_electricos.trim()) { errors.cantidad_consumida_electricos = "Cant Cons. erroneo" }
+
+                    else if (!/^\d+$/.test(valores.cantidad_consumida_electricos)) { errors.cantidad_consumida_electricos = "Cant Cons. erroneo" }
+                    
+                    else if (!valores.ubicacion_parte_electricos.trim()) { errors.ubicacion_parte_electricos = "Ubicación erronea" }
+
+                    else if (!valores.descripcion_parte_electricos.trim()) { errors.descripcion_parte_electricos = "Descripción erronea" }
 
                     return errors;
+                    
                   }}
 
                   onSubmit={( valores, {resetForm} ) => {
                     
                     setloader_edit(true);
-                    valores.imagen = img_edit;
 
-                    electricos_post( valores  ).then( (info) => {
+                    if (img_edit === "") {
+                      valores.imagen = "https://concepto.de/wp-content/uploads/2020/08/aislante-electrico-cables-e1597781533583.jpg";
+                    }else{
+                      valores.imagen = img_edit;
+                    }
 
-                      if (info.status == 202) {
+                    console.log(valores);
+
+                    // electricos_post( valores  ).then( (info) => {
+
+                    //   if (info.status == 202) {
                         
-                        setloader_edit(false);
-                        setmodal_edit(false);
-                        refreshRequest();
-                        setimg_edit("");
-                        resetForm();
+                    //     setloader_edit(false);
+                    //     setmodal_edit(false);
+                    //     refreshRequest();
+                    //     setimg_edit("");
+                    //     resetForm();
 
-                      }else{
+                    //   }else{
 
-                        setmsj_desha_rqst("Hubo un error, intentalo mas tarde.");
-                        setloader_edit(false);
-                        setmodal_edit(false);
-                        setimg_edit("");
-                        refreshRequest();
-                        setTimeout(() => { window.location = "/principal"; }, 3500);
-                      }
+                    //     setmsj_desha_rqst("Hubo un error, intentalo mas tarde.");
+                    //     setloader_edit(false);
+                    //     setmodal_edit(false);
+                    //     setimg_edit("");
+                    //     refreshRequest();
+                    //     setTimeout(() => { window.location = "/principal"; }, 3500);
+                    //   }
 
-                    } )
+                    // } )
 
                   }}>
                       {({errors}) => (
                           <Form className='form2'>
                        
-                       {
+                                  {
                                     ( !!img_edit ) 
 
                                     ?
@@ -643,72 +660,94 @@ export const Electricos = ( { mdl , evt } ) => {
                                           <FaFileUpload fontSize={"140px"}/>
                                       </div>
                                   }
-
                                   
                                   <br />
 
-                            <ErrorMessage  name='nombre' component={() => (<p className='warn__password-user'>{errors.nombre_parte_electricos}</p>)} />
+                            <ErrorMessage  name='nombre_parte_electricos' component={() => (<p className='warn__password-user'>{errors.nombre_parte_electricos}</p>)} />
                             <div className="input-container input_inventario">
                             <hr />
+                            <br />
+                            <br />
                                   <Field 
                                     type='text'
                                     placeholder='Nombre' 
                                     name='nombre_parte_electricos'
-                                    id="nombre"
+                                    id="nombre_parte_electricos"
                                   />
                                 </div>
 
-                                <ErrorMessage  name='nombre' component={() => (<p className='warn__password-user'>{errors.id_parte_electricos}</p>)} />
-                                <div className="input-container input_inventario">
-                                  <Field 
-                                    type='text'
-                                    placeholder='ID' 
-                                    name='id_parte_electricos'
-                                    id="id"
-                                  />
+                                <div className="type_selector">
+                                  <p style={{ color:"rgb(255, 203, 58)",width:"12vh" }}>{ (!!type_select) ? "Seleccionar tipo:" : "Crear nuevo tipo:" }</p>
+                                  <input type="checkbox" id="switch" onClick={ () => { settype_select(!type_select) } } /><label for="switch" id='text_type_selector'>Toggle</label>
                                 </div>
+                                <br />
                                 
-                                <ErrorMessage  name='nombre' component={() => (<p className='warn__password-user'>{errors.tipo_parte_electricos}</p>)} />
-                                <div className="input-container input_inventario">
-                                  <Field 
-                                    type='text'
-                                    placeholder='Tipo' 
-                                    name='tipo_parte_electricos'
-                                    id="tipo"
-                                  />
-                                </div>
+                               {
+                                ( !!type_select )
+
+                                ? <div className="animate__animated animate__fadeInDown" style={{ display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center" }}>
+                                    <ErrorMessage  name='tipo_parte_electricos' component={() => (<p className='warn__password-user'>{errors.tipo_parte_electricos}</p>)} />
+                                      <div className="option_cont">
+                                        <Field as="select" name="tipo_parte_electricos" id="select_filter" autoFocus="true" style={{ width:"400px" }}>
+
+                                          {
+                                            types.map((item) => (
+                                              <>
+                                                <option value="none">{item}</option>
+                                              </>
+                                            ))
+                                          }
+
+                                        </Field>
+                                      </div>
+                                  </div>
+
+                                :
+                                  <div className="animate__animated animate__fadeInDown" style={{ display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center" }}>
+                                    <ErrorMessage  name='tipo_parte_electricos' component={() => (<p className='warn__password-user'>{errors.tipo_parte_electricos}</p>)} />
+                                    <div className="input-container input_inventario">
+                                      <Field 
+                                        type='text'
+                                        placeholder='Tipo' 
+                                        name='tipo_parte_electricos'
+                                        id="tipo_parte_electricos"
+                                      />
+                                    </div>
+                                  </div>
+
+                               } 
                                 
-                                <ErrorMessage  name='nombre' component={() => (<p className='warn__password-user'>{errors.cantidad_disponible_electricos}</p>)} />
+                                <ErrorMessage  name='cantidad_disponible_electricos' component={() => (<p className='warn__password-user'>{errors.cantidad_disponible_electricos}</p>)} />
                                 <div className="input-container input_inventario">
                                   <Field 
                                     type='text'
                                     placeholder='Cantidad disponible' 
                                     name='cantidad_disponible_electricos'
-                                    id="cant_disp"
+                                    id="cantidad_disponible_electricos"
                                   />
                                 </div>
                                 
-                                <ErrorMessage  name='nombre' component={() => (<p className='warn__password-user'>{errors.cantidad_consumida_electricos}</p>)} />
+                                <ErrorMessage  name='cantidad_consumida_electricos' component={() => (<p className='warn__password-user'>{errors.cantidad_consumida_electricos}</p>)} />
                                 <div className="input-container input_inventario">
                                   <Field 
                                     type='text'
                                     placeholder='Cantidad consumida' 
                                     name='cantidad_consumida_electricos'
-                                    id="cant_cons"
+                                    id="cantidad_consumida_electricos"
                                   />
                                 </div>
                                 
-                                <ErrorMessage  name='nombre' component={() => (<p className='warn__password-user'>{errors.ubicacion_parte_electricos}</p>)} />
+                                <ErrorMessage  name='ubicacion_parte_electricos' component={() => (<p className='warn__password-user'>{errors.ubicacion_parte_electricos}</p>)} />
                                 <div className="input-container input_inventario">
                                   <Field 
                                     type='text'
                                     placeholder='Ubicacion' 
                                     name='ubicacion_parte_electricos'
-                                    id="ubicacion"
+                                    id="ubicacion_parte_electricos"
                                   />
                                 </div>
                                 
-                                <ErrorMessage  name='nombre' component={() => (<p className='warn__password-user'>{errors.descripcion_parte_electricos}</p>)} />
+                                <ErrorMessage  name='descripcion_parte_electricos' component={() => (<p className='warn__password-user'>{errors.descripcion_parte_electricos}</p>)} />
                                 <div className="input-container input_inventario">
                                 <Field 
                                   as="textarea"
@@ -716,14 +755,14 @@ export const Electricos = ( { mdl , evt } ) => {
                                   style={{ resize: "none", backgroundColor: "rgb(2, 71, 118)",borderRadius:"6px",width:"28vh",padding:"1rem", color:"color:rgb(223 222 223 / 1)" }} 
                                   placeholder='Descripcion' 
                                   name='descripcion_parte_electricos'
-                                  id="descripcion"
+                                  id="descripcion_parte_electricos"
                                 />
                                 </div>
                                 
                                   <div className='file-input'>
                                       <h2>{ "Datasheet: (Opcional)" }</h2><br />
                                       <Input type="file" id="file" style={"file"} eventChange={ (e) => { setfile(e.target.files); } } name={"file"}></Input>
-                                      <label for="file">Subir archivo</label>
+                                      <label for="file">Selecciona archivo</label>
                                       <p class="file-name">{ nameFile }</p>
                                   </div>
                                 
@@ -731,6 +770,14 @@ export const Electricos = ( { mdl , evt } ) => {
                                     <Button type={"button"} style={"btn upload_btn"} text={"Subir Archivo"} event={ getFile }/>
                                     <Button type={"submit"} style={"btn upload_btn"} text={"Enviar Registro"}/>
                                   </div>
+
+                                  {
+                                    ( !!msj_desha_rqst ) && 
+                                    <div className="cont_buttons_desha">
+                                      <h2 style={{ color:"rgb(26 200 252)" }}>{ msj_desha_rqst }</h2>
+                                    </div>
+                                  }
+
                           </Form>
                         )}
                       </Formik>

@@ -394,7 +394,7 @@ export const Inventario = ( { user } ) => {
                 ))
             }
             {
-              ( items_electricos.length === 0 ) && <><h1>No encontrado</h1></>
+              ( items_electricos.length === 0 ) && <><h1>Vacio</h1></>
             }
 
         </div>
@@ -486,7 +486,7 @@ export const Inventario = ( { user } ) => {
               ))
           }
           {
-           ( items_electronicos.length === 0 ) && <><h1>No encontrado</h1></>
+           ( items_electronicos.length === 0 ) && <><h1>Vacio</h1></>
           }
 
         </div>
@@ -572,7 +572,7 @@ export const Inventario = ( { user } ) => {
             ))
         }
         {
-          ( items_eleferre.length === 0 ) && <><h1>No encontrado</h1></>
+          ( items_eleferre.length === 0 ) && <><h1>Vacio</h1></>
         }
         </div>
 
@@ -658,7 +658,7 @@ export const Inventario = ( { user } ) => {
             ))
         }
             {
-              ( items_moddev.length === 0 ) && <><h1>No encontrado</h1></>
+              ( items_moddev.length === 0 ) && <><h1>Vacio</h1></>
             }
 
         </div>
@@ -744,7 +744,7 @@ export const Inventario = ( { user } ) => {
             ))
         }
             {
-              ( items_otros.length === 0 ) && <><h1>No encontrado</h1></>
+              ( items_otros.length === 0 ) && <><h1>Vacio</h1></>
             }
 
         </div>

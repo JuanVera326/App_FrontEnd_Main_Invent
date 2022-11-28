@@ -232,7 +232,7 @@ export const GestionUsuarios = () => {
               ))
             }
             {
-              ( items_usuarios.length === 0 ) && <><h1>No encontrado</h1></>
+              ( items_usuarios.length === 0 ) && <><h1>Vacio</h1></>
             }
     
             </div>

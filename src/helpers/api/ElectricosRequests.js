@@ -73,6 +73,23 @@ export const getItemsElectricosByType = async( types ) => {
 
 };
 
+export const getTypesItemsElectricos = async() => {
+
+    try {
+
+        const sendRequest = await axios.get(`${URL}/electricos/tipos`);
+        return sendRequest;
+
+    } catch (error) {
+
+        if ( error.response ) {
+            return error.response;
+        }
+
+    }
+
+};
+
 export const electricos_put = async( obj , id ) => {
 
     try {
