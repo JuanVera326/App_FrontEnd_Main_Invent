@@ -126,7 +126,7 @@ export const electricos_post = async( obj ) => {
     try {
         
         const sendRequest = await axios({
-            url : `${URL}/api/electricos/${KEY}`,
+            url : `${URL}/electricos/${KEY}`,
             method : 'POST',
             headers : {
                 "Content-Type":"application/json",

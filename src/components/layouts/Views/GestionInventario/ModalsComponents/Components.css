@@ -111,10 +111,6 @@
     align-items: center;
     margin-top: 100px;
 }
-.modal_registar{
-    width: 30vh;
-    gap: 20px;
-}
 .upload_btn{
     height: 4rem;
     gap: 20px;

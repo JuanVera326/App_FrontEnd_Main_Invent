@@ -10,8 +10,8 @@ import { Modal } from '../../../../pages/Modal/Modal';
 import { Input } from '../../../../ui/Input/Input';
 import { Button } from '../../../../ui/Buttons/Button';
 import { doc_post } from '../../../../../helpers/api/DocsRequest';
-import "./Components.css";
 import { FaFileUpload } from 'react-icons/fa';
+import "./Components.css";
 
 export const Electricos = ( { mdl , evt } ) => {
 
@@ -38,23 +38,44 @@ export const Electricos = ( { mdl , evt } ) => {
   const [file, setfile] = useState(null);
   const [nameFile, setnameFile] = useState("");
   const [fileRequest, setfileRequest] = useState({});
-  const [name_file_param, setname_file_param] = useState("");
-  const [id_file_param, setfirst] = useState("");
+  const [obj_file_toUpadate, setobj_file_toUpadate] = useState({});
+  const [modal_file, setmodal_file] = useState(false);
 
   const [type_select, settype_select] = useState(false);
   const [types, settypes] = useState([]);
 
   const getFile = () => {
+    
     const formData = new FormData();
     formData.set("file" , file[0]);
 
-    doc_post( formData,name_file_param,id_file_param ).then( info => {
+    const new_item = obj_file_toUpadate;
+
+    doc_post( formData,obj_file_toUpadate.nombre_parte_electricos,obj_file_toUpadate.id_parte_electricos ).then( info => {
 
       if (info.status === 202) {
-        setfileRequest(info.data);  
+
+        setloader_edit(true);
+        setfileRequest(info.data);
+        new_item.datasheet_parte_electricos = fileRequest.id_doc;
+
+        electricos_put( new_item,new_item.id_parte_electricos ).then((info) => { if (info.status === 200) {
+
+          setloader_edit(false); 
+          setmodal_file(false);
+          setgetAll(!getAll);
+
+        }else{
+
+          setloader_edit(false);
+          setnameFile("Hubo un error, por favor intente mas tarde.")
+          setTimeout(() => { window.location = "/principal"; }, 3500);
+
+        }})
       }
 
     })
+
   }
 
   const handleKeyPress = ( e ) => {
@@ -225,7 +246,6 @@ export const Electricos = ( { mdl , evt } ) => {
                                                             </div>
 
                                                             <div className="cont_default_row" style={{ borderRight:"solid 5px rgb(255, 203, 58)", paddingRight:"20px", width:"35vh", justifyContent:"space-around "}}>
-                                                              <Link className='btn btn_invent create_btn' onClick={() => { setmodal_edit(true); setmodal_obj_edit(item); setimg_edit(item.imagen_parte_electricos); }}>Editar Item</Link>
                                                               <Link className='btn btn_view' onClick={ () => { 
 
                                                                               setmodal_detail(true); 
@@ -245,7 +265,19 @@ export const Electricos = ( { mdl , evt } ) => {
 
 
                                                                               }}><IoMdEye/></Link>
+                                                              <Link className='btn btn_invent create_btn' onClick={() => { setmodal_edit(true); setmodal_obj_edit(item); setimg_edit(item.imagen_parte_electricos); }}>Editar Item</Link>
                                                               <Link className='btn btn_invent create_btn' onClick={() => {}} style={{ backgroundColor:"rgb(234 66 54)" }}>Eliminar Item</Link>
+
+                                                              {
+                                                                ( !item.datasheet_parte_electricos ) 
+                                                                
+                                                                  ?
+                                                                    <Link className='btn btn_invent create_btn' onClick={() => { setmodal_file(true); setobj_file_toUpadate(item); }} style={{ backgroundColor:"rgb(255, 203, 58)",color:"rgba(0, 0, 0, 0.5)" }}>Agregar Dtsh.</Link>
+                                                                  
+                                                                  :
+                                                                    <Link className='btn btn_invent create_btn' onClick={() => { setmodal_file(true); setobj_file_toUpadate(item); }} style={{ backgroundColor:"#55da5e",color:"rgba(0, 0, 0, 0.5)",fontSize:"13px", textAlign:"center" }}>Actualizar Dtsh.</Link>
+
+                                                              }
                                                             </div>
 
                                                       </div>
@@ -338,12 +370,7 @@ export const Electricos = ( { mdl , evt } ) => {
                            </div>
                        </div>
  
-                       <div className="row">
-                         <div className="name_detail">
-                             <h4 className='modal_object_text'>DT-SHEET: </h4>
-                           </div>
- 
-                       </div>
+
  
                        {
                          ( !!modal_obj.elemento ) &&
@@ -361,17 +388,20 @@ export const Electricos = ( { mdl , evt } ) => {
                        }
  
                        <div className="row">
-                         <div className="name_detail">
-                             <h2 className='modal_object_text'>DESCRIPCION: </h2>
+                         <div className="name_detail" style={{height:"45px", width:"245px"}}>
+                             <h2 className='modal_object_text' style={{fontSize:"16px"}}>DESCRIPCION: </h2>
                            </div>
- 
                            <div className="contain_detail">
                              <h3 style={{ padding:"10px",textAlign:"center" }}>{modal_obj.descp}</h3>
                            </div>
                        </div>
- 
+                       <div className="row">
+                         <div className="name_detail">
+                             <h4 className='modal_object_text'>DT-SHEET: </h4>
+                           </div>
+                       </div>
                      </div>
- 
+
                  </div>
                  </div>
              </Modal>
@@ -619,27 +649,27 @@ export const Electricos = ( { mdl , evt } ) => {
 
                     console.log(valores);
 
-                    // electricos_post( valores  ).then( (info) => {
+                    electricos_post( valores  ).then( (info) => {
 
-                    //   if (info.status == 202) {
+                      if (info.status == 202) {
                         
-                    //     setloader_edit(false);
-                    //     setmodal_edit(false);
-                    //     refreshRequest();
-                    //     setimg_edit("");
-                    //     resetForm();
+                        setmodal_crear(false);
+                        setmodal_crear(false);
+                        refreshRequest();
+                        setimg_edit("");
+                        resetForm();
 
-                    //   }else{
+                      }else{
 
-                    //     setmsj_desha_rqst("Hubo un error, intentalo mas tarde.");
-                    //     setloader_edit(false);
-                    //     setmodal_edit(false);
-                    //     setimg_edit("");
-                    //     refreshRequest();
-                    //     setTimeout(() => { window.location = "/principal"; }, 3500);
-                    //   }
+                        setmsj_desha_rqst("Hubo un error, intentalo mas tarde.");
+                        setloader_edit(false);
+                        setmodal_crear(false);
+                        setimg_edit("");
+                        refreshRequest();
+                        setTimeout(() => { window.location = "/principal"; }, 3500);
+                      }
 
-                    // } )
+                    } )
 
                   }}>
                       {({errors}) => (
@@ -758,19 +788,9 @@ export const Electricos = ( { mdl , evt } ) => {
                                   id="descripcion_parte_electricos"
                                 />
                                 </div>
-                                
-                                  <div className='file-input'>
-                                      <h2>{ "Datasheet: (Opcional)" }</h2><br />
-                                      <Input type="file" id="file" style={"file"} eventChange={ (e) => { setfile(e.target.files); } } name={"file"}></Input>
-                                      <label for="file">Selecciona archivo</label>
-                                      <p class="file-name">{ nameFile }</p>
-                                  </div>
-                                
-                                  <div className="buttons_gest_electric modal_registar">
-                                    <Button type={"button"} style={"btn upload_btn"} text={"Subir Archivo"} event={ getFile }/>
-                                    <Button type={"submit"} style={"btn upload_btn"} text={"Enviar Registro"}/>
-                                  </div>
 
+                                  <Button type={"submit"} style={"btn upload_btn"} text={"Enviar Registro"}/>
+                                  
                                   {
                                     ( !!msj_desha_rqst ) && 
                                     <div className="cont_buttons_desha">
@@ -784,6 +804,19 @@ export const Electricos = ( { mdl , evt } ) => {
 
 
                     </div>
+                </Modal>
+            }
+            {
+              (!!modal_file) &&
+
+                <Modal close={ setmodal_file }>
+                  <div className='animate__animated animate__fadeInRight file-input' style={{ zIndex:"10000" }}>
+                    <h2>{ "Datasheet (Opcional) : " }{ obj_file_toUpadate.nombre_parte_electricos }</h2><br />
+                    <Input type="file" id="file" style={"file"} eventChange={ (e) => { setfile(e.target.files); } } name={"file"}></Input>
+                    <label for="file">Selecciona archivo</label>
+                    <p class="file-name">{ nameFile }</p>
+                    <Button type={"button"} style={"btn upload_btn"} text={"Subir Archivo"} event={ getFile }/>
+                  </div>
                 </Modal>
             }
 
