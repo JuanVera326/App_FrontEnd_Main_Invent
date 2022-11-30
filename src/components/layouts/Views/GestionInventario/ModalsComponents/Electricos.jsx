@@ -265,14 +265,14 @@ export const Electricos = ( { mdl , evt } ) => {
 
 
                                                                               }}><IoMdEye/></Link>
-                                                              <Link className='btn btn_invent create_btn' onClick={() => { setmodal_edit(true); setmodal_obj_edit(item); setimg_edit(item.imagen_parte_electricos); }}>Editar Item</Link>
-                                                              <Link className='btn btn_invent create_btn' onClick={() => {}} style={{ backgroundColor:"rgb(234 66 54)" }}>Eliminar Item</Link>
+                                                              <Link className='btn btn_invent create_btn' onClick={() => { setmodal_edit(true); setmodal_obj_edit(item); setimg_edit(item.imagen_parte_electricos); }} style={{height:"40px", width:"168px"}}><p style={{marginTop:"10px"}}>Editar Item</p></Link>
+                                                              <Link className='btn btn_invent create_btn' onClick={() => {}} style={{ backgroundColor:"rgb(234 66 54)",  height:"40px", width:"168px"}}>Eliminar Item</Link>
 
                                                               {
                                                                 ( !item.datasheet_parte_electricos ) 
                                                                 
                                                                   ?
-                                                                    <Link className='btn btn_invent create_btn' onClick={() => { setmodal_file(true); setobj_file_toUpadate(item); }} style={{ backgroundColor:"rgb(255, 203, 58)",color:"rgba(0, 0, 0, 0.5)" }}>Agregar Dtsh.</Link>
+                                                                    <Link className='btn btn_invent create_btn' onClick={() => { setmodal_file(true); setobj_file_toUpadate(item); }} style={{ backgroundColor:"rgb(255, 203, 58)",color:"rgba(0, 0, 0, 0.5)", height:"40px", width:"168px"}}>Agregar Dtsh.</Link>
                                                                   
                                                                   :
                                                                     <Link className='btn btn_invent create_btn' onClick={() => { setmodal_file(true); setobj_file_toUpadate(item); }} style={{ backgroundColor:"#55da5e",color:"rgba(0, 0, 0, 0.5)",fontSize:"13px", textAlign:"center" }}>Actualizar Dtsh.</Link>
