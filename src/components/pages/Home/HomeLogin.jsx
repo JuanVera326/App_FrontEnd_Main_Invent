@@ -3,6 +3,7 @@ import { Button } from '../../ui/Buttons/Button';
 import { Input } from '../../ui/Input/Input';
 import { auth_post } from '../../../helpers/api/Auth';
 import { useEffect, useState } from 'react';
+import "../../../complements/QueryHomeLogin.css"
 import "./HomeLogin.css";
 import "animate.css"
 
