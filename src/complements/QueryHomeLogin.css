@@ -1,3 +1,5 @@
 @media screen and (max-width: 1080px){
-    
+    .cont_input_login {
+        gap: 0px;
+    }
 }
