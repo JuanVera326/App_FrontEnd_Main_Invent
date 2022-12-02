@@ -147,6 +147,8 @@
 }
 .btn_invent{
     width: 8vh;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-decoration: none;
 }

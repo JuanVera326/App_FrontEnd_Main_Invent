@@ -9,7 +9,7 @@ import { useSendImage } from '../../../../../helpers/image/useSendImage';
 import { Modal } from '../../../../pages/Modal/Modal';
 import { Input } from '../../../../ui/Input/Input';
 import { Button } from '../../../../ui/Buttons/Button';
-import { doc_post } from '../../../../../helpers/api/DocsRequest';
+import { doc_del, doc_post } from '../../../../../helpers/api/DocsRequest';
 import { FaFileUpload } from 'react-icons/fa';
 import "./Components.css";
 
@@ -40,6 +40,7 @@ export const Electricos = ( { mdl , evt } ) => {
   const [fileRequest, setfileRequest] = useState({});
   const [obj_file_toUpadate, setobj_file_toUpadate] = useState({});
   const [modal_file, setmodal_file] = useState(false);
+  const [typeRequestFile, setTypeRequestFile] = useState(0);
 
   const [type_select, settype_select] = useState(false);
   const [types, settypes] = useState([]);
@@ -59,22 +60,44 @@ export const Electricos = ( { mdl , evt } ) => {
         setfileRequest(info.data);
         new_item.datasheet_parte_electricos = fileRequest.id_doc;
 
-        electricos_put( new_item,new_item.id_parte_electricos ).then((info) => { if (info.status === 200) {
+        electricos_put( new_item,new_item.id_parte_electricos ).then((info) => { 
+          
+          if (info.status === 202) {
 
-          setloader_edit(false); 
-          setmodal_file(false);
-          setgetAll(!getAll);
+            setloader_edit(false); 
+            setmodal_file(false);
+            setgetAll(!getAll);
 
-        }else{
+          }else{
 
-          setloader_edit(false);
-          setnameFile("Hubo un error, por favor intente mas tarde.")
-          setTimeout(() => { window.location = "/principal"; }, 3500);
+            setloader_edit(false);
+            setnameFile("Hubo un error, por favor intente mas tarde.")
+            setTimeout(() => { window.location = "/principal"; }, 3500);
 
-        }})
+          }})
       }
 
     })
+
+  }
+
+  const delFile = () => {
+
+    doc_del( obj_file_toUpadate.datasheet_parte_electricos ).then((info) => { 
+          
+      if (info.status === 202) {
+
+        setloader_edit(false); 
+        setmodal_file(false);
+        setgetAll(!getAll);
+
+      }else{
+
+        setloader_edit(false);
+        setnameFile("Hubo un error, por favor intente mas tarde.")
+        setTimeout(() => { window.location = "/principal"; }, 3500);
+
+      }})
 
   }
 
@@ -265,17 +288,17 @@ export const Electricos = ( { mdl , evt } ) => {
 
 
                                                                               }}><IoMdEye/></Link>
-                                                              <Link className='btn btn_invent create_btn' onClick={() => { setmodal_edit(true); setmodal_obj_edit(item); setimg_edit(item.imagen_parte_electricos); }} style={{height:"40px", width:"168px"}}><p style={{marginTop:"10px"}}>Editar Item</p></Link>
-                                                              <Link className='btn btn_invent create_btn' onClick={() => {}} style={{ backgroundColor:"rgb(234 66 54)",  height:"40px", width:"168px"}}>Eliminar Item</Link>
+                                                              <Link className='btn btn_invent' onClick={() => { setmodal_edit(true); setmodal_obj_edit(item); setimg_edit(item.imagen_parte_electricos); }} style={{height:"40px", width:"168px"}}><p>Editar Item</p></Link>
+                                                              <Link className='btn btn_invent' onClick={() => {}} style={{ backgroundColor:"rgb(234 66 54)",  height:"40px", width:"168px"}}>Eliminar Item</Link>
 
                                                               {
-                                                                ( !item.datasheet_parte_electricos ) 
+                                                                ( item.datasheet_parte_electricos === "" ) 
                                                                 
                                                                   ?
-                                                                    <Link className='btn btn_invent create_btn' onClick={() => { setmodal_file(true); setobj_file_toUpadate(item); }} style={{ backgroundColor:"rgb(255, 203, 58)",color:"rgba(0, 0, 0, 0.5)", height:"40px", width:"168px"}}>Agregar Dtsh.</Link>
+                                                                    <Link className='btn btn_invent' onClick={() => { setmodal_file(true); setobj_file_toUpadate(item); setTypeRequestFile(1); }} style={{ backgroundColor:"rgb(255, 203, 58)",color:"rgba(0, 0, 0, 0.5)", height:"40px", width:"168px"}}>Agregar Dtsh.</Link>
                                                                   
                                                                   :
-                                                                    <Link className='btn btn_invent create_btn' onClick={() => { setmodal_file(true); setobj_file_toUpadate(item); }} style={{ backgroundColor:"#55da5e",color:"rgba(0, 0, 0, 0.5)",fontSize:"13px", textAlign:"center" }}>Actualizar Dtsh.</Link>
+                                                                    <Link className='btn btn_invent' onClick={() => { setmodal_file(true); setobj_file_toUpadate(item); setTypeRequestFile(2); }} style={{ backgroundColor:"#55da5e",color:"rgba(0, 0, 0, 0.5)",fontSize:"13px", textAlign:"center" }}>Actualizar Dtsh.</Link>
 
                                                               }
                                                             </div>
@@ -610,7 +633,7 @@ export const Electricos = ( { mdl , evt } ) => {
                     cantidad_consumida_electricos: "",
                     ubicacion_parte_electricos: "",
                     descripcion_parte_electricos: "",
-                    datasheet_parte_electricos: fileRequest.id_doc,
+                    datasheet_parte_electricos: "",
                   }}
 
                   validate = {(valores) => {
@@ -619,7 +642,7 @@ export const Electricos = ( { mdl , evt } ) => {
 
                     if (!valores.nombre_parte_electricos.trim()) { errors.nombre_parte_electricos = "Nombre erroneo" }
 
-                    else if (valores.tipo_parte_electricos === "" || valores.tipo_parte_electricos === "none") { errors.tipo_parte_electricos = "Tipo erroneo" }
+                    else if (valores.tipo_parte_electricos === "" || valores.tipo_parte_electricos === "Crea una categoria nueva") { errors.tipo_parte_electricos = "Tipo erroneo" }
                     
                     else if (!valores.cantidad_disponible_electricos.trim()) { errors.cantidad_disponible_electricos = "Cant Disp. erroneos" }
 
@@ -642,12 +665,14 @@ export const Electricos = ( { mdl , evt } ) => {
                     setloader_edit(true);
 
                     if (img_edit === "") {
-                      valores.imagen = "https://concepto.de/wp-content/uploads/2020/08/aislante-electrico-cables-e1597781533583.jpg";
-                    }else{
-                      valores.imagen = img_edit;
-                    }
 
-                    console.log(valores);
+                      valores.imagen_parte_electricos = "https://concepto.de/wp-content/uploads/2020/08/aislante-electrico-cables-e1597781533583.jpg";
+
+                    }else{
+
+                      valores.imagen_parte_electricos = img_edit;
+
+                    }
 
                     electricos_post( valores  ).then( (info) => {
 
@@ -723,7 +748,7 @@ export const Electricos = ( { mdl , evt } ) => {
                                           {
                                             types.map((item) => (
                                               <>
-                                                <option value="none">{item}</option>
+                                                <option value={item}>{item}</option>
                                               </>
                                             ))
                                           }
@@ -816,6 +841,9 @@ export const Electricos = ( { mdl , evt } ) => {
                     <label for="file">Selecciona archivo</label>
                     <p class="file-name">{ nameFile }</p>
                     <Button type={"button"} style={"btn upload_btn"} text={"Subir Archivo"} event={ getFile }/>
+                    {
+                      ( typeRequestFile == 2 ) && <Link type={"button"} className={"btn btn_invent"} style={{ backgroundColor:"rgb(234 66 54)",  height:"40px", width:"168px"}} onClick={ delFile }>Eliminar Dtsh</Link>
+                    }
                   </div>
                 </Modal>
             }

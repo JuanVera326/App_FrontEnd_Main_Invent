@@ -34,3 +34,30 @@ export const doc_post = async( doc , names , id ) => {
     }
 
 };
+
+export const doc_del = async(id ) => {
+
+    try {
+        
+        const sendRequest = await axios({
+            url : `${URL}/files/${id}/${KEY}`,
+            method : 'DELETE'
+        }).catch( function( error ) {
+
+            if ( error.response ) {
+                return error.response;
+            }
+
+        });
+                
+        return sendRequest;
+
+    } catch (error) {
+
+        if ( error.response ) {
+            return error.response;
+        }
+
+    }
+
+};
