@@ -4,7 +4,7 @@ import { HiOutlineRefresh } from 'react-icons/hi';
 import { IoMdEye } from 'react-icons/io';
 import { VscSearch } from 'react-icons/vsc';
 import { Link } from 'react-router-dom';
-import { electricos_post, electricos_put, getItemsElectricos, getItemsElectricosByGeneralId, getItemsElectricosByGeneralName, getItemsElectricosByType, getTypesItemsElectricos } from '../../../../../helpers/api/ElectricosRequests';
+import { electricos_del, electricos_post, electricos_put, getItemsElectricos, getItemsElectricosByGeneralId, getItemsElectricosByGeneralName, getItemsElectricosByType, getTypesItemsElectricos } from '../../../../../helpers/api/ElectricosRequests';
 import { useSendImage } from '../../../../../helpers/image/useSendImage';
 import { Modal } from '../../../../pages/Modal/Modal';
 import { Input } from '../../../../ui/Input/Input';
@@ -37,7 +37,6 @@ export const Electricos = ( { mdl , evt } ) => {
 
   const [file, setfile] = useState(null);
   const [nameFile, setnameFile] = useState("");
-  const [fileRequest, setfileRequest] = useState({});
   const [obj_file_toUpadate, setobj_file_toUpadate] = useState({});
   const [modal_file, setmodal_file] = useState(false);
   const [typeRequestFile, setTypeRequestFile] = useState(0);
@@ -45,25 +44,66 @@ export const Electricos = ( { mdl , evt } ) => {
   const [type_select, settype_select] = useState(false);
   const [types, settypes] = useState([]);
 
+  const [modal_desha, setmodaldesha] = useState(false);
+  const [modal_obj_desha, setmodal_obj_desha] = useState({});
+  const [loader_desha, setloader_desha] = useState(false);
+
   const getFile = () => {
     
     const formData = new FormData();
     formData.set("file" , file[0]);
-
-    const new_item = obj_file_toUpadate;
 
     doc_post( formData,obj_file_toUpadate.nombre_parte_electricos,obj_file_toUpadate.id_parte_electricos ).then( info => {
 
       if (info.status === 202) {
 
         setloader_edit(true);
-        setfileRequest(info.data);
-        new_item.datasheet_parte_electricos = fileRequest.id_doc;
 
-        electricos_put( new_item,new_item.id_parte_electricos ).then((info) => { 
+        const new_item = {
+
+          cantidad_consumida_electricos
+          : 
+          obj_file_toUpadate.cantidad_consumida_electricos,
+
+          cantidad_disponible_electricos
+          : 
+          obj_file_toUpadate.cantidad_disponible_electricos,
+
+          datasheet_parte_electricos
+          : 
+          info.data.id_doc,
+
+          descripcion_parte_electricos
+          : 
+          obj_file_toUpadate.descripcion_parte_electricos,
+
+          id_parte_electricos
+          : 
+          obj_file_toUpadate.id_parte_electricos,
+
+          imagen_parte_electricos
+          : 
+          obj_file_toUpadate.imagen_parte_electricos,
+
+          nombre_parte_electricos
+          : 
+          obj_file_toUpadate.nombre_parte_electricos,
+
+          tipo_parte_electricos
+          : 
+          obj_file_toUpadate.tipo_parte_electricos,
+
+          ubicacion_parte_electricos
+          : 
+          obj_file_toUpadate.ubicacion_parte_electricos,
+
+        };
+
+        electricos_put( new_item,new_item.id_parte_electricos ).then((info) => {  
           
           if (info.status === 202) {
 
+            console.log(info);
             setloader_edit(false); 
             setmodal_file(false);
             setgetAll(!getAll);
@@ -74,7 +114,7 @@ export const Electricos = ( { mdl , evt } ) => {
             setnameFile("Hubo un error, por favor intente mas tarde.")
             setTimeout(() => { window.location = "/principal"; }, 3500);
 
-          }})
+       }})
       }
 
     })
@@ -83,21 +123,137 @@ export const Electricos = ( { mdl , evt } ) => {
 
   const delFile = () => {
 
-    doc_del( obj_file_toUpadate.datasheet_parte_electricos ).then((info) => { 
+    doc_del( obj_file_toUpadate.datasheet_parte_electricos ).then(() => { 
           
-      if (info.status === 202) {
+      setloader_edit(true);
 
-        setloader_edit(false); 
-        setmodal_file(false);
-        setgetAll(!getAll);
+      const new_item = {
 
-      }else{
+        cantidad_consumida_electricos
+        : 
+        obj_file_toUpadate.cantidad_consumida_electricos,
 
-        setloader_edit(false);
-        setnameFile("Hubo un error, por favor intente mas tarde.")
-        setTimeout(() => { window.location = "/principal"; }, 3500);
+        cantidad_disponible_electricos
+        : 
+        obj_file_toUpadate.cantidad_disponible_electricos,
 
-      }})
+        datasheet_parte_electricos
+        : 
+        "",
+
+        descripcion_parte_electricos
+        : 
+        obj_file_toUpadate.descripcion_parte_electricos,
+
+        id_parte_electricos
+        : 
+        obj_file_toUpadate.id_parte_electricos,
+
+        imagen_parte_electricos
+        : 
+        obj_file_toUpadate.imagen_parte_electricos,
+
+        nombre_parte_electricos
+        : 
+        obj_file_toUpadate.nombre_parte_electricos,
+
+        tipo_parte_electricos
+        : 
+        obj_file_toUpadate.tipo_parte_electricos,
+
+        ubicacion_parte_electricos
+        : 
+        obj_file_toUpadate.ubicacion_parte_electricos,
+
+      };
+
+      electricos_put( new_item,new_item.id_parte_electricos ).then((info) => {  
+        
+        if (info.status === 202) {
+
+          console.log(info);
+          setloader_edit(false); 
+          setmodal_file(false);
+          setgetAll(!getAll);
+          setfile(null);
+
+        }else{
+
+          setloader_edit(false);
+          setnameFile("Hubo un error, por favor intente mas tarde.")
+          setTimeout(() => { window.location = "/principal"; }, 3500);
+
+     }})
+    })
+
+  }
+
+  const handleDelItem = () => {
+
+    setloader_desha(true);
+
+    if ( !!modal_obj_desha.id_doc ) {
+
+      doc_del( modal_obj_desha.id_doc ).then(info => {
+
+        if (info === 202) {
+  
+          electricos_del(modal_obj_desha.id_parte_electricos).then((info) => {
+  
+            if ( info.status == 202 ) {
+      
+              setloader_desha(false);
+              setmodaldesha(false);
+              setgetAll(!getAll);
+      
+            }else{
+      
+              setmsj_desha_rqst("Hubo un error, Intente mas tarde.")
+              setloader_desha(false);
+              setimg_edit("");
+              setTimeout(() => { window.location = "/principal"; }, 3500);
+      
+            }
+            console.log(info);
+  
+          });
+  
+        }else{
+      
+          setmsj_desha_rqst("Hubo un error, Intente mas tarde.")
+          setloader_desha(false);
+          setimg_edit("");
+          setTimeout(() => { window.location = "/principal"; }, 3500);
+  
+        }
+  
+        console.log(info);
+  
+      });
+      
+    }else{
+
+      electricos_del(modal_obj_desha.id_parte_electricos).then((info) => {
+  
+        if ( info.status == 202 ) {
+  
+          setloader_desha(false);
+          setmodaldesha(false);
+          setgetAll(!getAll);
+  
+        }else{
+  
+          setmsj_desha_rqst("Hubo un error, Intente mas tarde.")
+          setloader_desha(false);
+          setimg_edit("");
+          setTimeout(() => { window.location = "/principal"; }, 3500);
+  
+        }
+        console.log(info);
+
+      })
+
+    }
 
   }
 
@@ -160,9 +316,21 @@ export const Electricos = ( { mdl , evt } ) => {
 
     getTypesItemsElectricos().then((info) => {
       if (info.status === 200) {
-        settypes(info.data);
+
+        if (info.data.length === 0) {
+
+          settypes(["Cree un nuevo tipo"])
+
+        }else{
+
+          settypes(info.data);
+
+        }
+
       }else{
+
         settypes(["Error al obtener tipos"])
+
       }
     });
 
@@ -289,13 +457,13 @@ export const Electricos = ( { mdl , evt } ) => {
 
                                                                               }}><IoMdEye/></Link>
                                                               <Link className='btn btn_invent' onClick={() => { setmodal_edit(true); setmodal_obj_edit(item); setimg_edit(item.imagen_parte_electricos); }} style={{height:"40px", width:"168px"}}><p>Editar Item</p></Link>
-                                                              <Link className='btn btn_invent' onClick={() => {}} style={{ backgroundColor:"rgb(234 66 54)",  height:"40px", width:"168px"}}>Eliminar Item</Link>
+                                                              <Link className='btn btn_invent' onClick={() => { setmodal_obj_desha(item); setmodaldesha(true); }} style={{ backgroundColor:"rgb(234 66 54)",  height:"40px", width:"168px"}}>Eliminar Item</Link>
 
                                                               {
                                                                 ( item.datasheet_parte_electricos === "" ) 
                                                                 
                                                                   ?
-                                                                    <Link className='btn btn_invent' onClick={() => { setmodal_file(true); setobj_file_toUpadate(item); setTypeRequestFile(1); }} style={{ backgroundColor:"rgb(255, 203, 58)",color:"rgba(0, 0, 0, 0.5)", height:"40px", width:"168px"}}>Agregar Dtsh.</Link>
+                                                                    <Link className='btn btn_invent' onClick={() => { setmodal_file(true); setobj_file_toUpadate(item); setTypeRequestFile(1); }} style={{ backgroundColor:"rgb(255, 203, 58)",color:"rgba(0, 0, 0, 0.5)", height:"40px", width:"130px",fontSize:"13px",textAlign:"center"}}>Agregar Dtsh.</Link>
                                                                   
                                                                   :
                                                                     <Link className='btn btn_invent' onClick={() => { setmodal_file(true); setobj_file_toUpadate(item); setTypeRequestFile(2); }} style={{ backgroundColor:"#55da5e",color:"rgba(0, 0, 0, 0.5)",fontSize:"13px", textAlign:"center" }}>Actualizar Dtsh.</Link>
@@ -510,6 +678,7 @@ export const Electricos = ( { mdl , evt } ) => {
                             setimg_edit("");
                             refreshRequest();
                             setTimeout(() => { window.location = "/principal"; }, 3500);
+                            resetForm();
                           }
 
                         } )
@@ -642,7 +811,7 @@ export const Electricos = ( { mdl , evt } ) => {
 
                     if (!valores.nombre_parte_electricos.trim()) { errors.nombre_parte_electricos = "Nombre erroneo" }
 
-                    else if (valores.tipo_parte_electricos === "" || valores.tipo_parte_electricos === "Crea una categoria nueva") { errors.tipo_parte_electricos = "Tipo erroneo" }
+                    else if (valores.tipo_parte_electricos === "" ) { errors.tipo_parte_electricos = "Tipo erroneo" }
                     
                     else if (!valores.cantidad_disponible_electricos.trim()) { errors.cantidad_disponible_electricos = "Cant Disp. erroneos" }
 
@@ -814,7 +983,10 @@ export const Electricos = ( { mdl , evt } ) => {
                                 />
                                 </div>
 
-                                  <Button type={"submit"} style={"btn upload_btn"} text={"Enviar Registro"}/>
+                                  <div style={{ width:"100%", display:"flex", justifyContent:"center", gap:"20px" }}>
+                                    <Button type={"submit"} style={"btn btn_invent"} text={"Enviar"}/>
+                                    <Button type={"button"} style={"btn btn_invent"} text={"Cancelar"} event={ () => setmodal_crear(false) }/>
+                                  </div>
                                   
                                   {
                                     ( !!msj_desha_rqst ) && 
@@ -842,12 +1014,48 @@ export const Electricos = ( { mdl , evt } ) => {
                     <p class="file-name">{ nameFile }</p>
                     <Button type={"button"} style={"btn upload_btn"} text={"Subir Archivo"} event={ getFile }/>
                     {
-                      ( typeRequestFile == 2 ) && <Link type={"button"} className={"btn btn_invent"} style={{ backgroundColor:"rgb(234 66 54)",  height:"40px", width:"168px"}} onClick={ delFile }>Eliminar Dtsh</Link>
+                      ( typeRequestFile == 2 ) && <div className="btn_cont_val_el"><Link type={"button"} className={"btn btn_invent"} style={{ backgroundColor:"rgb(234 66 54)",  height:"40px", width:"168px"}} onClick={ delFile }>Eliminar Dtsh</Link></div>
+                    }
+                    {
+                      ( !!loader_edit ) && <span className="loader_rows"></span>
                     }
                   </div>
                 </Modal>
             }
+            {
 
+            ( !!modal_desha ) &&
+            <Modal close={setmodaldesha}>
+
+              <div className="animate__animated animate__fadeInRight cont_decision" style={{ zIndex:"10000" }}>
+                <div>
+                    <h1>{ "¿Esta seguro de querer Eliminar el Item : " }{ modal_obj_desha.nombre_parte_electricos }{ "?" }</h1>
+                    <br />
+                    {
+                      ( !!loader_desha )
+                      ?
+                        <>
+                            <span className="loader"></span>
+                        </>
+                      : 
+                        ( !!msj_desha_rqst )
+
+                        ?
+                          <div className="cont_buttons_desha">
+                            <h2 style={{ color:"rgb(26 200 252)" }}>{ msj_desha_rqst }</h2>
+                          </div> 
+                        :
+                          <div className="cont_buttons_desha">
+                            <Link className='btn btn_invent' onClick={ handleDelItem }>Si</Link>
+                            <Link className='btn btn_invent' onClick={ () => { setmodaldesha(false); } }>Cancelar</Link>
+                          </div>
+                    }
+                </div>
+              </div>
+
+            </Modal>
+
+            }
     </div>
   )
 }

@@ -214,15 +214,19 @@ export const GestionUsuarios = () => {
                     <h3>Edad:</h3>
                     <p>{ item.edad }</p>
                   </div>
+                  <div className="txt">
+                    <h3>Estado:</h3>
+                    <>{ (item.estado) ? <p style={{ color:"rgb(38 201 64)", fontSize:"18px"  }}>{"ACTIVO"}</p> : <p style={{ color:"rgb(255 95 87)", fontSize:"18px" }}>{"INACTIVO"}</p> }</>
+                  </div>
                   <br />
                   <div className="txt">
                     
                     {
                       ( item.rol === 1 ) ? <Link className='btn btn_invent' onClick={() => {setmodal_edit(true); setmodal_obj_edit(item); setimg_edit(item.imagen);}}>Editar</Link> :( item.estado === false ) 
-                          ? <><Link className='btn btn_invent' onClick={() => {setmodal_edit(true); setmodal_obj_edit(item); setimg_edit(item.imagen);}}>Editar</Link>
-                            <Link className='btn btn_invent' onClick={ () => {setmodal_obj_desha(item); setmodaldesha(true); setaction_desh("Habilitar"); } } >Habilitar</Link></>
+                          ? <><Link className='btn btn_invent' onClick={() => {setmodal_edit(true); setmodal_obj_edit(item); setimg_edit(item.imagen);}}>Editar</Link> 
+                            <Link className='btn btn_invent' onClick={ () => {setmodal_obj_desha(item); setmodaldesha(true); setaction_desh("Habilitar"); } } style={{ backgroundColor:"rgb(38 201 64)" }} >Habilitar</Link></>
                           : <><Link className='btn btn_invent' onClick={() => {setmodal_edit(true); setmodal_obj_edit(item); setimg_edit(item.imagen);}}>Editar</Link>
-                            <Link className='btn btn_invent' onClick={ () => {setmodal_obj_desha(item); setmodaldesha(true); setaction_desh("Deshabilitar"); } } >Deshabilitar</Link></>
+                            <Link className='btn btn_invent' onClick={ () => {setmodal_obj_desha(item); setmodaldesha(true); setaction_desh("Deshabilitar"); } } style={{ backgroundColor:"rgb(255 95 87)" }}>Deshabilitar</Link></>
                     }
                     <Link className='btn btn_view' onClick={ () => {setmodal(true); setmodal_obj(item);}}><IoMdEye/></Link>
                   </div>

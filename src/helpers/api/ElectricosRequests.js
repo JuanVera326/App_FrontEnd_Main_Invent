@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const URL = "http://localhost:9090/api";
+const URL = "http://10.205.194.46:9090/api";
 const KEY = "bWF0aWFzLm1hL25zZnc=";
 
 export const getItemsElectricos = async() => {
@@ -133,6 +133,34 @@ export const electricos_post = async( obj ) => {
             },
             data : obj
             
+        }).catch( function( error ) {
+
+            if ( error.response ) {
+                return error.response;
+            }
+
+        });
+                
+        return sendRequest;
+
+    } catch (error) {
+
+        if ( error.response ) {
+            return error.response;
+        }
+
+    }
+
+};
+
+export const electricos_del = async( id ) => {
+
+    try {
+        
+        const sendRequest = await axios({
+            url : `${URL}/electricos/delete/${id}/${KEY}`,
+            method : 'DELETE'
+
         }).catch( function( error ) {
 
             if ( error.response ) {

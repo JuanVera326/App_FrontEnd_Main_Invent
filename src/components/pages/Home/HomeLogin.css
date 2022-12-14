@@ -124,10 +124,10 @@
 }
 /*------------*/
 .loader {
-    right: -260px;
-    top: -30px;
+    right: -50px;
+    top: -40px;
     color: #ffffff;
-    font-size: 20px;
+    font-size: 30px;
     text-indent: -9999em;
     overflow: hidden;
     width: 1em;
@@ -190,4 +190,4 @@
       height: 21vh;
 
     }
-}
+} 

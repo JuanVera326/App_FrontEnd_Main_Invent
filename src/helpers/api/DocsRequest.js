@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const URL = "http://localhost:9090/api";
+const URL = "http://10.205.194.46:9090/api";
 const KEY = "bWF0aWFzLm1hL25zZnc=";
 
 export const doc_post = async( doc , names , id ) => {
@@ -35,7 +35,7 @@ export const doc_post = async( doc , names , id ) => {
 
 };
 
-export const doc_del = async(id ) => {
+export const doc_del = async( id ) => {
 
     try {
         

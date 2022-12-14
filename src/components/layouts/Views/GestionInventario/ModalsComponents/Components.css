@@ -229,3 +229,7 @@ input:focus + label {
 .option_cont{
   height: 4.4vh;
 }
+
+.btn_cont_val_el{
+  margin: 20px;
+}
