@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const URL = "http://10.205.194.46:9090/api";
+const URL = "http://10.205.194.24:9090/api";
 //const KEY = "aHR0cHM6Ly93d3cueW91dHViZS5jb20vd2F0Y2g/dj1kUXc0dzlXZ1hjUQ==";
 
 export const auth_post = async( obj ) => {

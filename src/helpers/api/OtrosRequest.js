@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const URL = "http://localhost:9090/api";
+const URL = "http://10.205.194.24:9090/api";
 const KEY = "bWF0aWFzLm1hL25zZnc=";
 
 export const getItemsOtros = async() => {
