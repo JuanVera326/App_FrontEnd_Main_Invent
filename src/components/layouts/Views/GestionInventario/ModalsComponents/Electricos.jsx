@@ -200,7 +200,7 @@ export const Electricos = ( { mdl , evt } ) => {
   
           electricos_del(modal_obj_desha.id_parte_electricos).then((info) => {
   
-            if ( info.status == 202 ) {
+            if ( info.status === 202 ) {
       
               setloader_desha(false);
               setmodaldesha(false);
@@ -235,7 +235,7 @@ export const Electricos = ( { mdl , evt } ) => {
 
       electricos_del(modal_obj_desha.id_parte_electricos).then((info) => {
   
-        if ( info.status == 202 ) {
+        if ( info.status === 202 ) {
   
           setloader_desha(false);
           setmodaldesha(false);
@@ -504,13 +504,6 @@ export const Electricos = ( { mdl , evt } ) => {
                      <div className="cont_img_details">
                        <img src={ modal_obj.imagen } className="img_card"/>
                      </div>
-       
-                     {
-                       ( !!modal_obj.esquema ) && 
-                       <div className="cont_img_details">
-                         <img src={ modal_obj.esquema } className="img_card"/>
-                       </div>
-                     }
  
                    </div>
                     <div className='modal_objects'>
@@ -561,23 +554,6 @@ export const Electricos = ( { mdl , evt } ) => {
                            </div>
                        </div>
  
-
- 
-                       {
-                         ( !!modal_obj.elemento ) &&
- 
-                         <div className="row">
-                           <div className="name_detail">
-                               <h4 className='modal_object_text'>ENCAPSULADO: </h4>
-                             </div>
- 
-                             <div className="contain_detail">
-                               <h3>{modal_obj.encap}</h3>
-                             </div>
-                         </div>
- 
-                       }
- 
                        <div className="row">
                          <div className="name_detail" style={{height:"45px", width:"245px"}}>
                              <h2 className='modal_object_text' style={{fontSize:"16px"}}>DESCRIPCION: </h2>
@@ -622,47 +598,53 @@ export const Electricos = ( { mdl , evt } ) => {
                     <Formik
 
                       initialValues={{
-                        imagen : "",
-                        id: modal_obj_edit.id,
-                        nombre: "",
-                        descp: "",
-                        tipo: "",
-                        cant_disp: "",
-                        cont_cons: "",
-                        rol: 2,
-                        ubicacion : ""
-                        // data_sht: ""
+                        id_parte_electricos : "",
+                        nombre_parte_electricos: "",
+                        imagen_parte_electricos: img_edit,
+                        tipo_parte_electricos: "",
+                        cantidad_disponible_electricos: "",
+                        cantidad_consumida_electricos: "",
+                        ubicacion_parte_electricos: "",
+                        descripcion_parte_electricos: "",
+                        datasheet_parte_electricos: "",
                       }}
 
                       validate = {(valores) => {
 
                         let errors = {};
 
-                        if (!valores.nombre.trim()) { errors.nombre = "Nombres erroneos" }
-                        else if (!/^[A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]+$/.test(valores.nombre)) { errors.nombre = "Nombres erroneos" }
+                        if (!valores.nombre_parte_electricos.trim()) { errors.nombre_parte_electricos = "Nombre erroneo" }
 
-                        else if (!valores.apellido.trim()) { errors.apellido = "Apellidos erroneos" }
-                        else if (!/^[A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]+$/.test(valores.apellido)) { errors.apellido = "Apellidos erroneos" }
+                        else if (!valores.tipo_parte_electricos.trim()) { errors.tipo_parte_electricos = "Tipo erroneo" }
 
-                        else if (!valores.correo.trim()) { errors.correo = "Correo erroneo" }
-                        else if (!/^(\w+[/./-]?){1,}@[a-z]+[/.]\w{2,}$/.test(valores.correo)) { errors.correo = "Correo erroneo" }
+                        else if (!valores.tipo_parte_electricos === "none") { errors.tipo_parte_electricos = "Tipo erroneo" }
 
-                        else if (!valores.cargo.trim()) { errors.cargo = "Cargo erroneo" }
-                        else if (!/^[A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]+$/.test(valores.cargo)) { errors.cargo = "Cargo erroneo" }
+                        else if (!valores.tipo_parte_electricos === "Cree un nuevo tipo") { errors.tipo_parte_electricos = "Tipo erroneo" }
+                        
+                        else if (!valores.cantidad_disponible_electricos.trim()) { errors.cantidad_disponible_electricos = "Cant Disp. erroneos" }
 
-                        else if (!valores.password.trim()) {errors.password = "Contraseña necesaria"}
+                        else if (!/^\d+$/.test(valores.cantidad_disponible_electricos)) { errors.cantidad_disponible_electricos = "Cant Disp. erroneo" }
+                        
+                        else if (!valores.cantidad_consumida_electricos.trim()) { errors.cantidad_consumida_electricos = "Cant Cons. erroneo" }
+
+                        else if (!/^\d+$/.test(valores.cantidad_consumida_electricos)) { errors.cantidad_consumida_electricos = "Cant Cons. erroneo" }
+                        
+                        else if (!valores.ubicacion_parte_electricos.trim()) { errors.ubicacion_parte_electricos = "Ubicación erronea" }
+
+                        else if (!valores.descripcion_parte_electricos.trim()) { errors.descripcion_parte_electricos = "Descripción erronea" }
                         
                         return errors;
                       }}
 
                       onSubmit={( valores, {resetForm} ) => {
-                        
+
+                        valores.id_parte_electricos = modal_obj_edit.id_parte_electricos;
+                        valores.imagen_parte_electricos = img_edit;
                         setloader_edit(true);
-                        valores.imagen = img_edit;
 
-                        electricos_put( valores, valores.id ).then( (info) => {
+                        electricos_put( valores, valores.id_parte_electricos ).then( (info) => {
 
-                          if (info.status == 202) {
+                          if (info.status === 202) {
                             
                             setloader_edit(false);
                             setmodal_edit(false);
@@ -670,14 +652,18 @@ export const Electricos = ( { mdl , evt } ) => {
                             setimg_edit("");
                             resetForm();
 
+                          }else if (info.status === 403){
+
+                            setmsj_desha_rqst(info.data);
+                            setloader_edit(false);
+                            setTimeout(() => { setmsj_desha_rqst("") }, 3500);
+    
                           }else{
 
                             setmsj_desha_rqst("Hubo un error, intentalo mas tarde.");
                             setloader_edit(false);
-                            setmodal_edit(false);
-                            setimg_edit("");
                             refreshRequest();
-                            setTimeout(() => { window.location = "/principal"; }, 3500);
+                            setTimeout(() => { setmsj_desha_rqst("") }, 5000);
                             resetForm();
                           }
 
@@ -691,90 +677,134 @@ export const Electricos = ( { mdl , evt } ) => {
                             <hr />
                             <br />
                             <p style={{ maxWidth:"30vh", color:"rgb(255, 203, 58)" }}>{ modal_obj_edit.nombre_parte_electricos }</p>
-                            <ErrorMessage  name='nombre' component={() => (<p className='warn__password-user'>{errors.nombre_parte_electricos}</p>)} />
+                            <ErrorMessage  name='nombre_parte_electricos' component={() => (<p className='warn__password-user'>{errors.nombre_parte_electricos}</p>)} />
                             <div className="input-container input_inventario">
                               <Field 
                                 type='text'
                                 placeholder='Nuev@ Nombre' 
-                                name='nombre'
-                                id="nombre"
+                                name='nombre_parte_electricos'
+                                id="nombre_parte_electricos"
                               />
                               </div>
-                              <p style={{ maxWidth:"30vh", color:"rgb(255, 203, 58)" }}>{ modal_obj_edit.descripcion_parte_electricos }</p>
-                            <ErrorMessage  name='nombre' component={() => (<p className='warn__password-user'>{errors.descripcion_parte_electricos}</p>)} />
+                            <ErrorMessage  name='descripcion_parte_electricos' component={() => (<p className='warn__password-user'>{errors.descripcion_parte_electricos}</p>)} />
+                            <p style={{ maxWidth:"30vh", color:"rgb(255, 203, 58)" }}>{ "Nueva Descripción" }</p>
                             <div className="input-container input_inventario">
                               <Field 
                                 as="textarea"
                                 max="180"
                                 style={{ resize: "none", backgroundColor: "rgb(2, 71, 118)",borderRadius:"6px",width:"28vh",padding:"1rem", color:"color:rgb(223 222 223 / 1)" }} 
-                                placeholder='Nuev@ Descripcion' 
-                                name='descripcion'
-                                id="descripcion"
+                                placeholder={ modal_obj_edit.descripcion_parte_electricos }
+                                name='descripcion_parte_electricos'
+                                id="descripcion_parte_electricos"
                               />
                               </div>
-                              <p style={{ maxWidth:"30vh", color:"rgb(255, 203, 58)" }}>{ modal_obj_edit.tipo_parte_electricos }</p>
-                            <ErrorMessage  name='nombre' component={() => (<p className='warn__password-user'>{errors.tipo_parte_electricos}</p>)} />
-                            <div className="input-container input_inventario">
-                              <Field 
-                                type='text'
-                                placeholder='Nuev@ Tipo'
-                                name='tipo'
-                                id="tipo"
-                              />
+
+                            <br />
+                            <hr />
+                            <br />
+
+                            <p style={{ maxWidth:"30vh", color:"rgb(255, 203, 58)" }}>{ "Tipo anterior: " + modal_obj_edit.tipo_parte_electricos }</p>
+                            <br />
+                            <ErrorMessage  name='tipo_parte_electricos' component={() => (<p className='warn__password-user'>{errors.tipo_parte_electricos}</p>)} />
+                            
+                            <div className="type_selector">
+                              <p style={{ color:"rgb(255, 203, 58)",width:"12vh" }}>{ (!!type_select) ? "Seleccionar otro tipo:" : "Crear nuevo tipo:" }</p>
+                              <input type="checkbox" id="switch" onClick={ () => { settype_select(!type_select) } } /><label for="switch" id='text_type_selector'>Toggle</label>
+                            </div>
+                            <br />
+                            
+                            {
+                            ( !!type_select )
+
+                            ? <div className="animate__animated animate__fadeInDown" style={{ display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center" }}>
+                                <ErrorMessage  name='tipo_parte_electricos' component={() => (<p className='warn__password-user'>{errors.tipo_parte_electricos}</p>)} />
+                                  <div className="option_cont">
+                                    <Field as="select" name="tipo_parte_electricos" id="select_filter" autofocus="true" style={{ width:"400px" }}>
+
+                                      <option value={"none"}>{" Selecciona un tipo "}</option>
+
+                                      {
+                                        types.map((item) => (
+                                          <>
+                                            <option value={item}>{item}</option>
+                                          </>
+                                        ))
+                                      }
+
+                                    </Field>
+                                  </div>
                               </div>
-                              <p style={{ maxWidth:"30vh", color:"rgb(255, 203, 58)" }}>{ modal_obj_edit.cantidad_consumida_electricos }</p>
-                            <ErrorMessage  name='nombre' component={() => (<p className='warn__password-user'>{errors.cantidad_consumida_electricos }</p>)} />
+
+                            :
+                              <div className="animate__animated animate__fadeInDown" style={{ display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center" }}>
+                                <ErrorMessage  name='tipo_parte_electricos' component={() => (<p className='warn__password-user'>{errors.tipo_parte_electricos}</p>)} />
+                                <div className="input-container input_inventario">
+                                  <Field 
+                                    type='text'
+                                    placeholder='Tipo' 
+                                    name='tipo_parte_electricos'
+                                    id="tipo_parte_electricos"
+                                  />
+                                </div>
+                              </div>
+
+                            } 
+                            <br />
+                            <hr />
+                            <br />
+
+                            <p style={{ maxWidth:"30vh", color:"rgb(255, 203, 58)" }}>{ modal_obj_edit.cantidad_consumida_electricos }</p>
+                            <ErrorMessage  name='cantidad_consumida_electricos' component={() => (<p className='warn__password-user'>{errors.cantidad_consumida_electricos }</p>)} />
                             <div className="input-container input_inventario">
                               <Field 
                                 type='text'
                                 placeholder='Nuev@ Cantidad consumida' 
-                                name='cant_cons'
-                                id="cant_cons"
+                                name='cantidad_consumida_electricos'
+                                id="cantidad_consumida_electricos"
                               />
                               </div>
                               <p style={{ maxWidth:"30vh", color:"rgb(255, 203, 58)" }}>{ modal_obj_edit.cantidad_disponible_electricos }</p>
-                            <ErrorMessage  name='nombre' component={() => (<p className='warn__password-user'>{errors.cantidad_disponible_electricos}</p>)} />
+                            <ErrorMessage  name='cantidad_disponible_electricos' component={() => (<p className='warn__password-user'>{errors.cantidad_disponible_electricos}</p>)} />
                             <div className="input-container input_inventario">
                               <Field 
                                 type='text'
                                 placeholder='Nuev@ Cantidad disponible' 
-                                name='cant_disp'
-                                id="cant_disp"
+                                name='cantidad_disponible_electricos'
+                                id="cantidad_disponible_electricos"
                               />
                               </div>
                               <p style={{ maxWidth:"30vh", color:"rgb(255, 203, 58)" }}>{ modal_obj_edit.ubicacion_parte_electricos }</p>
-                            <ErrorMessage  name='ubicacion' component={() => (<p className='warn__password-user'>{errors.ubicacion}</p>)} />
+                            <ErrorMessage  name='ubicacion_parte_electricos' component={() => (<p className='warn__password-user'>{errors.ubicacion}</p>)} />
                             <div className="input-container input_inventario">
                               <Field 
                                 placeholder='Nuev@ Ubicacion'
-                                name='ubicacion'
-                                id="ubicacion"
+                                name='ubicacion_parte_electricos'
+                                id="ubicacion_parte_electricos"
                               />
                             </div>
                               
-                            <ErrorMessage  name='data_sheet' component={() => (<p className='warn__password-user'>{errors.data_sht}</p>)} />
-                            <div className="input-container input_inventario">
-                              {/* <p style={{ maxWidth:"30vh", color:"rgb(255, 203, 58)"}}>{ modal_obj_edit.datasheet_parte_electricos }</p> */}
-                            </div>
-
                             <div style={{ width:"100%",display:"flex",justifyContent:"center",gap:"10px" }}>
                               <Input type={"submit"} txt={"Actualizar"} style={"btn btn_invent"}/>
                               <Link className='btn btn_invent'  style={{ fontSize:"13px",width:"6vh" }} onClick={ () => { setmodal_edit(false); } } >Cancelar</Link>
                             </div>
 
-                            {
-                              ( !!msj_desha_rqst ) && 
-                              <div className="cont_buttons_desha">
-                                <h2 style={{ color:"rgb(26 200 252)" }}>{ msj_desha_rqst }</h2>
-                              </div>
-                            }
-                    
                           </Form> 
 
                       )}
 
                       </Formik>
+                      
                     </div>
+
+                      {
+                        ( !!msj_desha_rqst ) && 
+                        <div style={{ width: "100%", display:"flex", justifyContent: "center" }}>
+                            <div className="cont_buttons_desha" style={{ textAlign:"center", width:"25vh" }}>
+                                <h2 style={{ color:"rgb(26 200 252)" }}>{ msj_desha_rqst }</h2>
+                            </div>
+                        </div>
+                      }
+
                 </div>
             </Modal>
             }
@@ -811,7 +841,9 @@ export const Electricos = ( { mdl , evt } ) => {
 
                     if (!valores.nombre_parte_electricos.trim()) { errors.nombre_parte_electricos = "Nombre erroneo" }
 
-                    else if (valores.tipo_parte_electricos === "" ) { errors.tipo_parte_electricos = "Tipo erroneo" }
+                    else if (!valores.tipo_parte_electricos.trim()) { errors.tipo_parte_electricos = "Tipo erroneo" }
+
+                    else if (valores.tipo_parte_electricos === "none") { errors.tipo_parte_electricos = "Tipo erroneo" }
                     
                     else if (!valores.cantidad_disponible_electricos.trim()) { errors.cantidad_disponible_electricos = "Cant Disp. erroneos" }
 
@@ -845,13 +877,20 @@ export const Electricos = ( { mdl , evt } ) => {
 
                     electricos_post( valores  ).then( (info) => {
 
-                      if (info.status == 202) {
+                      if (info.status === 202) {
                         
-                        setmodal_crear(false);
+                        setloader_edit(false);
+
                         setmodal_crear(false);
                         refreshRequest();
                         setimg_edit("");
                         resetForm();
+
+                      }else if (info.status === 403){
+
+                        setmsj_desha_rqst(info.data);
+                        setloader_edit(false);
+                        setTimeout(() => { setmsj_desha_rqst("") }, 3500);
 
                       }else{
 
@@ -860,7 +899,7 @@ export const Electricos = ( { mdl , evt } ) => {
                         setmodal_crear(false);
                         setimg_edit("");
                         refreshRequest();
-                        setTimeout(() => { window.location = "/principal"; }, 3500);
+                        setTimeout(() => { window.location = "/principal"; }, 5000);
                       }
 
                     } )
@@ -912,7 +951,9 @@ export const Electricos = ( { mdl , evt } ) => {
                                 ? <div className="animate__animated animate__fadeInDown" style={{ display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center" }}>
                                     <ErrorMessage  name='tipo_parte_electricos' component={() => (<p className='warn__password-user'>{errors.tipo_parte_electricos}</p>)} />
                                       <div className="option_cont">
-                                        <Field as="select" name="tipo_parte_electricos" id="select_filter" autoFocus="true" style={{ width:"400px" }}>
+                                        <Field as="select" name="tipo_parte_electricos" id="select_filter" autofocus="true" style={{ width:"400px" }}>
+
+                                          <option value={"none"}>{" Selecciona un tipo "}</option>
 
                                           {
                                             types.map((item) => (
@@ -989,10 +1030,12 @@ export const Electricos = ( { mdl , evt } ) => {
                                   </div>
                                   
                                   {
-                                    ( !!msj_desha_rqst ) && 
-                                    <div className="cont_buttons_desha">
-                                      <h2 style={{ color:"rgb(26 200 252)" }}>{ msj_desha_rqst }</h2>
-                                    </div>
+                                      ( !!msj_desha_rqst ) && 
+                                      <div style={{ width: "100%", display:"flex", justifyContent: "center" }}>
+                                          <div className="cont_buttons_desha" style={{ textAlign:"center", width:"25vh" }}>
+                                              <h2 style={{ color:"rgb(26 200 252)" }}>{ msj_desha_rqst }</h2>
+                                          </div>
+                                      </div>
                                   }
 
                           </Form>

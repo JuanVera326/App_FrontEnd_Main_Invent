@@ -233,3 +233,10 @@ input:focus + label {
 .btn_cont_val_el{
   margin: 20px;
 }
+/* ----- */
+
+.img_edit_cont_1:hover{
+  cursor: pointer;
+  filter: brightness(50%);
+  transition: 0.3s;
+}
