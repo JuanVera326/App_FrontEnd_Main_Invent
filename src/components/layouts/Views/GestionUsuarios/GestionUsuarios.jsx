@@ -152,17 +152,17 @@ export const GestionUsuarios = () => {
 
     <HiOutlineRefresh title="Refresh" className="refresh_invent" onClick={refreshRequest} />
     <div className="input_title_cont">
-      <h1>Gestion de usuarios</h1>
+      <h1 style={{color:"rgb(0 0 0)"}}>Gestion de usuarios</h1>
 
       <div className="input-container input_inventario">
 
         <Input type={"text"} txt={"Buscar Usuario"} id={"usuarios_items_search_image"} eventKeyPress={ handleKeyPress } eventChange={(e) => { setinput_search_usuarios(e.target.value) }}/>
         <VscSearch style={{color:"rgb(85 85 85)",fontSize:"20px",cursor:"pointer"}} id={"usuarios_items_search_image"} onClick={ searchByClick }/>
 
-        <select id="select_filter" onChange={ ( e ) => { setSelectFilterUsuarios( e.target.value ) } }>
-          <option value="1">Por nombre de usuario</option>
-          <option value="2">Por ID de usuario</option>
-          <option value="3">Por cargo de usuario</option>
+        <select style={{color:"rgb(0 0 0)"}} id="select_filter" onChange={ ( e ) => { setSelectFilterUsuarios( e.target.value ) } }>
+          <option style={{color:"rgb(0 0 0)"}} value="1">Por nombre de usuario</option>
+          <option style={{color:"rgb(0 0 0)"}} value="2">Por ID de usuario</option>
+          <option style={{color:"rgb(0 0 0)"}} value="3">Por cargo de usuario</option>
         </select>
       </div>
       <Link className='btn btn_invent create_btn' onClick={() => {setmodal_regist(true);}}>Crear usuario</Link>

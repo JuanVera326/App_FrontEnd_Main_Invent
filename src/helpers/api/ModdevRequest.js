@@ -70,3 +70,113 @@ export const getItemsModdevByType = async( types ) => {
 
     }
 };
+
+
+
+export const getTypesItemsModdev= async() => {
+
+    try {
+
+        const sendRequest = await axios.get(`${URL}/moddev/tipos`);
+        return sendRequest;
+
+    } catch (error) {
+
+        if ( error.response ) {
+            return error.response;
+        }
+
+    }
+
+};
+
+export const moddev_put = async( obj , id ) => {
+
+    try {
+        
+        const sendRequest = await axios({
+            url : `${URL}/moddev/${id}/${KEY}`,
+            method : 'PUT',
+            headers : {
+                "Content-Type":"application/json",
+            },
+            data : obj
+            
+        }).catch( function( error ) {
+
+            if ( error.response ) {
+                return error.response;
+            }
+
+        });
+                
+        return sendRequest;
+
+    } catch (error) {
+
+        if ( error.response ) {
+            return error.response;
+        }
+
+    }
+
+};
+export const moddev_post = async( obj ) => {
+
+    try {
+        
+        const sendRequest = await axios({
+            url : `${URL}/moddev/${KEY}`,
+            method : 'POST',
+            headers : {
+                "Content-Type":"application/json",
+            },
+            data : obj
+            
+        }).catch( function( error ) {
+
+            if ( error.response ) {
+                return error.response;
+            }
+
+        });
+                
+        return sendRequest;
+
+    } catch (error) {
+
+        if ( error.response ) {
+            return error.response;
+        }
+
+    }
+
+};
+
+export const moddev_del = async( id ) => {
+
+    try {
+        
+        const sendRequest = await axios({
+            url : `${URL}/moddev/delete/${id}/${KEY}`,
+            method : 'DELETE'
+
+        }).catch( function( error ) {
+
+            if ( error.response ) {
+                return error.response;
+            }
+
+        });
+                
+        return sendRequest;
+
+    } catch (error) {
+
+        if ( error.response ) {
+            return error.response;
+        }
+
+    }
+
+};

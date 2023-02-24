@@ -69,3 +69,112 @@ export const getItemsEleferreByType = async( types ) => {
 
     }
 };
+
+
+export const getTypesItemsEleferre= async() => {
+
+    try {
+
+        const sendRequest = await axios.get(`${URL}/eleferre/tipos`);
+        return sendRequest;
+
+    } catch (error) {
+
+        if ( error.response ) {
+            return error.response;
+        }
+
+    }
+
+};
+
+export const eleferre_put = async( obj , id ) => {
+
+    try {
+        
+        const sendRequest = await axios({
+            url : `${URL}/eleferre/${id}/${KEY}`,
+            method : 'PUT',
+            headers : {
+                "Content-Type":"application/json",
+            },
+            data : obj
+            
+        }).catch( function( error ) {
+
+            if ( error.response ) {
+                return error.response;
+            }
+
+        });
+                
+        return sendRequest;
+
+    } catch (error) {
+
+        if ( error.response ) {
+            return error.response;
+        }
+
+    }
+
+};
+export const eleferre_post = async( obj ) => {
+
+    try {
+        
+        const sendRequest = await axios({
+            url : `${URL}/eleferre/${KEY}`,
+            method : 'POST',
+            headers : {
+                "Content-Type":"application/json",
+            },
+            data : obj
+            
+        }).catch( function( error ) {
+
+            if ( error.response ) {
+                return error.response;
+            }
+
+        });
+                
+        return sendRequest;
+
+    } catch (error) {
+
+        if ( error.response ) {
+            return error.response;
+        }
+
+    }
+
+};
+
+export const eleferre_del = async( id ) => {
+
+    try {
+        
+        const sendRequest = await axios({
+            url : `${URL}/eleferre/delete/${id}/${KEY}`,
+            method : 'DELETE'
+
+        }).catch( function( error ) {
+
+            if ( error.response ) {
+                return error.response;
+            }
+
+        });
+                
+        return sendRequest;
+
+    } catch (error) {
+
+        if ( error.response ) {
+            return error.response;
+        }
+
+    }
+
+};

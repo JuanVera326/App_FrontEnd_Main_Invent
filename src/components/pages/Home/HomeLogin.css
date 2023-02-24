@@ -23,7 +23,7 @@
 }
 .principal_view{
     margin-top: 25vh;
-    background-color: rgba(110, 152, 168, 0.713);
+    background-color: rgba(218, 218, 218, 0.788);
     width: 120vh;
     height: 60vh;
     border-radius: 6px;
@@ -52,12 +52,12 @@
 }
 /*Ids*/
 #h1{
-    color: rgb(255, 255, 255);
+    color: rgb(37, 228, 11);
     font-size: 45px;
 }
 /*Inputs LogIn*/
 .box{
-    background-color: rgb(0 46 77);
+    background-color: rgb(77, 77, 77);
 	border-radius:6px;
 	padding:70px 80px;
     height: 15vh;
@@ -87,11 +87,11 @@
 .input-container input:focus{ 
  border:none;	
  outline:none;
- border-bottom:1px solid rgb(31 136 173);	
+ border-bottom:1px solid rgb(8, 197, 8);	
 }
 .btn{
 	color:#fff;
-	background-color:rgb(31 136 173);
+	background-color:rgb(48, 173, 31);
 	outline: none;
     border: 0;
     color: #fff;

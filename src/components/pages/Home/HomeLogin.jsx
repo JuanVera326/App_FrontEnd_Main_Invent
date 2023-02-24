@@ -85,7 +85,7 @@ export const Home = () => {
 
                   <div className="cont_images_login">
 
-                    <h1 id='h1' style={{color:"rgb(255 198 28)"}}>Main Invent</h1>
+                    <h1 id='h1' style={{color:"rgb(37, 228, 11)"}}>Main Invent</h1>
 
                     <br />
 

@@ -555,7 +555,7 @@ export const Electricos = ( { mdl , evt } ) => {
                        </div>
  
                        <div className="row">
-                         <div className="name_detail" style={{height:"45px", width:"245px"}}>
+                         <div className="name_detail" style={{height:"45px", width:"245px", color:"rgb(104, 104, 104)"}}>
                              <h2 className='modal_object_text' style={{fontSize:"16px"}}>DESCRIPCION: </h2>
                            </div>
                            <div className="contain_detail">
@@ -692,7 +692,7 @@ export const Electricos = ( { mdl , evt } ) => {
                               <Field 
                                 as="textarea"
                                 max="180"
-                                style={{ resize: "none", backgroundColor: "rgb(2, 71, 118)",borderRadius:"6px",width:"28vh",padding:"1rem", color:"color:rgb(223 222 223 / 1)" }} 
+                                style={{ resize: "none", backgroundColor: "rgb(104, 104, 104)",borderRadius:"6px",width:"28vh",padding:"1rem", color:"color:rgb(223 222 223 / 1)" }} 
                                 placeholder={ modal_obj_edit.descripcion_parte_electricos }
                                 name='descripcion_parte_electricos'
                                 id="descripcion_parte_electricos"
@@ -774,7 +774,7 @@ export const Electricos = ( { mdl , evt } ) => {
                               />
                               </div>
                               <p style={{ maxWidth:"30vh", color:"rgb(255, 203, 58)" }}>{ modal_obj_edit.ubicacion_parte_electricos }</p>
-                            <ErrorMessage  name='ubicacion_parte_electricos' component={() => (<p className='warn__password-user'>{errors.ubicacion}</p>)} />
+                            <ErrorMessage  name='ubicacion_parte_electricos' component={() => (<p className='warn__password-user'>{errors.ubicacion_parte_electricos}</p>)} />
                             <div className="input-container input_inventario">
                               <Field 
                                 placeholder='Nuev@ Ubicacion'
@@ -1017,7 +1017,7 @@ export const Electricos = ( { mdl , evt } ) => {
                                 <Field 
                                   as="textarea"
                                   max="180"
-                                  style={{ resize: "none", backgroundColor: "rgb(2, 71, 118)",borderRadius:"6px",width:"28vh",padding:"1rem", color:"color:rgb(223 222 223 / 1)" }} 
+                                  style={{ resize: "none", backgroundColor: "rgb(104, 104, 104)",borderRadius:"6px",width:"28vh",padding:"1rem", color:"color:rgb(223 222 223 / 1)" }} 
                                   placeholder='Descripcion' 
                                   name='descripcion_parte_electricos'
                                   id="descripcion_parte_electricos"

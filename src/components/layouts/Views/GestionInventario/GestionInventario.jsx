@@ -18,7 +18,7 @@ export const GestionInventario = () => {
 
           <div className="header_gest_invent">
 
-                <h1>{" Gestion Inventario "}</h1>
+                <h1 style={{color:"rgb(0 0 0)"}}>{" Gestion Inventario "}</h1>
 
           </div>
 

@@ -316,15 +316,15 @@ export const Inventario = ( { user } ) => {
     <div className='cont_invent'>
         <HiOutlineRefresh title="Refresh" className="refresh_invent" onClick={refreshRequest} />
         <div className="input_title_cont">
-          <h1>Ítems Electricos</h1>
+          <h1 style={{color:"rgb(0 0 0)"}}>Ítems Electricos</h1>
           <div className="input-container input_inventario">
             <Input type={"text"} txt={"Buscar Electrico"} id={"electricos_items_search_image"} eventKeyPress={ handleKeyPress } eventChange={(e) => { setinput_search_electricos(e.target.value) }}/>
             <VscSearch style={{color:"rgb(85 85 85)",fontSize:"20px",cursor:"pointer"}} id={"electricos_items_search_image"} onClick={ searchByClick }/>
 
-            <select id="select_filter" onChange={ ( e ) => { setSelectFilterElectricos( e.target.value ) } }>
-              <option value="1">Por Nombre Item</option>
-              <option value="2">Por ID Item</option>
-              <option value="3">Por Tipo Item</option>
+            <select style={{color:"rgb(0 0 0)"}} id="select_filter" onChange={ ( e ) => { setSelectFilterElectricos( e.target.value ) } }>
+              <option style={{color:"rgb(0 0 0)"}} value="1">Por Nombre Item</option>
+              <option style={{color:"rgb(0 0 0)"}} value="2">Por ID Item</option>
+              <option style={{color:"rgb(0 0 0)"}} value="3">Por Tipo Item</option>
             </select>
           </div>
         </div>
@@ -402,15 +402,15 @@ export const Inventario = ( { user } ) => {
         <br />
         <br />
         <div className="input_title_cont">
-          <h1>Ítems Electronicos</h1>
+          <h1 style={{color:"rgb(0 0 0)"}}>Ítems Electronicos</h1>
           <div className="input-container input_inventario">
           <Input type={"text"} txt={"Buscar Electronicos"} id={"electronicos_items_search_image"} eventKeyPress={ handleKeyPress } eventChange={(e) => { setinput_search_electronicos(e.target.value) }}/>
             <VscSearch style={{color:"rgb(85 85 85)",fontSize:"20px",cursor:"pointer"}} id={"electronicos_items_search_image"} onClick={ searchByClick }/>
 
-            <select id="select_filter" onChange={ ( e ) => { setSelectFilterElectronicos( e.target.value ) } }>
-              <option value="1">Por Nombre parte fabricante Item</option>
-              <option value="2">Por ID Item</option>
-              <option value="3">Por Tipo Item</option>
+            <select style={{color:"rgb(0 0 0)"}} id="select_filter" onChange={ ( e ) => { setSelectFilterElectronicos( e.target.value ) } }>
+              <option style={{color:"rgb(0 0 0)"}} value="1">Por Nombre parte fabricante Item</option>
+              <option style={{color:"rgb(0 0 0)"}} value="2">Por ID Item</option>
+              <option style={{color:"rgb(0 0 0)"}} value="3">Por Tipo Item</option>
             </select>
 
           </div>
@@ -494,15 +494,15 @@ export const Inventario = ( { user } ) => {
         <br />
         <br />
         <div className="input_title_cont">
-          <h1>Ítems Elementos ferreteria</h1>
+          <h1 style={{color:"rgb(0 0 0)"}}>Ítems Elementos ferreteria</h1>
           <div className="input-container input_inventario">
             <Input type={"text"} txt={"Buscar Elementos de ferreteria"} id={"eleferre_items_search_image"} eventKeyPress={ handleKeyPress } eventChange={(e) => { setinput_search_eleferre(e.target.value) }}/>
             <VscSearch style={{color:"rgb(85 85 85)",fontSize:"20px",cursor:"pointer"}} id={"eleferre_items_search_image"} onClick={ searchByClick }/>
 
-            <select id="select_filter" onChange={ ( e ) => { setSelectFilterEleferre( e.target.value ) } }>
-              <option value="1">Por Nombre Item</option>
-              <option value="2">Por ID Item</option>
-              <option value="3">Por Tipo Item</option>
+            <select style={{color:"rgb(0 0 0)"}} id="select_filter" onChange={ ( e ) => { setSelectFilterEleferre( e.target.value ) } }>
+              <option style={{color:"rgb(0 0 0)"}} value="1">Por Nombre Item</option>
+              <option style={{color:"rgb(0 0 0)"}} value="2">Por ID Item</option>
+              <option style={{color:"rgb(0 0 0)"}} value="3">Por Tipo Item</option>
             </select>
 
           </div>
@@ -579,15 +579,15 @@ export const Inventario = ( { user } ) => {
         <br />
         <br />
         <div className="input_title_cont">
-          <h1>Ítems Modulos de desarrollo</h1>
+          <h1 style={{color:"rgb(0 0 0)"}}>Ítems Modulos de desarrollo</h1>
           <div className="input-container input_inventario">
           <Input type={"text"} txt={"Buscar modulo de desarrollo"} id={"moddev_items_search_image"} eventKeyPress={ handleKeyPress } eventChange={(e) => { setinput_search_moddev(e.target.value) }}/>
             <VscSearch style={{color:"rgb(85 85 85)",fontSize:"20px",cursor:"pointer"}} id={"moddev_items_search_image"} onClick={ searchByClick }/>
 
-            <select id="select_filter" onChange={ ( e ) => { setSelectFilterModdev( e.target.value ) } }>
-              <option value="1">Por Nombre Item</option>
-              <option value="2">Por ID Item</option>
-              <option value="3">Por Tipo Item</option>
+            <select style={{color:"rgb(0 0 0)"}} id="select_filter" onChange={ ( e ) => { setSelectFilterModdev( e.target.value ) } }>
+              <option style={{color:"rgb(0 0 0)"}} value="1">Por Nombre Item</option>
+              <option style={{color:"rgb(0 0 0)"}} value="2">Por ID Item</option>
+              <option style={{color:"rgb(0 0 0)"}} value="3">Por Tipo Item</option>
             </select>
 
           </div>
@@ -666,15 +666,15 @@ export const Inventario = ( { user } ) => {
         <br />
         <br />
         <div className="input_title_cont">
-          <h1>Ítems Otros</h1>
+          <h1 style={{color:"rgb(0 0 0)"}}>Ítems Otros</h1>
           <div className="input-container input_inventario">
           <Input type={"text"} txt={"Buscar Otros"} id={"otros_items_search_image"} eventKeyPress={ handleKeyPress } eventChange={(e) => { setinput_search_otros(e.target.value) }}/>
             <VscSearch style={{color:"rgb(85 85 85)",fontSize:"20px",cursor:"pointer"}} id={"otros_items_search_image"} onClick={ searchByClick }/>
 
-            <select id="select_filter" onChange={ ( e ) => { setSelectFilterOtros( e.target.value ) } }>
-              <option value="1">Por Nombre Item</option>
-              <option value="2">Por ID Item</option>
-              <option value="3">Por Tipo Item</option>
+            <select style={{color:"rgb(0 0 0)"}} id="select_filter" onChange={ ( e ) => { setSelectFilterOtros( e.target.value ) } }>
+              <option style={{color:"rgb(0 0 0)"}} value="1">Por Nombre Item</option>
+              <option style={{color:"rgb(0 0 0)"}} value="2">Por ID Item</option>
+              <option style={{color:"rgb(0 0 0)"}} value="3">Por Tipo Item</option>
             </select>
 
           </div>

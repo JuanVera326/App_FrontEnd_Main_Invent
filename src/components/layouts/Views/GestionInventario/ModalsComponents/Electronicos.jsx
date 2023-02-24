@@ -138,7 +138,7 @@ export const Electronicos = ( { mdl , evt }  ) => {
 
   const delFile = () => {
 
-    doc_del( obj_file_toUpadate.datasheet_parte_electricos ).then(() => { 
+    doc_del( obj_file_toUpadate.datasheet_comp ).then(() => { 
           
       setloader_edit(true);
 
@@ -182,7 +182,7 @@ export const Electronicos = ( { mdl , evt }  ) => {
 
       };
 
-      electronicos_put( new_item,new_item.id_parte_electricos ).then((info) => {  
+      electronicos_put( new_item,new_item.id_Comp ).then((info) => {  
         
         if (info.status === 202) {
 
@@ -213,7 +213,7 @@ export const Electronicos = ( { mdl , evt }  ) => {
 
         if (info === 202) {
   
-          electronicos_del(modal_obj_desha.id_parte_electricos).then((info) => {
+          electronicos_del(modal_obj_desha.id_Comp).then((info) => {
   
             if ( info.status === 202 ) {
       
@@ -248,7 +248,7 @@ export const Electronicos = ( { mdl , evt }  ) => {
       
     }else{
 
-      electronicos_del(modal_obj_desha.id_parte_electricos).then((info) => {
+      electronicos_del(modal_obj_desha.id_Comp).then((info) => {
   
         if ( info.status === 202 ) {
   
@@ -1232,7 +1232,7 @@ export const Electronicos = ( { mdl , evt }  ) => {
 
                 <Modal close={ setmodal_file }>
                   <div className='animate__animated animate__fadeInRight file-input' style={{ zIndex:"10000" }}>
-                    <h2>{ "Datasheet (Opcional) : " }{ obj_file_toUpadate.nombre_parte_electricos }</h2><br />
+                    <h2>{ "Datasheet (Opcional) : " }{ obj_file_toUpadate.nombre_comp }</h2><br />
                     <Input type="file" id="file" style={"file"} eventChange={ (e) => { setfile(e.target.files); } } name={"file"}></Input>
                     <label for="file">Selecciona archivo</label>
                     <p class="file-name">{ nameFile }</p>
@@ -1253,7 +1253,7 @@ export const Electronicos = ( { mdl , evt }  ) => {
 
               <div className="animate__animated animate__fadeInRight cont_decision" style={{ zIndex:"10000" }}>
                 <div>
-                    <h1>{ "¿Esta seguro de querer Eliminar el Item : " }{ modal_obj_desha.nombre_parte_electricos }{ "?" }</h1>
+                    <h1>{ "¿Esta seguro de querer Eliminar el Item : " }{ modal_obj_desha.nombre_comp }{ "?" }</h1>
                     <br />
                     {
                       ( !!loader_desha )

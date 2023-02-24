@@ -71,7 +71,7 @@ export const getItemsElectricosByType = async( types ) => {
 
     }
 
-};
+}
 
 export const getTypesItemsElectricos = async() => {
 
