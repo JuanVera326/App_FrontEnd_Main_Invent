@@ -114,7 +114,7 @@ export const Electronicos = ( { mdl , evt }  ) => {
           obj_file_toUpadate.ubicacion_comp
         };
 
-        electronicos_post( new_item,new_item.id_parte_electricos ).then((info) => {  
+        electronicos_post( new_item,new_item.id_Comp ).then((info) => {  
           
           if (info.status === 202) {
 
@@ -144,41 +144,53 @@ export const Electronicos = ( { mdl , evt }  ) => {
 
       const new_item = {
 
-        cantidad_consumida_electricos
-        : 
-        obj_file_toUpadate.cantidad_consumida_electricos,
+          id_Comp
+          : 
+          obj_file_toUpadate.id_Comp,
 
-        cantidad_disponible_electricos
-        : 
-        obj_file_toUpadate.cantidad_disponible_electricos,
+          nombre_comp
+          : 
+          obj_file_toUpadate.nombre_comp,
 
-        datasheet_parte_electricos
-        : 
-        "",
+          datasheet_comp
+          : 
+          "",
 
-        descripcion_parte_electricos
-        : 
-        obj_file_toUpadate.descripcion_parte_electricos,
+          numero_partefabricante_comp
+          : 
+          obj_file_toUpadate.numero_partefabricante_comp,
 
-        id_parte_electricos
-        : 
-        obj_file_toUpadate.id_parte_electricos,
+          pinout_comp
+          : 
+          obj_file_toUpadate.pinout_comp,
 
-        imagen_parte_electricos
-        : 
-        obj_file_toUpadate.imagen_parte_electricos,
+          esquematico_comp
+          : 
+          obj_file_toUpadate.esquematico_comp,
 
-        nombre_parte_electricos
-        : 
-        obj_file_toUpadate.nombre_parte_electricos,
+          descripcion_comp
+          : 
+          obj_file_toUpadate.descripcion_comp,
 
-        tipo_parte_electricos
-        : 
-        obj_file_toUpadate.tipo_parte_electricos,
+          tipo_comp
+          : 
+          obj_file_toUpadate.tipo_comp,
 
-        ubicacion_parte_electricos
-        : 
-        obj_file_toUpadate.ubicacion_parte_electricos,
+          encampsulado_comp
+          : 
+          obj_file_toUpadate.encampsulado_comp,
+
+          cantidad_disponible_comp
+          : 
+          obj_file_toUpadate.cantidad_disponible_comp,
+
+          cantidad_consumida_comp
+          : 
+          obj_file_toUpadate.cantidad_consumida_comp,
+
+          ubicacion_comp
+          : 
+          obj_file_toUpadate.ubicacion_comp
 
       };
 

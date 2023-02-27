@@ -123,7 +123,7 @@ export const Moddev = ( { mdl , evt } ) => {
 
   const delFile = () => {
 
-    doc_del( obj_file_toUpadate.datasheet_parte_electricos ).then(() => { 
+    doc_del( obj_file_toUpadate.datasheet_parte_moddev ).then(() => { 
           
       setloader_edit(true);
 
@@ -261,7 +261,7 @@ export const Moddev = ( { mdl , evt } ) => {
 
     if (e.key === "Enter" || e.keyCode === 13) {
 
-      searchItemEleferre( input_search_moddev );
+      searchItemModdev( input_search_moddev );
 
     }else if (e.target.value === "") {
       
@@ -271,9 +271,9 @@ export const Moddev = ( { mdl , evt } ) => {
 
   }
 
-  const searchByClick = () => { searchItemEleferre( input_search_moddev ); }
+  const searchByClick = () => { searchItemModdev( input_search_moddev ); }
 
-  const searchItemEleferre = ( e ) => {
+  const searchItemModdev = ( e ) => {
 
     switch ( selectFilterModdev) {
       case "1":
@@ -459,7 +459,7 @@ export const Moddev = ( { mdl , evt } ) => {
                                                               <Link className='btn btn_invent' onClick={() => { setmodal_obj_desha(item); setmodaldesha(true); }} style={{ backgroundColor:"rgb(234 66 54)",  height:"40px", width:"168px"}}>Eliminar Item</Link>
 
                                                               {
-                                                                ( item.datasheet_parte_elementosferreteria === "" ) 
+                                                                ( item.datasheet_parte_moddev === "" ) 
                                                                 
                                                                   ?
                                                                     <Link className='btn btn_invent' onClick={() => { setmodal_file(true); setobj_file_toUpadate(item); setTypeRequestFile(1); }} style={{ backgroundColor:"rgb(255, 203, 58)",color:"rgba(0, 0, 0, 0.5)", height:"40px", width:"130px",fontSize:"13px",textAlign:"center"}}>Agregar Dtsh.</Link>
@@ -580,7 +580,7 @@ export const Moddev = ( { mdl , evt } ) => {
                 <div className="animate__animated animate__fadeInRight cont_decision" style={{ zIndex:"10000" }}>
                     
                     <div className="form_cont_edit_users">
-                    <h4 className='modal_object_text' style={{ color:"rgb(255, 203, 58)" }}>{modal_obj_edit.id_parte_elementosferreteria}</h4>
+                    <h4 className='modal_object_text' style={{ color:"rgb(255, 203, 58)" }}>{modal_obj_edit.id_parte_moddev}</h4>
                     <h1>Editar Ítem Modulo de Desarrollo</h1>
                       
                       {
@@ -637,8 +637,8 @@ export const Moddev = ( { mdl , evt } ) => {
 
                       onSubmit={( valores, {resetForm} ) => {
 
-                        valores.id_parte_elementosferreteria = modal_obj_edit.id_parte_elementosferreteria;
-                        valores.imagen_parte_elementosferreteria = img_edit;
+                        valores.id_parte_moddev = <modal_obj_edit className="id"></modal_obj_edit>;
+                        valores.imagen_partemoddev = img_edit;
                         setloader_edit(true);
 
                         moddev_put( valores, valores.id_parte_moddev ).then( (info) => {
@@ -702,9 +702,9 @@ export const Moddev = ( { mdl , evt } ) => {
                             <hr />
                             <br />
 
-                            <p style={{ maxWidth:"30vh", color:"rgb(255, 203, 58)" }}>{ "Tipo anterior: " + modal_obj_edit.tipo_parte_elementosferreteria }</p>
+                            <p style={{ maxWidth:"30vh", color:"rgb(255, 203, 58)" }}>{ "Tipo anterior: " + modal_obj_edit.tipo_parte_moddev }</p>
                             <br />
-                            <ErrorMessage  name='tipo_parte_elementosferreteria' component={() => (<p className='warn__password-user'>{errors.tipo_parte_elementosferreteria}</p>)} />
+                            <ErrorMessage  name='tipo_parte_moddev' component={() => (<p className='warn__password-user'>{errors.tipo_parte_moddev}</p>)} />
                             
                             <div className="type_selector">
                               <p style={{ color:"rgb(255, 203, 58)",width:"12vh" }}>{ (!!type_select) ? "Seleccionar otro tipo:" : "Crear nuevo tipo:" }</p>
@@ -752,7 +752,7 @@ export const Moddev = ( { mdl , evt } ) => {
                             <hr />
                             <br />
 
-                            <p style={{ maxWidth:"30vh", color:"rgb(255, 203, 58)" }}>{ modal_obj_edit.cantidad_consumida_elementosferreteria }</p>
+                            <p style={{ maxWidth:"30vh", color:"rgb(255, 203, 58)" }}>{ modal_obj_edit.cantidad_consumida_moddev }</p>
                             <ErrorMessage  name='cantidad_consumida_moddev' component={() => (<p className='warn__password-user'>{errors.cantidad_consumida_moddev }</p>)} />
                             <div className="input-container input_inventario">
                               <Field 
@@ -762,7 +762,7 @@ export const Moddev = ( { mdl , evt } ) => {
                                 id="cantidad_consumida_moddev"
                               />
                               </div>
-                              <p style={{ maxWidth:"30vh", color:"rgb(255, 203, 58)" }}>{ modal_obj_edit.cantidad_disponible_elementosferreteria }</p>
+                              <p style={{ maxWidth:"30vh", color:"rgb(255, 203, 58)" }}>{ modal_obj_edit.cantidad_disponible_moddev }</p>
                             <ErrorMessage  name='cantidad_disponible_moddev' component={() => (<p className='warn__password-user'>{errors.cantidad_disponible_moddev}</p>)} />
                             <div className="input-container input_inventario">
                               <Field 
@@ -772,7 +772,7 @@ export const Moddev = ( { mdl , evt } ) => {
                                 id="cantidad_disponible_moddev"
                               />
                               </div>
-                              <p style={{ maxWidth:"30vh", color:"rgb(255, 203, 58)" }}>{ modal_obj_edit.ubicacion_parte_elementosferreteria }</p>
+                              <p style={{ maxWidth:"30vh", color:"rgb(255, 203, 58)" }}>{ modal_obj_edit.ubicacion_parte_moddev }</p>
                             <ErrorMessage  name='ubicacion_parte_moddev' component={() => (<p className='warn__password-user'>{errors.ubicacion_parte_moddev}</p>)} />
                             <div className="input-container input_inventario">
                               <Field 
@@ -813,7 +813,7 @@ export const Moddev = ( { mdl , evt } ) => {
 
                 <Modal close={ setmodal_crear }>
                     <div className="animate__animated animate__fadeInRight cont_crear_item" style={{ zIndex:"10000" }} >
-                      <h1 style={{ width:"100%",display:"flex",justifyContent:"center",gap:"10px", color:"rgb(255, 203, 58)", marginTop:"45px" }}>Crear item Elemento Ferreteria</h1>
+                      <h1 style={{ width:"100%",display:"flex",justifyContent:"center",gap:"10px", color:"rgb(255, 203, 58)", marginTop:"45px" }}>Crear item Modulo de Desarrollo</h1>
 
 
                           {
@@ -899,7 +899,8 @@ export const Moddev = ( { mdl , evt } ) => {
                         setmodal_crear(false);
                         setimg_edit("");
                         refreshRequest();
-                        setTimeout(() => { window.location = "/principal"; }, 5000);
+                        console.log(info);
+                        //setTimeout(() => { window.location = "/principal"; }, 5000);
                       }
 
                     } )

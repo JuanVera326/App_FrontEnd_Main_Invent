@@ -52,7 +52,7 @@ export const Eleferre = ( { mdl , evt }  ) => {
     const formData = new FormData();
     formData.set("file" , file[0]);
 
-    doc_post( formData,obj_file_toUpadate.nombre_parte_electricos,obj_file_toUpadate.id_parte_electricos ).then( info => {
+    doc_post( formData,obj_file_toUpadate.nombre_parte_elementosferreteria,obj_file_toUpadate.id_parte_elementosferreteria ).then( info => {
 
       if (info.status === 202) {
 
@@ -122,7 +122,7 @@ export const Eleferre = ( { mdl , evt }  ) => {
 
   const delFile = () => {
 
-    doc_del( obj_file_toUpadate.datasheet_parte_electricos ).then(() => { 
+    doc_del( obj_file_toUpadate.datasheet_parte_elementosferreteria ).then(() => { 
           
       setloader_edit(true);
 
@@ -866,7 +866,7 @@ export const Eleferre = ( { mdl , evt }  ) => {
 
                     if (img_edit === "") {
 
-                      valores.imagen_parte_elementosferreteria = "https://static.wikia.nocookie.net/residentevil/images/1/15/Llave_inglesa.png/revision/latest?cb=20200626021009&path-prefix=es";
+                      valores.imagen_parte_elementosferreteria = "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Hammer.jpg/220px-Hammer.jpg";
 
                     }else{
 
