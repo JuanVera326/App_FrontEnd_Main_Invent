@@ -577,7 +577,7 @@ export const GestionUsuarios = () => {
                             cargo: "",
                             imagen: "",
                             edad: "",
-                            rol: 2,
+                            rol: 0,
                             password: "",
                             correo: "",
                             estado: ""
@@ -604,6 +604,8 @@ export const GestionUsuarios = () => {
 
                             else if (valores.estado === "none" || valores.estado === "") { errors.estado = "Estado invalido" }
                             else if (!valores.password.trim()) {errors.password = "Contraseña necesaria"}
+
+                            else if (valores.rol === "none" || valores.rol === "") { errors.rol = "Rol invalido" }
                             
                             return errors;
                           }}
@@ -611,7 +613,6 @@ export const GestionUsuarios = () => {
                           onSubmit={( valores, {resetForm} ) => {
 
                             valores.imagen = img_edit;
-                            console.log(valores);
                             setloader_edit(true);
 
                             usuariosPost( valores ).then( (info) => {
@@ -740,6 +741,15 @@ export const GestionUsuarios = () => {
                                   </Field>
                                 </div>
 
+                                <ErrorMessage  name='rol' component={() => (<p className='warn__password-user'>{errors.rol}</p>)} />
+                                <div className="input-container input_inventario estado_regist">
+                                  <h3 style={{ fontWeight:"lighter" }} id='rol'>{ "Rol Usuario" }</h3>
+                                  <Field as="select" name="rol" id="select_filter" autofocus="true">
+                                      <option value="none">Seleccione tipo usuario</option>
+                                      <option value="2">Visualizador</option>
+                                      <option value="3">Editor</option>
+                                  </Field>
+                                </div>
 
                                 <div style={{ width:"100%",display:"flex",justifyContent:"center",gap:"10px" }}>
                                   <Input type={"submit"} txt={"Actualizar"} style={"btn btn_invent"}/>

@@ -334,7 +334,7 @@ export const Moddev = ( { mdl , evt } ) => {
       }
     });
 
-  }, [ getAll ])
+  }, [ getAll ])  
 
   useEffect(() => { setmodal(mdl); }, [mdl]);
 
@@ -415,7 +415,7 @@ export const Moddev = ( { mdl , evt } ) => {
 
                                                       <div className='animate__animated animate__fadeInRight row_items'>
 
-                                                            <div style={{ borderRight:"solid 5px rgb(255, 203, 58)", paddingRight:"20px",height:"90px",display:"flex", alignItems:"center"}}>
+                                                            <div  style={{  width:"50px", display:"flex", justifyContent:"center", borderRight:"solid 5px rgb(255, 203, 58)", paddingRight:"10px",height:"90px", alignItems:"center"}}>
                                                               <h3 style={{ color:"rgb(255, 203, 58)" }}>{ item.id_parte_moddev }</h3>
                                                             </div>
 
@@ -900,7 +900,7 @@ export const Moddev = ( { mdl , evt } ) => {
                         setimg_edit("");
                         refreshRequest();
                         console.log(info);
-                        //setTimeout(() => { window.location = "/principal"; }, 5000);
+                        setTimeout(() => { window.location = "/principal"; }, 5000);
                       }
 
                     } )

@@ -414,7 +414,7 @@ export const Eleferre = ( { mdl , evt }  ) => {
 
                                                       <div className='animate__animated animate__fadeInRight row_items'>
 
-                                                            <div style={{ borderRight:"solid 5px rgb(255, 203, 58)", paddingRight:"20px",height:"90px",display:"flex", alignItems:"center"}}>
+                                                            <div  style={{  width:"50px", display:"flex", justifyContent:"center", borderRight:"solid 5px rgb(255, 203, 58)", paddingRight:"10px",height:"90px", alignItems:"center"}}>
                                                               <h3 style={{ color:"rgb(255, 203, 58)" }}>{ item.id_parte_elementosferreteria }</h3>
                                                             </div>
 
