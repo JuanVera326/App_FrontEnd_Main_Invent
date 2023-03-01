@@ -11,6 +11,7 @@ import { useSendImage } from '../../../../../helpers/image/useSendImage';
 import { Modal } from '../../../../pages/Modal/Modal';
 import { Button } from '../../../../ui/Buttons/Button';
 import { Input } from '../../../../ui/Input/Input';
+import "./Components.css";
 
 export const Eleferre = ( { mdl , evt }  ) => {
 

@@ -11,6 +11,7 @@ import { useSendImage } from '../../../../../helpers/image/useSendImage';
 import { Button } from '../../../../ui/Buttons/Button';
 import { Input } from '../../../../ui/Input/Input';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
+import "./Components.css";
 
 export const Otros = ( { mdl , evt } ) => {
   

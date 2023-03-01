@@ -416,7 +416,7 @@ export const Electricos = ( { mdl , evt } ) => {
 
                                                       <div className='animate__animated animate__fadeInRight row_items'>
 
-                                                            <div style={{  width:"50px", display:"flex", justifyContent:"center", borderRight:"solid 5px rgb(255, 203, 58)", paddingRight:"10px",height:"90px", alignItems:"center"}}>
+                                                            <div style={{  width:"50px", display:"flex", justifyContent:"center", borderRight:"solid 5px rgb(255, 203, 58)", paddingRight:"10px",height:"90px", alignItems:"center"}} >
                                                               <h3 style={{ color:"rgb(255, 203, 58)" }}>{ item.id_parte_electricos }</h3>
                                                             </div>
 
@@ -1001,6 +1001,9 @@ export const Electricos = ( { mdl , evt } ) => {
                                     id="cantidad_consumida_electricos"
                                   />
                                 </div>
+
+
+                                {/* ----------- */}
                                 
                                 <ErrorMessage  name='ubicacion_parte_electricos' component={() => (<p className='warn__password-user'>{errors.ubicacion_parte_electricos}</p>)} />
                                 <div className="input-container input_inventario">
@@ -1011,6 +1014,9 @@ export const Electricos = ( { mdl , evt } ) => {
                                     id="ubicacion_parte_electricos"
                                   />
                                 </div>
+
+                                {/* ----------- */}
+
                                 
                                 <ErrorMessage  name='descripcion_parte_electricos' component={() => (<p className='warn__password-user'>{errors.descripcion_parte_electricos}</p>)} />
                                 <div className="input-container input_inventario">

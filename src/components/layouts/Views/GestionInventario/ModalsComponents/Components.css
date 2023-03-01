@@ -240,3 +240,32 @@ input:focus + label {
   filter: brightness(50%);
   transition: 0.3s;
 }
+/* ------- configinvent---- */
+.config_invent{
+  width: 98%;
+  background-color: rgb(56, 56, 56);
+  height: 89%;
+  border-radius: 6px;
+  margin: 3rem;
+}
+.btn_ref_config_invent {
+  min-width: 40vh;
+  max-height: 25vh;
+  transition: 0.2s;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.cont_card_config{
+  padding: 2rem;
+  background-color: rgb(104 104 104);
+  border-radius: 6px;
+}
+.cont_card_config_info{
+  padding: 2rem;
+  /* background-color: #55da5e; */
+  display: flex;
+  justify-content: center;
+}
