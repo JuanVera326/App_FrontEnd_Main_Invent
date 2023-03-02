@@ -247,6 +247,8 @@ input:focus + label {
   height: 89%;
   border-radius: 6px;
   margin: 3rem;
+  display: flex;
+  justify-content: center;
 }
 .btn_ref_config_invent {
   min-width: 40vh;
@@ -257,6 +259,7 @@ input:focus + label {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  cursor: auto;
 }
 .cont_card_config{
   padding: 2rem;
@@ -268,4 +271,10 @@ input:focus + label {
   /* background-color: #55da5e; */
   display: flex;
   justify-content: center;
+}
+.btn_config{
+  color: rgb(255, 255, 255);
+  text-decoration: none;
+  font-size: 25px;
+  text-align: center;
 }
