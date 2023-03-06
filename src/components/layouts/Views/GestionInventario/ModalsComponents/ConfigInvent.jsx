@@ -2,31 +2,30 @@ import React, { useState } from 'react'
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { main_invent_images } from '../../../../../helpers/ImagesHelp';
+import { Modal } from '../../../../pages/Modal/Modal';
 import "./Components.css";
 
 export const ConfigInvent = () => {
 
     const [config_action, setconfig_action] = useState(0);
-    const [sectors, setsectors] = useState(0);
-    const [bdgs, setbdgs] = useState(0);
-    const [arms, setarms] = useState(0);
-
+    const [modal_random, setmodal_random] = useState(false);
 
     useEffect(() => { 
 
         if (config_action === 1) {
 
-            console.log(config_action);
-            setconfig_action(0);
+            setmodal_random(!modal_random);
 
         }else if (config_action === 2) {
 
-            console.log(config_action);
-            setconfig_action(0);
+            setmodal_random(!modal_random);
 
         }else if (config_action === 3) {
 
-            console.log(config_action);
+            setmodal_random(!modal_random);
+
+        }else if ( modal_random === false ){
+
             setconfig_action(0);
 
         }
@@ -43,7 +42,7 @@ export const ConfigInvent = () => {
             <div className="sec_ref_btn">
 
                 <div className="cont_card_config">
-                    <h1>1</h1>
+                    <h1 style={{ color:"rgb(57 180 45)" }}>1</h1>
                     <br />
                     <div className={"btn btn_ref_config_invent animate__animated animate__zoomIn"}>
                         <img className='img_btn_gest_invent' src={ main_invent_images("./images/configuracion_inventario/almacen.png") }/>
@@ -60,7 +59,7 @@ export const ConfigInvent = () => {
                 </div>
 
                 <div className="cont_card_config">
-                    <h1>2</h1>
+                    <h1 style={{ color:"rgb(57 180 45)" }}>2</h1>
                     <br />
                     <div className={"btn btn_ref_config_invent animate__animated animate__zoomIn"}>
                         <img className='img_btn_gest_invent' src={ main_invent_images("./images/configuracion_inventario/deposito.png") }/>
@@ -77,7 +76,7 @@ export const ConfigInvent = () => {
                 </div>
 
                 <div className="cont_card_config">
-                    <h1>3</h1>
+                    <h1 style={{ color:"rgb(57 180 45)" }}>3</h1>
                     <br />
                     <div className={"btn btn_ref_config_invent animate__animated animate__zoomIn"}>
                         <img className='img_btn_gest_invent' src={ main_invent_images("./images/configuracion_inventario/rack.png") }/>
@@ -95,6 +94,16 @@ export const ConfigInvent = () => {
 
             </div>
         </div>
+        {
+            (!!modal_random) &&
+            <Modal close={setmodal_random}>
+
+                <div style={{zIndex:"10000"}}>
+                    <h1>{config_action}</h1>
+                </div>
+
+            </Modal>
+        }
     </> 
   )
 }
