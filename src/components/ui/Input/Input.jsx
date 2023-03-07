@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const Input = ( { name, type, style, txt, id, eventChange, eventBlur, value, ref, eventKeyPress } ) => {
+export const Input = ( { name, type, style, txt, id, eventChange, eventBlur, value, ref, eventKeyPress,minLen,maxLen } ) => {
     return (
       <input 
         type={type} 
@@ -13,6 +13,8 @@ export const Input = ( { name, type, style, txt, id, eventChange, eventBlur, val
         name={name}
         ref={ref}
         onKeyDown={eventKeyPress}
+        min={minLen}
+        max={maxLen}
       />
     )
 }

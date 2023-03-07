@@ -271,10 +271,36 @@ input:focus + label {
   /* background-color: #55da5e; */
   display: flex;
   justify-content: center;
+  gap: 15px;
 }
 .btn_config{
   color: rgb(255, 255, 255);
   text-decoration: none;
   font-size: 25px;
   text-align: center;
+  transition: 0.2s;
+  width: 8vh;
+}
+.btn_config:hover{
+  background-color: rgb(26 100 16);
+  transition: 0.2s;
+}
+.input_config_number{
+  height: 15vh;
+  width: 25vh;
+  font-size: 150px;
+  color: #1adf27;
+  text-align: center;
+  background-color: rgb(165 164 164);
+  border: none;
+  border-radius: 6px;
+}
+.modal_config{
+  background-color: rgb(104, 104, 104);
+  min-width: 600px;
+  max-width: 650px;
+  min-height: 30vh;
+  z-index: 10000;
+  padding: 2rem;
+  border-radius: 6px;
 }

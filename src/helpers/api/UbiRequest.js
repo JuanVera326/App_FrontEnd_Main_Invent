@@ -92,3 +92,20 @@ export const ubi_del = async( id ) => {
     }
 
 };
+
+export const ubi_get = async( id ) => {
+
+    try {
+
+        const sendRequest = await axios.get(`${URL}/ubi/${id}`);
+        return sendRequest;
+
+    } catch (error) {
+
+        if ( error.response ) {
+            return error.response;
+        }
+
+    }
+
+};
