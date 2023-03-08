@@ -69,7 +69,7 @@ export const ConfigInvent = () => {
             }else{
 
                 setmodal_random(false);
-                setfind("Error al ingresar nuevos sectores")
+                setfind("Error al ingresar nuevos Sectores")
                 setTimeout(() => { setfind("") }, 5000);
 
             }
@@ -99,7 +99,7 @@ export const ConfigInvent = () => {
             }else{
 
                 setmodal_random(false);
-                setfind("Error al ingresar nuevos sectores")
+                setfind("Error al ingresar nuevas Bodegas")
                 setTimeout(() => { setfind("") }, 5000);
 
             }
@@ -129,7 +129,7 @@ export const ConfigInvent = () => {
             }else{
 
                 setmodal_random(false);
-                setfind("Error al ingresar nuevos sectores")
+                setfind("Error al ingresar nuevos Armarios")
                 setTimeout(() => { setfind("") }, 5000);
 
             }
@@ -232,7 +232,7 @@ export const ConfigInvent = () => {
 
                         <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
 
-                            <h1>Sectores</h1>
+                            <h1>Sectores Total: { prev_ubi.sectors }</h1>
 
                         </div>
 
@@ -270,7 +270,7 @@ export const ConfigInvent = () => {
 
                         <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
 
-                            <h1>Bodegas</h1>
+                            <h1>Bodegas Total: { prev_ubi.warehouses }</h1>
 
                         </div>
                         
@@ -308,7 +308,7 @@ export const ConfigInvent = () => {
 
                         <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
 
-                            <h1>Armarios</h1>
+                            <h1>Armarios Total: { prev_ubi.racks }</h1>
 
                         </div>
                         

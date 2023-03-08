@@ -12,6 +12,7 @@ import { Button } from '../../../../ui/Buttons/Button';
 import { doc_del, doc_post } from '../../../../../helpers/api/DocsRequest';
 import { FaFileUpload } from 'react-icons/fa';
 import "./Components.css";
+import { ubi_get } from '../../../../../helpers/api/UbiRequest';
 
 export const Electricos = ( { mdl , evt } ) => {
 
@@ -19,6 +20,7 @@ export const Electricos = ( { mdl , evt } ) => {
   const [modal_detail, setmodal_detail] = useState(false);
 
   const [modal_crear, setmodal_crear] = useState(false);
+  const user = JSON.parse(localStorage.getItem("usuario"));
 
   const [modal_edit, setmodal_edit] = useState(false);
   const [modal_obj_edit, setmodal_obj_edit] = useState({});
@@ -33,6 +35,10 @@ export const Electricos = ( { mdl , evt } ) => {
   const [loader, setloader] = useState(false);
   const [items_electricos, setitems_electricos] = useState([]);
   const [val_request_electricos, setval_request_electricos] = useState(0);
+  const [ubi, setubi] = useState({});
+  const [sct, setsct] = useState([]);
+  const [bdgs, setbdgs] = useState([]);
+  const [racks, setracks] = useState([]);
   const [getAll, setgetAll] = useState(true);
 
   const [file, setfile] = useState(null);
@@ -332,6 +338,33 @@ export const Electricos = ( { mdl , evt } ) => {
         settypes(["Error al obtener tipos"])
 
       }
+    });
+
+    ubi_get(user.id).then(info => {
+
+      if (info.status === 202) {
+        console.log(info.data.racks);
+        let arr = [];
+        setubi(info.data);
+
+        arr = [];
+        for (let index = 1; index <= info.data.racks; index++) { arr.push(index); }
+        setracks(arr);
+
+        for (let index = 1; index <= info.data.sectors; index++) { arr.push(index); }
+        setsct(arr);
+
+        arr = [];
+        for (let index = 1; index <= info.data.warehouses; index++) { arr.push(index); }
+        setbdgs(arr);
+        
+
+      }else{
+
+        setubi(["Error al obtener Datos de Inventario"])
+
+      }
+
     });
 
   }, [ getAll ])
@@ -830,7 +863,13 @@ export const Electricos = ( { mdl , evt } ) => {
                     tipo_parte_electricos: "",
                     cantidad_disponible_electricos: "",
                     cantidad_consumida_electricos: "",
-                    ubicacion_parte_electricos: "",
+                    
+                    sectors:"",
+                    warehouses:"",
+                    racks:"",
+                    fila:"",
+                    columna:"",
+
                     descripcion_parte_electricos: "",
                     datasheet_parte_electricos: "",
                   }}
@@ -853,56 +892,79 @@ export const Electricos = ( { mdl , evt } ) => {
 
                     else if (!/^\d+$/.test(valores.cantidad_consumida_electricos)) { errors.cantidad_consumida_electricos = "Cant Cons. erroneo" }
                     
-                    else if (!valores.ubicacion_parte_electricos.trim()) { errors.ubicacion_parte_electricos = "Ubicación erronea" }
-
                     else if (!valores.descripcion_parte_electricos.trim()) { errors.descripcion_parte_electricos = "Descripción erronea" }
+
+                    else if (!valores.sectors.trim()) { errors.sectors = "Sector erroneo" }
+
+                    else if (!valores.warehouses.trim()) { errors.warehouses = "Bodega erronea" }
+
+                    else if (!valores.racks.trim()) { errors.racks = "Armario erroneo" }
+
+                    else if (!valores.fila.trim()) { errors.fila = "Fila erronea" }
+
+                    else if (!valores.columna.trim()) { errors.columna = "Columna erronea" }
 
                     return errors;
                     
                   }}
 
                   onSubmit={( valores, {resetForm} ) => {
+
+                    let obj = {
+
+                      id_parte_electricos : valores.id_parte_electricos,
+                      nombre_parte_electricos: valores.nombre_parte_electricos,
+                      imagen_parte_electricos: valores.imagen_parte_electricos,
+                      tipo_parte_electricos: valores.tipo_parte_electricos,
+                      cantidad_disponible_electricos: valores.cantidad_disponible_electricos,
+                      cantidad_consumida_electricos: valores.cantidad_consumida_electricos,
+                      ubicacion_parte_electricos:`Sector ${valores.sectors} Bodega ${valores.warehouses} Armario ${valores.racks} Fila ${valores.fila} Columna ${valores.columna}`,
+                      descripcion_parte_electricos: valores.descripcion_parte_electricos,
+                      datasheet_parte_electricos: "",
+                    }
                     
                     setloader_edit(true);
 
                     if (img_edit === "") {
 
-                      valores.imagen_parte_electricos = "https://concepto.de/wp-content/uploads/2020/08/aislante-electrico-cables-e1597781533583.jpg";
+                      obj.imagen_parte_electricos = "https://concepto.de/wp-content/uploads/2020/08/aislante-electrico-cables-e1597781533583.jpg";
 
                     }else{
 
-                      valores.imagen_parte_electricos = img_edit;
+                      obj.imagen_parte_electricos = img_edit;
 
                     }
 
-                    electricos_post( valores  ).then( (info) => {
+                    console.log(obj);
 
-                      if (info.status === 202) {
+                    // electricos_post( valores  ).then( (info) => {
+
+                    //   if (info.status === 202) {
                         
-                        setloader_edit(false);
+                    //     setloader_edit(false);
 
-                        setmodal_crear(false);
-                        refreshRequest();
-                        setimg_edit("");
-                        resetForm();
+                    //     setmodal_crear(false);
+                    //     refreshRequest();
+                    //     setimg_edit("");
+                    //     resetForm();
 
-                      }else if (info.status === 403){
+                    //   }else if (info.status === 403){
 
-                        setmsj_desha_rqst(info.data);
-                        setloader_edit(false);
-                        setTimeout(() => { setmsj_desha_rqst("") }, 3500);
+                    //     setmsj_desha_rqst(info.data);
+                    //     setloader_edit(false);
+                    //     setTimeout(() => { setmsj_desha_rqst("") }, 3500);
 
-                      }else{
+                    //   }else{
 
-                        setmsj_desha_rqst("Hubo un error, intentalo mas tarde.");
-                        setloader_edit(false);
-                        setmodal_crear(false);
-                        setimg_edit("");
-                        refreshRequest();
-                        setTimeout(() => { window.location = "/principal"; }, 5000);
-                      }
+                    //     setmsj_desha_rqst("Hubo un error, intentalo mas tarde.");
+                    //     setloader_edit(false);
+                    //     setmodal_crear(false);
+                    //     setimg_edit("");
+                    //     refreshRequest();
+                    //     setTimeout(() => { window.location = "/principal"; }, 5000);
+                    //   }
 
-                    } )
+                    // } )
 
                   }}>
                       {({errors}) => (
@@ -1006,13 +1068,69 @@ export const Electricos = ( { mdl , evt } ) => {
                                 {/* ----------- */}
                                 
                                 <ErrorMessage  name='ubicacion_parte_electricos' component={() => (<p className='warn__password-user'>{errors.ubicacion_parte_electricos}</p>)} />
-                                <div className="input-container input_inventario">
-                                  <Field 
-                                    type='text'
-                                    placeholder='Ubicacion' 
-                                    name='ubicacion_parte_electricos'
-                                    id="ubicacion_parte_electricos"
-                                  />
+                                <div style={{ width:"30vh", height:"19vh",display:"flex", flexDirection:"column", alignItems:"center" }}>
+
+                                  <h3>Ubicacion:</h3>
+                                  
+                                  <ErrorMessage  name='sectors' component={() => (<p className='warn__password-user'>{errors.sectors}</p>)} />
+                                  <ErrorMessage  name='warehouses' component={() => (<p className='warn__password-user'>{errors.warehouses}</p>)} />
+                                  <ErrorMessage  name='racks' component={() => (<p className='warn__password-user'>{errors.racks}</p>)} />
+                                  <ErrorMessage  name='fila' component={() => (<p className='warn__password-user'>{errors.fila}</p>)} />
+                                  <ErrorMessage  name='columna' component={() => (<p className='warn__password-user'>{errors.columna}</p>)} />
+                                  
+                                  <div style={{ display:"grid", gridTemplateColumns:"repeat(2,1fr)", gap:"2rem", textAlign:"center" }}>
+
+                                    <div className="row_config">
+                                      <h2>Sector</h2>
+                                      <Field as="select" className="input_ubi" name='sectors'id="sectors">
+                                          {
+                                            sct.map((item) => (
+                                              <>
+                                                <option value={item}>{item}</option>
+                                              </>
+                                            ))
+                                          }
+                                      </Field>
+                                    </div>
+
+                                    <div className="row_config">
+                                      <h2>Bodega</h2>
+                                      <Field as="select" className="input_ubi" name='warehouses'id="warehouses">
+                                          {
+                                            bdgs.map((item) => (
+                                              <>
+                                                <option value={item}>{item}</option>
+                                              </>
+                                            ))
+                                          }
+                                      </Field>
+                                    </div>   
+
+                                    <div className="row_config">
+                                      <h2>Armario</h2>
+                                      <Field as="select" className="input_ubi" name='racks'id="racks" size>
+                                          {
+                                            racks.map((item) => (
+                                              <>
+                                                <option value={item}>{item}</option>
+                                              </>
+                                            ))
+                                          }
+                                      </Field>
+                                    </div>
+
+                                    <div className="row_config">
+                                      <h2>Fila</h2>
+                                      <Field placeholder="" className="input_ubi" type="text" name='fila'id="fila"/>
+                                    </div>
+
+                                  </div> 
+
+                                  <div className="row_config">
+                                    <h2>Columna</h2>
+                                    <Field placeholder="" className="input_ubi" type="text" name='columna'id="columna"/>
+                                  </div>
+
                                 </div>
 
                                 {/* ----------- */}

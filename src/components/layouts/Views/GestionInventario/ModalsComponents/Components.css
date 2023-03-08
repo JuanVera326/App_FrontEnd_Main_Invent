@@ -304,3 +304,18 @@ input:focus + label {
   padding: 2rem;
   border-radius: 6px;
 }
+.row_config{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.input_ubi{
+  width: 5rem;
+  height: 3rem;
+  font-size: 35px;
+  background-color: rgb(165 164 164);
+  border: none;
+  border-radius: 6px;
+  color: #1adf27;
+  text-align: center;
+}
