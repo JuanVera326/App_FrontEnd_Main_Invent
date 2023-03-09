@@ -11,6 +11,7 @@ import { useSendImage } from '../../../../../helpers/image/useSendImage';
 import { Modal } from '../../../../pages/Modal/Modal';
 import { Button } from '../../../../ui/Buttons/Button';
 import { Input } from '../../../../ui/Input/Input';
+import { ubi_get } from '../../../../../helpers/api/UbiRequest';
 import "./Components.css";
 
 export const Electronicos = ( { mdl , evt }  ) => {
@@ -19,6 +20,7 @@ export const Electronicos = ( { mdl , evt }  ) => {
   const [modal_detail, setmodal_detail] = useState(false);
 
   const [modal_crear, setmodal_crear] = useState(false);
+  const user = JSON.parse(localStorage.getItem("usuario"));
 
   const [modal_edit, setmodal_edit] = useState(false);
   const [modal_obj_edit, setmodal_obj_edit] = useState({});
@@ -38,6 +40,10 @@ export const Electronicos = ( { mdl , evt }  ) => {
   const [loader, setloader] = useState(false);
   const [items_electronicos, setitems_electronicos] = useState([]);
   const [val_request_electronicos, setval_request_electronicos] = useState(0);
+  const [ubi, setubi] = useState({});
+  const [sct, setsct] = useState([]);
+  const [bdgs, setbdgs] = useState([]);
+  const [racks, setracks] = useState([]);
   const [getAll, setgetAll] = useState(true);
 
   const [file, setfile] = useState(null);
@@ -360,6 +366,33 @@ export const Electronicos = ( { mdl , evt }  ) => {
         settypes(["Error al obtener tipos"])
 
       }
+    });
+
+    ubi_get(user.id).then(info => {
+
+      if (info.status === 202) {
+
+        let arr = [];
+        setubi(info.data);
+
+        arr = [];
+        for (let index = 1; index <= info.data.racks; index++) { arr.push(index); }
+        setracks(arr);
+
+        arr = [];
+        for (let index = 1; index <= info.data.sectors; index++) { arr.push(index); }
+        setsct(arr);
+
+        arr = [];
+        for (let index = 1; index <= info.data.warehouses; index++) { arr.push(index); }
+        setbdgs(arr);
+        
+      }else{
+
+        setubi(["Error al obtener Datos de Inventario"])
+
+      }
+
     });
 
   }, [ getAll ]);
@@ -697,10 +730,16 @@ export const Electronicos = ( { mdl , evt }  ) => {
                         esquematico_comp: "",
                         descripcion_comp: "",
                         tipo_comp : "",
+                        
+                        sectors:"",
+                        warehouses:"",
+                        racks:"",
+                        fila:"",
+                        columna:"",
+
                         encampsulado_comp : "",
                         cantidad_disponible_comp : "",
                         cantidad_consumida_comp : "",
-                        ubicacion_comp : "",
                         datasheet_comp : ""
                       }}
 
@@ -719,6 +758,16 @@ export const Electronicos = ( { mdl , evt }  ) => {
 
                         else if (!valores.tipo_comp === "Cree un nuevo tipo") { errors.tipo_comp = "Tipo erroneo" }
 
+                        else if (!valores.sectors.trim() || valores.sectors === "#") { errors.sectors = "Sector erroneo" }
+
+                        else if (!valores.warehouses.trim() || valores.warehouses === "#") { errors.warehouses = "Bodega erronea" }
+
+                        else if (!valores.racks.trim() || valores.racks === "#") { errors.racks = "Armario erroneo" }
+
+                        else if (!valores.fila.trim()) { errors.fila = "Fila erronea" }
+
+                        else if (!valores.columna.trim()) { errors.columna = "Columna erronea" }
+
                         else if (!valores.encampsulado_comp.trim()) { errors.encampsulado_comp = "Encapsulado erroneo" }
                         
                         else if (!valores.cantidad_disponible_comp.trim()) { errors.cantidad_disponible_comp = "Cant Disp. erroneos" }
@@ -729,8 +778,6 @@ export const Electronicos = ( { mdl , evt }  ) => {
 
                         else if (!/^\d+$/.test(valores.cantidad_consumida_comp)) { errors.cantidad_consumida_comp = "Cant Cons. erroneo" }
                         
-                        else if (!valores.ubicacion_comp.trim()) { errors.ubicacion_comp = "Ubicación erronea" }
-
                         else if (!valores.descripcion_comp.trim()) { errors.descripcion_comp = "Descripción erronea" }
                         
                         return errors;
@@ -738,33 +785,45 @@ export const Electronicos = ( { mdl , evt }  ) => {
 
                       onSubmit={( valores, {resetForm} ) => {
 
+                        let obj = {
+
+                          id_Comp: modal_obj_edit.id_Comp,
+                          nombre_comp: valores.nombre_comp,
+                          numero_partefabricante_comp: valores.numero_partefabricante_comp,
+                          pinout_comp: valores.pinout_comp,
+                          esquematico_comp: valores.esquematico_comp,
+                          descripcion_comp: valores.descripcion_comp,
+                          tipo_comp : valores.tipo_comp,
+                          encampsulado_comp : valores.encampsulado_comp,
+                          cantidad_disponible_comp : valores.cantidad_disponible_comp,
+                          cantidad_consumida_comp : valores.cantidad_consumida_comp,
+                          datasheet_comp : valores.datasheet_comp,
+                          ubicacion_comp : `Sector ${valores.sectors} Bodega ${valores.warehouses} Armario ${valores.racks} Fila ${valores.fila} Columna ${valores.columna}`
+                        }
+
                         if (img_pinout_edit === "") {
 
-                          valores.pinout_comp = modal_obj_edit.pinout_comp;
+                          obj.pinout_comp = modal_obj_edit.pinout_comp;
     
                         }else{
 
-                          valores.pinout_comp = img_pinout_edit;
+                          obj.pinout_comp = img_pinout_edit;
 
                         }
     
                         if (img_esque_edit === "") {
 
-                          valores.esquematico_comp = modal_obj_edit.esquematico_comp;
+                          obj.esquematico_comp = modal_obj_edit.esquematico_comp;
     
                         }else{
 
-                          valores.esquematico_comp = img_esque_edit;
+                          obj.esquematico_comp = img_esque_edit;
                           
                         }
 
-                        console.log(valores);
-                        
                         setloader_edit(true);
 
-                        electronicos_put( valores, valores.id_Comp ).then( (info) => {
-
-                          console.log(info);
+                        electronicos_put( obj, obj.id_Comp ).then( (info) => {
 
                           if (info.status === 202) {
                             
@@ -884,6 +943,79 @@ export const Electronicos = ( { mdl , evt }  ) => {
 
                             } 
 
+                            {/* ----------- */}
+                                
+                                <div style={{ width:"30vh", height:"19vh",display:"flex", flexDirection:"column", alignItems:"center" }}>
+
+                                  <h3>Ubicacion:</h3>
+                                  <p style={{ maxWidth:"30vh", color:"rgb(255, 203, 58)" }}>{ modal_obj_edit.ubicacion_comp }</p>
+                                  
+                                  <ErrorMessage  name='sectors' component={() => (<p className='warn__password-user'>{errors.sectors}</p>)} />
+                                  <ErrorMessage  name='warehouses' component={() => (<p className='warn__password-user'>{errors.warehouses}</p>)} />
+                                  <ErrorMessage  name='racks' component={() => (<p className='warn__password-user'>{errors.racks}</p>)} />
+                                  <ErrorMessage  name='fila' component={() => (<p className='warn__password-user'>{errors.fila}</p>)} />
+                                  <ErrorMessage  name='columna' component={() => (<p className='warn__password-user'>{errors.columna}</p>)} />
+                                  
+                                  <div style={{ display:"grid", gridTemplateColumns:"repeat(2,1fr)", gap:"2rem", textAlign:"center" }}>
+
+                                    <div className="row_config">
+                                      <h2>Sector</h2>
+                                      <Field as="select" className="input_ubi" name='sectors'id="sectors" autofocus="true">
+                                        <option value={"none"}>#</option>
+                                          {
+                                            sct.map((item) => (
+                                              <>
+                                                <option value={item}>{item}</option>
+                                              </>
+                                            ))
+                                          }
+                                      </Field>
+                                    </div>
+
+                                    <div className="row_config">
+                                      <h2>Bodega</h2>
+                                      <Field as="select" className="input_ubi" name='warehouses'id="warehouses" autofocus="true">
+                                        <option value={"none"}>#</option>
+                                          {
+                                            bdgs.map((item) => (
+                                              <>
+                                                <option value={item}>{item}</option>
+                                              </>
+                                            ))
+                                          }
+                                      </Field>
+                                    </div>   
+
+                                    <div className="row_config">
+                                      <h2>Armario</h2>
+                                      <Field as="select" className="input_ubi" name='racks'id="racks" autofocus="true">
+                                        <option value={"none"}>#</option>
+                                          {
+                                            racks.map((item) => (
+                                              <>
+                                                <option value={item}>{item}</option>
+                                              </>
+                                            ))
+                                          }
+                                      </Field>
+                                    </div>
+
+                                    <div className="row_config">
+                                      <h2>Fila</h2>
+                                      <Field placeholder="" className="input_ubi" type="text" name='fila'id="fila"/>
+                                    </div>
+
+                                  </div> 
+
+                                  <div className="row_config">
+                                    <h2>Columna</h2>
+                                    <Field placeholder="" className="input_ubi" type="text" name='columna'id="columna"/>
+                                  </div>
+
+                                </div>
+
+                                {/* ----------- */}
+
                               <p style={{ maxWidth:"30vh", color:"rgb(255, 203, 58)" }}>{ modal_obj_edit.cantidad_consumida_comp }</p>
                             <ErrorMessage  name='nombre' component={() => (<p className='warn__password-user'>{errors.cantidad_consumida_comp }</p>)} />
                             <div className="input-container input_inventario">
@@ -904,15 +1036,6 @@ export const Electronicos = ( { mdl , evt }  ) => {
                                 id="cantidad_disponible_comp"
                               />
                               </div>
-                              <p style={{ maxWidth:"30vh", color:"rgb(255, 203, 58)" }}>{ modal_obj_edit.ubicacion_comp }</p>
-                            <ErrorMessage  name='ubicacion' component={() => (<p className='warn__password-user'>{errors.ubicacion_comp}</p>)} />
-                            <div className="input-container input_inventario">
-                              <Field 
-                                placeholder='Nuev@ Ubicacion'
-                                name='ubicacion_comp'
-                                id="ubicacion_comp"
-                              />
-                            </div>
 
                             <div style={{ width:"100%",display:"flex",justifyContent:"center",gap:"10px" }}>
                               <Input type={"submit"} txt={"Actualizar"} style={"btn btn_invent"}/>
@@ -949,82 +1072,109 @@ export const Electronicos = ( { mdl , evt }  ) => {
                           }
 
                 <Formik
+                    initialValues={{
+                      id_Comp: modal_obj_edit.id_Comp,
+                      nombre_comp: "",
+                      numero_partefabricante_comp: "",
+                      pinout_comp: "",
+                      esquematico_comp: "",
+                      descripcion_comp: "",
+                      tipo_comp : "",
+                      
+                      sectors:"",
+                      warehouses:"",
+                      racks:"",
+                      fila:"",
+                      columna:"",
 
-                 initialValues={{
-                        id_Comp: "",
-                        nombre_comp: "",
-                        numero_partefabricante_comp: "",
-                        pinout_comp: "",
-                        esquematico_comp: "",
-                        descripcion_comp: "",
-                        tipo_comp : "",
-                        encampsulado_comp : "",
-                        cantidad_disponible_comp : "",
-                        cantidad_consumida_comp : "",
-                        ubicacion_comp : "",
-                        datasheet_comp : ""
-                      }}
+                      encampsulado_comp : "",
+                      cantidad_disponible_comp : "",
+                      cantidad_consumida_comp : "",
+                      datasheet_comp : ""
+                    }}
 
-                      validate = {(valores) => {
+                    validate = {(valores) => {
 
-                        let errors = {};
+                      let errors = {};
 
-                          
-                        if (!valores.nombre_comp.trim()) { errors.nombre_comp = "Nombre erroneo" }
-
-                        else if (!valores.numero_partefabricante_comp.trim()) { errors.numero_partefabricante_comp = "Numero Parte erroneo" }
-
-                        else if (!valores.tipo_comp.trim()) { errors.tipo_comp = "Tipo erroneo" }
-
-                        else if (!valores.tipo_comp === "none") { errors.tipo_comp = "Tipo erroneo" }
-
-                        else if (!valores.tipo_comp === "Cree un nuevo tipo") { errors.tipo_comp = "Tipo erroneo" }
-
-                        else if (!valores.encampsulado_comp.trim()) { errors.encampsulado_comp = "Encapsulado erroneo" }
                         
-                        else if (!valores.cantidad_disponible_comp.trim()) { errors.cantidad_disponible_comp = "Cant Disp. erroneos" }
+                      if (!valores.nombre_comp.trim()) { errors.nombre_comp = "Nombre erroneo" }
 
-                        else if (!/^\d+$/.test(valores.cantidad_disponible_comp)) { errors.cantidad_disponible_comp = "Cant Disp. erroneo" }
-                        
-                        else if (!valores.cantidad_consumida_comp.trim()) { errors.cantidad_consumida_comp = "Cant Cons. erroneo" }
+                      else if (!valores.numero_partefabricante_comp.trim()) { errors.numero_partefabricante_comp = "Numero Parte erroneo" }
 
-                        else if (!/^\d+$/.test(valores.cantidad_consumida_comp)) { errors.cantidad_consumida_comp = "Cant Cons. erroneo" }
-                        
-                        else if (!valores.ubicacion_comp.trim()) { errors.ubicacion_comp = "Ubicación erronea" }
+                      else if (!valores.tipo_comp.trim()) { errors.tipo_comp = "Tipo erroneo" }
 
-                        else if (!valores.descripcion_comp.trim()) { errors.descripcion_comp = "Descripción erronea" }
-                        
-                        return errors;
-                      }}
+                      else if (!valores.tipo_comp === "none") { errors.tipo_comp = "Tipo erroneo" }
+
+                      else if (!valores.tipo_comp === "Cree un nuevo tipo") { errors.tipo_comp = "Tipo erroneo" }
+
+                      else if (!valores.sectors.trim() || valores.sectors === "#") { errors.sectors = "Sector erroneo" }
+
+                      else if (!valores.warehouses.trim() || valores.warehouses === "#") { errors.warehouses = "Bodega erronea" }
+
+                      else if (!valores.racks.trim() || valores.racks === "#") { errors.racks = "Armario erroneo" }
+
+                      else if (!valores.fila.trim()) { errors.fila = "Fila erronea" }
+
+                      else if (!valores.columna.trim()) { errors.columna = "Columna erronea" }
+
+                      else if (!valores.encampsulado_comp.trim()) { errors.encampsulado_comp = "Encapsulado erroneo" }
+                      
+                      else if (!valores.cantidad_disponible_comp.trim()) { errors.cantidad_disponible_comp = "Cant Disp. erroneos" }
+
+                      else if (!/^\d+$/.test(valores.cantidad_disponible_comp)) { errors.cantidad_disponible_comp = "Cant Disp. erroneo" }
+                      
+                      else if (!valores.cantidad_consumida_comp.trim()) { errors.cantidad_consumida_comp = "Cant Cons. erroneo" }
+
+                      else if (!/^\d+$/.test(valores.cantidad_consumida_comp)) { errors.cantidad_consumida_comp = "Cant Cons. erroneo" }
+                      
+                      else if (!valores.descripcion_comp.trim()) { errors.descripcion_comp = "Descripción erronea" }
+                      
+                      return errors;
+                    }}
 
 
                   onSubmit={( valores, {resetForm} ) => {
+
+                    let obj = {
+
+                      id_Comp: "",
+                      nombre_comp: valores.nombre_comp,
+                      numero_partefabricante_comp: valores.numero_partefabricante_comp,
+                      pinout_comp: valores.pinout_comp,
+                      esquematico_comp: valores.esquematico_comp,
+                      descripcion_comp: valores.descripcion_comp,
+                      tipo_comp : valores.tipo_comp,
+                      encampsulado_comp : valores.encampsulado_comp,
+                      cantidad_disponible_comp : valores.cantidad_disponible_comp,
+                      cantidad_consumida_comp : valores.cantidad_consumida_comp,
+                      datasheet_comp : valores.datasheet_comp,
+                      ubicacion_comp : `Sector ${valores.sectors} Bodega ${valores.warehouses} Armario ${valores.racks} Fila ${valores.fila} Columna ${valores.columna}`
+                    }
                     
                     setloader_edit(true);
 
                     if (img_pinout === "") {
 
-                      valores.pinout_comp = "https://4.bp.blogspot.com/-L2HW4kmUrZs/VgkJY1MyGuI/AAAAAAAAFJ0/9HI1DIcMlUM/s1600/555-pinout.png";
+                      obj.pinout_comp = "https://4.bp.blogspot.com/-L2HW4kmUrZs/VgkJY1MyGuI/AAAAAAAAFJ0/9HI1DIcMlUM/s1600/555-pinout.png";
 
                     }else{
 
-                      valores.pinout_comp = img_pinout;
+                      obj.pinout_comp = img_pinout;
 
                     }
 
                     if (img_esque === "") {
 
-                      valores.esquematico_comp = "https://2.bp.blogspot.com/-0sKu5PzSfQI/U14_qaTxnCI/AAAAAAAAAVw/OkMF8TVsO6s/s1600/555_esquema.png";
+                      obj.esquematico_comp = "https://2.bp.blogspot.com/-0sKu5PzSfQI/U14_qaTxnCI/AAAAAAAAAVw/OkMF8TVsO6s/s1600/555_esquema.png";
 
                     }else{
 
-                      valores.esquematico_comp = img_esque;
+                      obj.esquematico_comp = img_esque;
 
                     }
 
-                    electronicos_post( valores ).then( (info) => {
-
-                      console.log(info);
+                    electronicos_post( obj ).then( (info) => {
                         
                         if (info.status === 202) {
                             
@@ -1188,6 +1338,79 @@ export const Electronicos = ( { mdl , evt }  ) => {
                               />
                             </div>
                             
+                                  {/* ----------- */}
+                                
+                                <div style={{ width:"30vh", height:"19vh",display:"flex", flexDirection:"column", alignItems:"center" }}>
+
+                                  <h3>Ubicacion:</h3>
+                                  
+                                  <ErrorMessage  name='sectors' component={() => (<p className='warn__password-user'>{errors.sectors}</p>)} />
+                                  <ErrorMessage  name='warehouses' component={() => (<p className='warn__password-user'>{errors.warehouses}</p>)} />
+                                  <ErrorMessage  name='racks' component={() => (<p className='warn__password-user'>{errors.racks}</p>)} />
+                                  <ErrorMessage  name='fila' component={() => (<p className='warn__password-user'>{errors.fila}</p>)} />
+                                  <ErrorMessage  name='columna' component={() => (<p className='warn__password-user'>{errors.columna}</p>)} />
+                                  
+                                  <div style={{ display:"grid", gridTemplateColumns:"repeat(2,1fr)", gap:"2rem", textAlign:"center" }}>
+
+                                    <div className="row_config">
+                                      <h2>Sector</h2>
+                                      <Field as="select" className="input_ubi" name='sectors'id="sectors" autofocus="true">
+                                        <option value={"none"}>#</option>
+                                          {
+                                            sct.map((item) => (
+                                              <>
+                                                <option value={item}>{item}</option>
+                                              </>
+                                            ))
+                                          }
+                                      </Field>
+                                    </div>
+
+                                    <div className="row_config">
+                                      <h2>Bodega</h2>
+                                      <Field as="select" className="input_ubi" name='warehouses'id="warehouses" autofocus="true">
+                                        <option value={"none"}>#</option>
+                                          {
+                                            bdgs.map((item) => (
+                                              <>
+                                                <option value={item}>{item}</option>
+                                              </>
+                                            ))
+                                          }
+                                      </Field>
+                                    </div>   
+
+                                    <div className="row_config">
+                                      <h2>Armario</h2>
+                                      <Field as="select" className="input_ubi" name='racks'id="racks" autofocus="true">
+                                        <option value={"none"}>#</option>
+                                          {
+                                            racks.map((item) => (
+                                              <>
+                                                <option value={item}>{item}</option>
+                                              </>
+                                            ))
+                                          }
+                                      </Field>
+                                    </div>
+
+                                    <div className="row_config">
+                                      <h2>Fila</h2>
+                                      <Field placeholder="" className="input_ubi" type="text" name='fila'id="fila"/>
+                                    </div>
+
+                                  </div> 
+
+                                  <div className="row_config">
+                                    <h2>Columna</h2>
+                                    <Field placeholder="" className="input_ubi" type="text" name='columna'id="columna"/>
+                                  </div>
+
+                                </div>
+
+                                {/* ----------- */}
+
+                            
                             <ErrorMessage  name='cantidad_consumida_comp' component={() => (<p className='warn__password-user'>{errors.cantidad_consumida_comp}</p>)} />
                             <div className="input-container input_inventario">
                               <Field 
@@ -1196,28 +1419,6 @@ export const Electronicos = ( { mdl , evt }  ) => {
                                 name='cantidad_consumida_comp'
                                 id="cantidad_consumida_comp"
                               />
-                            </div>
-                            
-                            <ErrorMessage  name='ubicacion_comp' component={() => (<p className='warn__password-user'>{errors.ubicacion_comp}</p>)} />
-                            <div className="input-container input_inventario">
-                              <Field 
-                                type='text'
-                                placeholder='Ubicacion' 
-                                name='ubicacion_comp'
-                                id="ubicacion_comp"
-                              />
-                            </div>
-                            
-                            <ErrorMessage  name='descripcion_comp' component={() => (<p className='warn__password-user'>{errors.descripcion_comp}</p>)} />
-                            <div className="input-container input_inventario">
-                            <Field 
-                              as="textarea"
-                              max="180"
-                              style={{ resize: "none", backgroundColor: "rgb(2, 71, 118)",borderRadius:"6px",width:"28vh",padding:"1rem", color:"color:rgb(223 222 223 / 1)" }} 
-                              placeholder='Descripcion' 
-                              name='descripcion_comp'
-                              id="descripcion_comp"
-                            />
                             </div>
 
                               <div style={{ width:"100%", display:"flex", justifyContent:"center", gap:"20px" }}>

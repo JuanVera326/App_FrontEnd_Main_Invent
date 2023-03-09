@@ -7,6 +7,7 @@ import { VscSearch } from 'react-icons/vsc';
 import { Link } from 'react-router-dom';
 import { doc_del, doc_post } from '../../../../../helpers/api/DocsRequest';
 import { getItemsModdev, getItemsModdevByGeneralId, getItemsModdevByGeneralName, getItemsModdevByType, getTypesItemsModdev, moddev_del, moddev_post, moddev_put } from '../../../../../helpers/api/ModdevRequest';
+import { ubi_get } from '../../../../../helpers/api/UbiRequest';
 import { useSendImage } from '../../../../../helpers/image/useSendImage';
 import { Modal } from '../../../../pages/Modal/Modal';
 import { Button } from '../../../../ui/Buttons/Button';
@@ -18,7 +19,8 @@ export const Moddev = ( { mdl , evt } ) => {
   const [modal_obj, setmodal_obj] = useState({});
   const [modal_detail, setmodal_detail] = useState(false);
 
-  const [modal_crear, setmodal_crear] = useState(false);
+  const [modal_crear, setmodal_crear] = useState(false); 
+  const user = JSON.parse(localStorage.getItem("usuario"));
 
   const [modal_edit, setmodal_edit] = useState(false);
   const [modal_obj_edit, setmodal_obj_edit] = useState({});
@@ -33,6 +35,10 @@ export const Moddev = ( { mdl , evt } ) => {
   const [loader, setloader] = useState(false);
   const [items_moddev, setitems_moddev] = useState([]);
   const [val_request_moddev, setval_request_moddev] = useState(0);
+  const [ubi, setubi] = useState({});
+  const [sct, setsct] = useState([]);
+  const [bdgs, setbdgs] = useState([]);
+  const [racks, setracks] = useState([]);
   const [getAll, setgetAll] = useState(true);
 
   const [file, setfile] = useState(null);
@@ -335,6 +341,33 @@ export const Moddev = ( { mdl , evt } ) => {
       }
     });
 
+    ubi_get(user.id).then(info => {
+
+      if (info.status === 202) {
+
+        let arr = [];
+        setubi(info.data);
+
+        arr = [];
+        for (let index = 1; index <= info.data.racks; index++) { arr.push(index); }
+        setracks(arr);
+
+        arr = [];
+        for (let index = 1; index <= info.data.sectors; index++) { arr.push(index); }
+        setsct(arr);
+
+        arr = [];
+        for (let index = 1; index <= info.data.warehouses; index++) { arr.push(index); }
+        setbdgs(arr);
+        
+      }else{
+
+        setubi(["Error al obtener Datos de Inventario"])
+
+      }
+
+    });
+
   }, [ getAll ])  
 
   useEffect(() => { setmodal(mdl); }, [mdl]);
@@ -602,9 +635,15 @@ export const Moddev = ( { mdl , evt } ) => {
                         nombre_partemoddev: "",
                         imagen_partemoddev: img_edit,
                         tipo_parte_moddev: "",
+
+                        sectors:"",
+                        warehouses:"",
+                        racks:"",
+                        fila:"",
+                        columna:"",
+
                         cantidad_disponible_moddev: "",
                         cantidad_consumida_moddev: "",
-                        ubicacion_parte_moddev: "",
                         descripcion_parte_moddev: "",
                         datasheet_parte_moddev: "",
                       }}
@@ -629,7 +668,15 @@ export const Moddev = ( { mdl , evt } ) => {
 
                         else if (!/^\d+$/.test(valores.cantidad_consumida_moddev)) { errors.cantidad_consumida_moddev = "Cant Cons. erroneo" }
                         
-                        else if (!valores.ubicacion_parte_moddev.trim()) { errors.ubicacion_parte_moddev = "Ubicación erronea" }
+                        else if (!valores.sectors.trim() || valores.sectors === "#") { errors.sectors = "Sector erroneo" }
+
+                        else if (!valores.warehouses.trim() || valores.warehouses === "#") { errors.warehouses = "Bodega erronea" }
+
+                        else if (!valores.racks.trim() || valores.racks === "#") { errors.racks = "Armario erroneo" }
+
+                        else if (!valores.fila.trim()) { errors.fila = "Fila erronea" }
+
+                        else if (!valores.columna.trim()) { errors.columna = "Columna erronea" }
 
                         else if (!valores.descripcion_parte_moddev.trim()) { errors.descripcion_parte_moddev = "Descripción erronea" }
                         
@@ -638,11 +685,24 @@ export const Moddev = ( { mdl , evt } ) => {
 
                       onSubmit={( valores, {resetForm} ) => {
 
-                        valores.id_parte_moddev = <modal_obj_edit className="id"></modal_obj_edit>;
-                        valores.imagen_partemoddev = img_edit;
+                        let obj ={
+                          
+                          id_parte_moddev : "",
+                          nombre_partemoddev: valores.nombre_partemoddev,
+                          imagen_partemoddev: valores.imagen_partemoddev,
+                          tipo_parte_moddev: valores.tipo_parte_moddev,
+                          cantidad_consumida_moddev: valores.cantidad_consumida_moddev,
+                          cantidad_disponible_moddev: valores.cantidad_disponible_moddev,
+                          descripcion_parte_moddev: valores.descripcion_parte_moddev,
+                          datasheet_parte_moddev: valores.datasheet_parte_moddev,
+                          ubicacion_parte_moddev :`Sector ${valores.sectors} Bodega ${valores.warehouses} Armario ${valores.racks} Fila ${valores.fila} Columna ${valores.columna}`
+                        }
+
+                        obj.id_parte_moddev = modal_edit.id_parte_moddev;
+                        obj.imagen_partemoddev = img_edit;
                         setloader_edit(true);
 
-                        moddev_put( valores, valores.id_parte_moddev ).then( (info) => {
+                        moddev_put( obj, obj.id_parte_moddev ).then( (info) => {
 
                           if (info.status === 202) {
                             
@@ -749,6 +809,78 @@ export const Moddev = ( { mdl , evt } ) => {
                               </div>
 
                             } 
+                             {/* ----------- */}
+                                
+                             <div style={{ width:"30vh", height:"19vh",display:"flex", flexDirection:"column", alignItems:"center" }}>
+
+                            <h3>Ubicacion:</h3>
+                            <p style={{ maxWidth:"30vh", color:"rgb(255, 203, 58)" }}>{ modal_obj_edit.ubicacion_parte_moddev }</p>
+
+                            <ErrorMessage  name='sectors' component={() => (<p className='warn__password-user'>{errors.sectors}</p>)} />
+                            <ErrorMessage  name='warehouses' component={() => (<p className='warn__password-user'>{errors.warehouses}</p>)} />
+                            <ErrorMessage  name='racks' component={() => (<p className='warn__password-user'>{errors.racks}</p>)} />
+                            <ErrorMessage  name='fila' component={() => (<p className='warn__password-user'>{errors.fila}</p>)} />
+                            <ErrorMessage  name='columna' component={() => (<p className='warn__password-user'>{errors.columna}</p>)} />
+
+                            <div style={{ display:"grid", gridTemplateColumns:"repeat(2,1fr)", gap:"2rem", textAlign:"center" }}>
+
+                              <div className="row_config">
+                                <h2>Sector</h2>
+                                <Field as="select" className="input_ubi" name='sectors'id="sectors" autofocus="true">
+                                  <option value={"none"}>#</option>
+                                    {
+                                      sct.map((item) => (
+                                        <>
+                                          <option value={item}>{item}</option>
+                                        </>
+                                      ))
+                                    }
+                                </Field>
+                              </div>
+
+                              <div className="row_config">
+                                <h2>Bodega</h2>
+                                <Field as="select" className="input_ubi" name='warehouses'id="warehouses" autofocus="true">
+                                  <option value={"none"}>#</option>
+                                    {
+                                      bdgs.map((item) => (
+                                        <>
+                                          <option value={item}>{item}</option>
+                                        </>
+                                      ))
+                                    }
+                                </Field>
+                              </div>   
+
+                              <div className="row_config">
+                                <h2>Armario</h2>
+                                <Field as="select" className="input_ubi" name='racks'id="racks" autofocus="true">
+                                  <option value={"none"}>#</option>
+                                    {
+                                      racks.map((item) => (
+                                        <>
+                                          <option value={item}>{item}</option>
+                                        </>
+                                      ))
+                                    }
+                                </Field>
+                              </div>
+
+                              <div className="row_config">
+                                <h2>Fila</h2>
+                                <Field placeholder="" className="input_ubi" type="text" name='fila'id="fila"/>
+                              </div>
+
+                            </div> 
+
+                            <div className="row_config">
+                              <h2>Columna</h2>
+                              <Field placeholder="" className="input_ubi" type="text" name='columna'id="columna"/>
+                            </div>
+
+                            </div>
+
+                            {/* ----------- */} 
                             <br />
                             <hr />
                             <br />
@@ -773,15 +905,6 @@ export const Moddev = ( { mdl , evt } ) => {
                                 id="cantidad_disponible_moddev"
                               />
                               </div>
-                              <p style={{ maxWidth:"30vh", color:"rgb(255, 203, 58)" }}>{ modal_obj_edit.ubicacion_parte_moddev }</p>
-                            <ErrorMessage  name='ubicacion_parte_moddev' component={() => (<p className='warn__password-user'>{errors.ubicacion_parte_moddev}</p>)} />
-                            <div className="input-container input_inventario">
-                              <Field 
-                                placeholder='Nuev@ Ubicacion'
-                                name='ubicacion_parte_moddev'
-                                id="ubicacion_parte_moddev"
-                              />
-                            </div>
                               
                             <div style={{ width:"100%",display:"flex",justifyContent:"center",gap:"10px" }}>
                               <Input type={"submit"} txt={"Actualizar"} style={"btn btn_invent"}/>
@@ -823,60 +946,87 @@ export const Moddev = ( { mdl , evt } ) => {
 
                 <Formik
 
-                    initialValues={{
-                      id_parte_moddev : "",
-                      nombre_partemoddev: "",
-                      imagen_partemoddev: img_edit,
-                      tipo_parte_moddev: "",
-                      cantidad_disponible_moddev: "",
-                      cantidad_consumida_moddev: "",
-                      ubicacion_parte_moddev: "",
-                      descripcion_parte_moddev: "",
-                      datasheet_parte_moddev: "",
-                    }}
+                  initialValues={{
+                    id_parte_moddev : "",
+                    nombre_partemoddev: "",
+                    imagen_partemoddev: img_edit,
+                    tipo_parte_moddev: "",
 
-                    validate = {(valores) => {
+                    sectors:"",
+                    warehouses:"",
+                    racks:"",
+                    fila:"",
+                    columna:"",
 
-                      let errors = {};
+                    cantidad_disponible_moddev: "",
+                    cantidad_consumida_moddev: "",
+                    descripcion_parte_moddev: "",
+                    datasheet_parte_moddev: "",
+                  }}
 
-                      if (!valores.nombre_partemoddev.trim()) { errors.nombre_partemoddev = "Nombre erroneo" }
+                  validate = {(valores) => {
 
-                      else if (!valores.tipo_parte_moddev.trim()) { errors.tipo_parte_moddev = "Tipo erroneo" }
+                    let errors = {};
 
-                      else if (!valores.tipo_parte_moddev === "none") { errors.tipo_parte_moddev = "Tipo erroneo" }
+                    if (!valores.nombre_partemoddev.trim()) { errors.nombre_partemoddev = "Nombre erroneo" }
 
-                      else if (!valores.tipo_parte_moddev === "Cree un nuevo tipo") { errors.tipo_parte_moddev = "Tipo erroneo" }
-                      
-                      else if (!valores.cantidad_disponible_moddev.trim()) { errors.cantidad_disponible_moddev = "Cant Disp. erroneos" }
+                    else if (!valores.tipo_parte_moddev.trim()) { errors.tipo_parte_moddev = "Tipo erroneo" }
 
-                      else if (!/^\d+$/.test(valores.cantidad_disponible_moddev)) { errors.cantidad_disponible_moddev = "Cant Disp. erroneo" }
-                      
-                      else if (!valores.cantidad_consumida_moddev.trim()) { errors.cantidad_consumida_moddev = "Cant Cons. erroneo" }
+                    else if (!valores.tipo_parte_moddev === "none") { errors.tipo_parte_moddev = "Tipo erroneo" }
 
-                      else if (!/^\d+$/.test(valores.cantidad_consumida_moddev)) { errors.cantidad_consumida_moddev = "Cant Cons. erroneo" }
-                      
-                      else if (!valores.ubicacion_parte_moddev.trim()) { errors.ubicacion_parte_moddev = "Ubicación erronea" }
+                    else if (!valores.tipo_parte_moddev === "Cree un nuevo tipo") { errors.tipo_parte_moddev = "Tipo erroneo" }
+                    
+                    else if (!valores.cantidad_disponible_moddev.trim()) { errors.cantidad_disponible_moddev = "Cant Disp. erroneos" }
 
-                      else if (!valores.descripcion_parte_moddev.trim()) { errors.descripcion_parte_moddev = "Descripción erronea" }
-                      
-                      return errors;
-                    }}
+                    else if (!/^\d+$/.test(valores.cantidad_disponible_moddev)) { errors.cantidad_disponible_moddev = "Cant Disp. erroneo" }
+                    
+                    else if (!valores.cantidad_consumida_moddev.trim()) { errors.cantidad_consumida_moddev = "Cant Cons. erroneo" }
+
+                    else if (!/^\d+$/.test(valores.cantidad_consumida_moddev)) { errors.cantidad_consumida_moddev = "Cant Cons. erroneo" }
+                    
+                    else if (!valores.sectors.trim() || valores.sectors === "#") { errors.sectors = "Sector erroneo" }
+
+                    else if (!valores.warehouses.trim() || valores.warehouses === "#") { errors.warehouses = "Bodega erronea" }
+
+                    else if (!valores.racks.trim() || valores.racks === "#") { errors.racks = "Armario erroneo" }
+
+                    else if (!valores.fila.trim()) { errors.fila = "Fila erronea" }
+
+                    else if (!valores.columna.trim()) { errors.columna = "Columna erronea" }
+
+                    else if (!valores.descripcion_parte_moddev.trim()) { errors.descripcion_parte_moddev = "Descripción erronea" }
+                    
+                    return errors;
+                  }}
 
                   onSubmit={( valores, {resetForm} ) => {
+
+                    let obj ={
+                          
+                      id_parte_moddev : "",
+                      nombre_partemoddev: valores.nombre_partemoddev,
+                      imagen_partemoddev: valores.imagen_partemoddev,
+                      tipo_parte_moddev: valores.tipo_parte_moddev,
+                      cantidad_consumida_moddev: valores.cantidad_consumida_moddev,
+                      cantidad_disponible_moddev: valores.cantidad_disponible_moddev,
+                      descripcion_parte_moddev: valores.descripcion_parte_moddev,
+                      datasheet_parte_moddev: valores.datasheet_parte_moddev,
+                      ubicacion_parte_moddev :`Sector ${valores.sectors} Bodega ${valores.warehouses} Armario ${valores.racks} Fila ${valores.fila} Columna ${valores.columna}`
+                    }
                     
                     setloader_edit(true);
 
                     if (img_edit === "") {
 
-                      valores.imagen_partemoddev = "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Raspberry_Pi_4_Model_B_-_Side.jpg/640px-Raspberry_Pi_4_Model_B_-_Side.jpg";
+                      obj.imagen_partemoddev = "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Raspberry_Pi_4_Model_B_-_Side.jpg/640px-Raspberry_Pi_4_Model_B_-_Side.jpg";
 
                     }else{
 
-                      valores.imagen_partemoddev = img_edit;
+                      obj.imagen_partemoddev = img_edit;
 
                     }
 
-                    moddev_post( valores  ).then( (info) => {
+                    moddev_post( obj  ).then( (info) => {
 
                       if (info.status === 202) {
                         
@@ -983,6 +1133,77 @@ export const Moddev = ( { mdl , evt } ) => {
                                   </div>
 
                                } 
+                               {/* ----------- */}
+                                
+                               <div style={{ width:"30vh", height:"19vh",display:"flex", flexDirection:"column", alignItems:"center" }}>
+
+                              <h3>Ubicacion:</h3>
+
+                              <ErrorMessage  name='sectors' component={() => (<p className='warn__password-user'>{errors.sectors}</p>)} />
+                              <ErrorMessage  name='warehouses' component={() => (<p className='warn__password-user'>{errors.warehouses}</p>)} />
+                              <ErrorMessage  name='racks' component={() => (<p className='warn__password-user'>{errors.racks}</p>)} />
+                              <ErrorMessage  name='fila' component={() => (<p className='warn__password-user'>{errors.fila}</p>)} />
+                              <ErrorMessage  name='columna' component={() => (<p className='warn__password-user'>{errors.columna}</p>)} />
+
+                              <div style={{ display:"grid", gridTemplateColumns:"repeat(2,1fr)", gap:"2rem", textAlign:"center" }}>
+
+                                <div className="row_config">
+                                  <h2>Sector</h2>
+                                  <Field as="select" className="input_ubi" name='sectors'id="sectors" autofocus="true">
+                                    <option value={"none"}>#</option>
+                                      {
+                                        sct.map((item) => (
+                                          <>
+                                            <option value={item}>{item}</option>
+                                          </>
+                                        ))
+                                      }
+                                  </Field>
+                                </div>
+
+                                <div className="row_config">
+                                  <h2>Bodega</h2>
+                                  <Field as="select" className="input_ubi" name='warehouses'id="warehouses" autofocus="true">
+                                    <option value={"none"}>#</option>
+                                      {
+                                        bdgs.map((item) => (
+                                          <>
+                                            <option value={item}>{item}</option>
+                                          </>
+                                        ))
+                                      }
+                                  </Field>
+                                </div>   
+
+                                <div className="row_config">
+                                  <h2>Armario</h2>
+                                  <Field as="select" className="input_ubi" name='racks'id="racks" autofocus="true">
+                                    <option value={"none"}>#</option>
+                                      {
+                                        racks.map((item) => (
+                                          <>
+                                            <option value={item}>{item}</option>
+                                          </>
+                                        ))
+                                      }
+                                  </Field>
+                                </div>
+
+                                <div className="row_config">
+                                  <h2>Fila</h2>
+                                  <Field placeholder="" className="input_ubi" type="text" name='fila'id="fila"/>
+                                </div>
+
+                              </div> 
+
+                              <div className="row_config">
+                                <h2>Columna</h2>
+                                <Field placeholder="" className="input_ubi" type="text" name='columna'id="columna"/>
+                              </div>
+
+                              </div>
+
+                              {/* ----------- */}
                                 
                                 <ErrorMessage  name='cantidad_disponible_moddev' component={() => (<p className='warn__password-user'>{errors.cantidad_disponible_moddev}</p>)} />
                                 <div className="input-container input_inventario">
@@ -1001,16 +1222,6 @@ export const Moddev = ( { mdl , evt } ) => {
                                     placeholder='Cantidad consumida' 
                                     name='cantidad_consumida_moddev'
                                     id="cantidad_consumida_moddev"
-                                  />
-                                </div>
-                                
-                                <ErrorMessage  name='ubicacion_parte_moddev' component={() => (<p className='warn__password-user'>{errors.ubicacion_parte_moddev}</p>)} />
-                                <div className="input-container input_inventario">
-                                  <Field 
-                                    type='text'
-                                    placeholder='Ubicacion' 
-                                    name='ubicacion_parte_moddev'
-                                    id="ubicacion_parte_moddev"
                                   />
                                 </div>
                                 

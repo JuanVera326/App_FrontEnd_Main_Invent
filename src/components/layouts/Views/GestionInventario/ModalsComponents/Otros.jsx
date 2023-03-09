@@ -12,6 +12,7 @@ import { Button } from '../../../../ui/Buttons/Button';
 import { Input } from '../../../../ui/Input/Input';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import "./Components.css";
+import { ubi_get } from '../../../../../helpers/api/UbiRequest';
 
 export const Otros = ( { mdl , evt } ) => {
   
@@ -19,6 +20,7 @@ export const Otros = ( { mdl , evt } ) => {
   const [modal_detail, setmodal_detail] = useState(false);
 
   const [modal_crear, setmodal_crear] = useState(false);
+  const user = JSON.parse(localStorage.getItem("usuario"));
 
   const [modal_edit, setmodal_edit] = useState(false);
   const [modal_obj_edit, setmodal_obj_edit] = useState({});
@@ -33,6 +35,10 @@ export const Otros = ( { mdl , evt } ) => {
   const [loader, setloader] = useState(false);
   const [items_otros, setitems_otros] = useState([]);
   const [val_request_otros, setval_request_otros] = useState(0);
+  const [ubi, setubi] = useState({});
+  const [sct, setsct] = useState([]);
+  const [bdgs, setbdgs] = useState([]);
+  const [racks, setracks] = useState([]);
   const [getAll, setgetAll] = useState(true);
 
   const [file, setfile] = useState(null);
@@ -334,6 +340,34 @@ export const Otros = ( { mdl , evt } ) => {
         settypes(["Error al obtener tipos"])
 
       }
+      
+      ubi_get(user.id).then(info => {
+
+        if (info.status === 202) {
+  
+          let arr = [];
+          setubi(info.data);
+  
+          arr = [];
+          for (let index = 1; index <= info.data.racks; index++) { arr.push(index); }
+          setracks(arr);
+  
+          arr = [];
+          for (let index = 1; index <= info.data.sectors; index++) { arr.push(index); }
+          setsct(arr);
+  
+          arr = [];
+          for (let index = 1; index <= info.data.warehouses; index++) { arr.push(index); }
+          setbdgs(arr);
+          
+        }else{
+  
+          setubi(["Error al obtener Datos de Inventario"])
+  
+        }
+  
+      });
+
     });
 
   }, [ getAll ])
@@ -604,9 +638,15 @@ export const Otros = ( { mdl , evt } ) => {
                         nombre_parte_otros: "",
                         imagen_parte_otros: img_edit,
                         tipo_parte_otros: "",
+                        
+                        sectors:"",
+                        warehouses:"",
+                        racks:"",
+                        fila:"",
+                        columna:"",
+
                         cantidad_disponible_otros: "",
                         cantidad_consumida_otros: "",
-                        ubicacion_parte_otros: "",
                         descripcion_parte_otros: "",
                         datasheet_parte_otros: "",
                       }}
@@ -631,7 +671,15 @@ export const Otros = ( { mdl , evt } ) => {
 
                         else if (!/^\d+$/.test(valores.cantidad_consumida_otros)) { errors.cantidad_consumida_otros = "Cant Cons. erroneo" }
                         
-                        else if (!valores.ubicacion_parte_otros.trim()) { errors.ubicacion_parte_otros = "Ubicación erronea" }
+                        else if (!valores.sectors.trim() || valores.sectors === "#") { errors.sectors = "Sector erroneo" }
+
+                        else if (!valores.warehouses.trim() || valores.warehouses === "#") { errors.warehouses = "Bodega erronea" }
+
+                        else if (!valores.racks.trim() || valores.racks === "#") { errors.racks = "Armario erroneo" }
+
+                        else if (!valores.fila.trim()) { errors.fila = "Fila erronea" }
+
+                        else if (!valores.columna.trim()) { errors.columna = "Columna erronea" }
 
                         else if (!valores.descripcion_parte_otros.trim()) { errors.descripcion_parte_otros = "Descripción erronea" }
                         
@@ -640,11 +688,24 @@ export const Otros = ( { mdl , evt } ) => {
 
                       onSubmit={( valores, {resetForm} ) => {
 
-                        valores.id_parte_otros = <modal_obj_edit className="id"></modal_obj_edit>;
-                        valores.imagen_parteotros = img_edit;
+                        let obj ={
+                          
+                          id_parte_otros : "",
+                          nombre_parte_otros: valores.nombre_parte_otros,
+                          imagen_parte_otros: valores.imagen_parte_otros,
+                          tipo_parte_otros: valores.tipo_parte_otros,
+                          cantidad_disponible_otros: valores.cantidad_disponible_otros,
+                          cantidad_consumida_otros: valores.cantidad_consumida_otros,
+                          descripcion_parte_otros: valores.descripcion_parte_otros,
+                          datasheet_parte_otros: valores.datasheet_parte_otros,
+                          ubicacion_parte_otros:`Sector ${valores.sectors} Bodega ${valores.warehouses} Armario ${valores.racks} Fila ${valores.fila} Columna ${valores.columna}`
+                        }
+
+                        obj.id_parte_otros = modal_edit.id_parte_otros;
+                        obj.imagen_parteotros = img_edit;
                         setloader_edit(true);
 
-                        otros_put( valores, valores.id_parte_otros ).then( (info) => {
+                        otros_put( obj, obj.id_parte_otros ).then( (info) => {
 
                           if (info.status === 202) {
                             
@@ -751,6 +812,78 @@ export const Otros = ( { mdl , evt } ) => {
                               </div>
 
                             } 
+                            {/* ----------- */}
+                                
+                                <div style={{ width:"30vh", height:"19vh",display:"flex", flexDirection:"column", alignItems:"center" }}>
+
+                                  <h3>Ubicacion:</h3>
+                                  <p style={{ maxWidth:"30vh", color:"rgb(255, 203, 58)" }}>{ modal_obj_edit.ubicacion_parte_otros }</p>
+                                  
+                                  <ErrorMessage  name='sectors' component={() => (<p className='warn__password-user'>{errors.sectors}</p>)} />
+                                  <ErrorMessage  name='warehouses' component={() => (<p className='warn__password-user'>{errors.warehouses}</p>)} />
+                                  <ErrorMessage  name='racks' component={() => (<p className='warn__password-user'>{errors.racks}</p>)} />
+                                  <ErrorMessage  name='fila' component={() => (<p className='warn__password-user'>{errors.fila}</p>)} />
+                                  <ErrorMessage  name='columna' component={() => (<p className='warn__password-user'>{errors.columna}</p>)} />
+                                  
+                                  <div style={{ display:"grid", gridTemplateColumns:"repeat(2,1fr)", gap:"2rem", textAlign:"center" }}>
+
+                                    <div className="row_config">
+                                      <h2>Sector</h2>
+                                      <Field as="select" className="input_ubi" name='sectors'id="sectors" autofocus="true">
+                                        <option value={"none"}>#</option>
+                                          {
+                                            sct.map((item) => (
+                                              <>
+                                                <option value={item}>{item}</option>
+                                              </>
+                                            ))
+                                          }
+                                      </Field>
+                                    </div>
+
+                                    <div className="row_config">
+                                      <h2>Bodega</h2>
+                                      <Field as="select" className="input_ubi" name='warehouses'id="warehouses" autofocus="true">
+                                        <option value={"none"}>#</option>
+                                          {
+                                            bdgs.map((item) => (
+                                              <>
+                                                <option value={item}>{item}</option>
+                                              </>
+                                            ))
+                                          }
+                                      </Field>
+                                    </div>   
+
+                                    <div className="row_config">
+                                      <h2>Armario</h2>
+                                      <Field as="select" className="input_ubi" name='racks'id="racks" autofocus="true">
+                                        <option value={"none"}>#</option>
+                                          {
+                                            racks.map((item) => (
+                                              <>
+                                                <option value={item}>{item}</option>
+                                              </>
+                                            ))
+                                          }
+                                      </Field>
+                                    </div>
+
+                                    <div className="row_config">
+                                      <h2>Fila</h2>
+                                      <Field placeholder="" className="input_ubi" type="text" name='fila'id="fila"/>
+                                    </div>
+
+                                  </div> 
+
+                                  <div className="row_config">
+                                    <h2>Columna</h2>
+                                    <Field placeholder="" className="input_ubi" type="text" name='columna'id="columna"/>
+                                  </div>
+
+                                </div>
+
+                                {/* ----------- */} 
                             <br />
                             <hr />
                             <br />
@@ -825,60 +958,87 @@ export const Otros = ( { mdl , evt } ) => {
 
                 <Formik
 
-                    initialValues={{
-                      id_parte_otros : "",
-                      nombre_parte_otros: "",
-                      imagen_parte_otros: img_edit,
-                      tipo_parte_otros: "",
-                      cantidad_disponible_otros: "",
-                      cantidad_consumida_otros: "",
-                      ubicacion_parte_otros: "",
-                      descripcion_parte_otros: "",
-                      datasheet_parte_otros: "",
-                    }}
+                  initialValues={{
+                    id_parte_otros : "",
+                    nombre_parte_otros: "",
+                    imagen_parte_otros: img_edit,
+                    tipo_parte_otros: "",
+                    
+                    sectors:"",
+                    warehouses:"",
+                    racks:"",
+                    fila:"",
+                    columna:"",
 
-                    validate = {(valores) => {
+                    cantidad_disponible_otros: "",
+                    cantidad_consumida_otros: "",
+                    descripcion_parte_otros: "",
+                    datasheet_parte_otros: "",
+                  }}
 
-                      let errors = {};
+                  validate = {(valores) => {
 
-                      if (!valores.nombre_parte_otros.trim()) { errors.nombre_parte_otros = "Nombre erroneo" }
+                    let errors = {};
 
-                      else if (!valores.tipo_parte_otros.trim()) { errors.tipo_parte_otros = "Tipo erroneo" }
+                    if (!valores.nombre_parte_otros.trim()) { errors.nombre_parte_otros = "Nombre erroneo" }
 
-                      else if (!valores.tipo_parte_otros === "none") { errors.tipo_parte_otros = "Tipo erroneo" }
+                    else if (!valores.tipo_parte_otros.trim()) { errors.tipo_parte_otros = "Tipo erroneo" }
 
-                      else if (!valores.tipo_parte_otros === "Cree un nuevo tipo") { errors.tipo_parte_otros = "Tipo erroneo" }
-                      
-                      else if (!valores.cantidad_disponible_otros.trim()) { errors.cantidad_disponible_otros = "Cant Disp. erroneos" }
+                    else if (!valores.tipo_parte_otros === "none") { errors.tipo_parte_otros = "Tipo erroneo" }
 
-                      else if (!/^\d+$/.test(valores.cantidad_disponible_otros)) { errors.cantidad_disponible_otros = "Cant Disp. erroneo" }
-                      
-                      else if (!valores.cantidad_consumida_otros.trim()) { errors.cantidad_consumida_otros = "Cant Cons. erroneo" }
+                    else if (!valores.tipo_parte_otros === "Cree un nuevo tipo") { errors.tipo_parte_otros = "Tipo erroneo" }
+                    
+                    else if (!valores.cantidad_disponible_otros.trim()) { errors.cantidad_disponible_otros = "Cant Disp. erroneos" }
 
-                      else if (!/^\d+$/.test(valores.cantidad_consumida_otros)) { errors.cantidad_consumida_otros = "Cant Cons. erroneo" }
-                      
-                      else if (!valores.ubicacion_parte_otros.trim()) { errors.ubicacion_parte_otros = "Ubicación erronea" }
+                    else if (!/^\d+$/.test(valores.cantidad_disponible_otros)) { errors.cantidad_disponible_otros = "Cant Disp. erroneo" }
+                    
+                    else if (!valores.cantidad_consumida_otros.trim()) { errors.cantidad_consumida_otros = "Cant Cons. erroneo" }
 
-                      else if (!valores.descripcion_parte_otros.trim()) { errors.descripcion_parte_otros = "Descripción erronea" }
-                      
-                      return errors;
-                    }}
+                    else if (!/^\d+$/.test(valores.cantidad_consumida_otros)) { errors.cantidad_consumida_otros = "Cant Cons. erroneo" }
+                    
+                    else if (!valores.sectors.trim() || valores.sectors === "#") { errors.sectors = "Sector erroneo" }
+
+                    else if (!valores.warehouses.trim() || valores.warehouses === "#") { errors.warehouses = "Bodega erronea" }
+
+                    else if (!valores.racks.trim() || valores.racks === "#") { errors.racks = "Armario erroneo" }
+
+                    else if (!valores.fila.trim()) { errors.fila = "Fila erronea" }
+
+                    else if (!valores.columna.trim()) { errors.columna = "Columna erronea" }
+
+                    else if (!valores.descripcion_parte_otros.trim()) { errors.descripcion_parte_otros = "Descripción erronea" }
+                    
+                    return errors;
+                  }}
 
                   onSubmit={( valores, {resetForm} ) => {
+
+                    let obj ={
+                          
+                      id_parte_otros : "",
+                      nombre_parte_otros: valores.nombre_parte_otros,
+                      imagen_parte_otros: valores.imagen_parte_otros,
+                      tipo_parte_otros: valores.tipo_parte_otros,
+                      cantidad_disponible_otros: valores.cantidad_disponible_otros,
+                      cantidad_consumida_otros: valores.cantidad_consumida_otros,
+                      descripcion_parte_otros: valores.descripcion_parte_otros,
+                      datasheet_parte_otros: valores.datasheet_parte_otros,
+                      ubicacion_parte_otros:`Sector ${valores.sectors} Bodega ${valores.warehouses} Armario ${valores.racks} Fila ${valores.fila} Columna ${valores.columna}`
+                    }
                     
                     setloader_edit(true);
 
                     if (img_edit === "") {
 
-                      valores.imagen_parte_otros = "https://www.controlpack.com/wp-content/uploads/2020/05/caja_de_carton_30x30x30cm_9.1-1.jpg";
+                      obj.imagen_parte_otros = "https://www.controlpack.com/wp-content/uploads/2020/05/caja_de_carton_30x30x30cm_9.1-1.jpg";
 
                     }else{
 
-                      valores.imagen_parte_otros = img_edit;
+                      obj.imagen_parte_otros = img_edit;
 
                     }
 
-                    otros_post( valores  ).then( (info) => {
+                    otros_post( obj  ).then( (info) => {
 
                       if (info.status === 202) {
                         
@@ -985,6 +1145,78 @@ export const Otros = ( { mdl , evt } ) => {
                                   </div>
 
                                } 
+
+                                {/* ----------- */}
+                                
+                                <div style={{ width:"30vh", height:"19vh",display:"flex", flexDirection:"column", alignItems:"center" }}>
+
+                                  <h3>Ubicacion:</h3>
+                                  
+                                  <ErrorMessage  name='sectors' component={() => (<p className='warn__password-user'>{errors.sectors}</p>)} />
+                                  <ErrorMessage  name='warehouses' component={() => (<p className='warn__password-user'>{errors.warehouses}</p>)} />
+                                  <ErrorMessage  name='racks' component={() => (<p className='warn__password-user'>{errors.racks}</p>)} />
+                                  <ErrorMessage  name='fila' component={() => (<p className='warn__password-user'>{errors.fila}</p>)} />
+                                  <ErrorMessage  name='columna' component={() => (<p className='warn__password-user'>{errors.columna}</p>)} />
+                                  
+                                  <div style={{ display:"grid", gridTemplateColumns:"repeat(2,1fr)", gap:"2rem", textAlign:"center" }}>
+
+                                    <div className="row_config">
+                                      <h2>Sector</h2>
+                                      <Field as="select" className="input_ubi" name='sectors'id="sectors" autofocus="true">
+                                        <option value={"none"}>#</option>
+                                          {
+                                            sct.map((item) => (
+                                              <>
+                                                <option value={item}>{item}</option>
+                                              </>
+                                            ))
+                                          }
+                                      </Field>
+                                    </div>
+
+                                    <div className="row_config">
+                                      <h2>Bodega</h2>
+                                      <Field as="select" className="input_ubi" name='warehouses'id="warehouses" autofocus="true">
+                                        <option value={"none"}>#</option>
+                                          {
+                                            bdgs.map((item) => (
+                                              <>
+                                                <option value={item}>{item}</option>
+                                              </>
+                                            ))
+                                          }
+                                      </Field>
+                                    </div>   
+
+                                    <div className="row_config">
+                                      <h2>Armario</h2>
+                                      <Field as="select" className="input_ubi" name='racks'id="racks" autofocus="true">
+                                        <option value={"none"}>#</option>
+                                          {
+                                            racks.map((item) => (
+                                              <>
+                                                <option value={item}>{item}</option>
+                                              </>
+                                            ))
+                                          }
+                                      </Field>
+                                    </div>
+
+                                    <div className="row_config">
+                                      <h2>Fila</h2>
+                                      <Field placeholder="" className="input_ubi" type="text" name='fila'id="fila"/>
+                                    </div>
+
+                                  </div> 
+
+                                  <div className="row_config">
+                                    <h2>Columna</h2>
+                                    <Field placeholder="" className="input_ubi" type="text" name='columna'id="columna"/>
+                                  </div>
+
+                                </div>
+
+                                {/* ----------- */}
                                 
                                 <ErrorMessage  name='cantidad_disponible_otros' component={() => (<p className='warn__password-user'>{errors.cantidad_disponible_otros}</p>)} />
                                 <div className="input-container input_inventario">

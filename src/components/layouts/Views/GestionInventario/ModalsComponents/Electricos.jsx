@@ -11,8 +11,8 @@ import { Input } from '../../../../ui/Input/Input';
 import { Button } from '../../../../ui/Buttons/Button';
 import { doc_del, doc_post } from '../../../../../helpers/api/DocsRequest';
 import { FaFileUpload } from 'react-icons/fa';
-import "./Components.css";
 import { ubi_get } from '../../../../../helpers/api/UbiRequest';
+import "./Components.css";
 
 export const Electricos = ( { mdl , evt } ) => {
 
@@ -343,7 +343,7 @@ export const Electricos = ( { mdl , evt } ) => {
     ubi_get(user.id).then(info => {
 
       if (info.status === 202) {
-        console.log(info.data.racks);
+
         let arr = [];
         setubi(info.data);
 
@@ -351,6 +351,7 @@ export const Electricos = ( { mdl , evt } ) => {
         for (let index = 1; index <= info.data.racks; index++) { arr.push(index); }
         setracks(arr);
 
+        arr = [];
         for (let index = 1; index <= info.data.sectors; index++) { arr.push(index); }
         setsct(arr);
 
@@ -358,7 +359,6 @@ export const Electricos = ( { mdl , evt } ) => {
         for (let index = 1; index <= info.data.warehouses; index++) { arr.push(index); }
         setbdgs(arr);
         
-
       }else{
 
         setubi(["Error al obtener Datos de Inventario"])
@@ -637,7 +637,13 @@ export const Electricos = ( { mdl , evt } ) => {
                         tipo_parte_electricos: "",
                         cantidad_disponible_electricos: "",
                         cantidad_consumida_electricos: "",
-                        ubicacion_parte_electricos: "",
+                        
+                        sectors:"",
+                        warehouses:"",
+                        racks:"",
+                        fila:"",
+                        columna:"",
+
                         descripcion_parte_electricos: "",
                         datasheet_parte_electricos: "",
                       }}
@@ -650,9 +656,7 @@ export const Electricos = ( { mdl , evt } ) => {
 
                         else if (!valores.tipo_parte_electricos.trim()) { errors.tipo_parte_electricos = "Tipo erroneo" }
 
-                        else if (!valores.tipo_parte_electricos === "none") { errors.tipo_parte_electricos = "Tipo erroneo" }
-
-                        else if (!valores.tipo_parte_electricos === "Cree un nuevo tipo") { errors.tipo_parte_electricos = "Tipo erroneo" }
+                        else if (valores.tipo_parte_electricos === "none") { errors.tipo_parte_electricos = "Tipo erroneo" }
                         
                         else if (!valores.cantidad_disponible_electricos.trim()) { errors.cantidad_disponible_electricos = "Cant Disp. erroneos" }
 
@@ -662,18 +666,44 @@ export const Electricos = ( { mdl , evt } ) => {
 
                         else if (!/^\d+$/.test(valores.cantidad_consumida_electricos)) { errors.cantidad_consumida_electricos = "Cant Cons. erroneo" }
                         
-                        else if (!valores.ubicacion_parte_electricos.trim()) { errors.ubicacion_parte_electricos = "Ubicación erronea" }
+                        else if (!valores.sectors.trim() || valores.sectors === "#") { errors.sectors = "Sector erroneo" }
+
+                        else if (!valores.warehouses.trim() || valores.warehouses === "#") { errors.warehouses = "Bodega erronea" }
+
+                        else if (!valores.racks.trim() || valores.racks === "#") { errors.racks = "Armario erroneo" }
+
+                        else if (!valores.fila.trim()) { errors.fila = "Fila erronea" }
+
+                        else if (!valores.columna.trim()) { errors.columna = "Columna erronea" }
 
                         else if (!valores.descripcion_parte_electricos.trim()) { errors.descripcion_parte_electricos = "Descripción erronea" }
-                        
+
+
                         return errors;
+                        
                       }}
 
                       onSubmit={( valores, {resetForm} ) => {
 
-                        valores.id_parte_electricos = modal_obj_edit.id_parte_electricos;
-                        valores.imagen_parte_electricos = img_edit;
+                        let obj = {
+
+                          id_parte_electricos : valores.id_parte_electricos,
+                          nombre_parte_electricos: valores.nombre_parte_electricos,
+                          imagen_parte_electricos: valores.imagen_parte_electricos,
+                          tipo_parte_electricos: valores.tipo_parte_electricos,
+                          cantidad_disponible_electricos: valores.cantidad_disponible_electricos,
+                          cantidad_consumida_electricos: valores.cantidad_consumida_electricos,
+                          ubicacion_parte_electricos:`Sector ${valores.sectors} Bodega ${valores.warehouses} Armario ${valores.racks} Fila ${valores.fila} Columna ${valores.columna}`,
+                          descripcion_parte_electricos: valores.descripcion_parte_electricos,
+                          datasheet_parte_electricos: valores.datasheet_parte_electricos,
+    
+                        }
+
+                        obj.id_parte_electricos = modal_obj_edit.id_parte_electricos;
+                        obj.imagen_parte_electricos = img_edit;
+
                         setloader_edit(true);
+
 
                         electricos_put( valores, valores.id_parte_electricos ).then( (info) => {
 
@@ -781,7 +811,80 @@ export const Electricos = ( { mdl , evt } ) => {
                                 </div>
                               </div>
 
-                            } 
+                            }
+
+                            {/* ----------- */}
+                                
+                                <div style={{ width:"30vh", height:"19vh",display:"flex", flexDirection:"column", alignItems:"center" }}>
+
+                                  <h3>Ubicacion:</h3>
+                                  <p style={{ maxWidth:"30vh", color:"rgb(255, 203, 58)" }}>{ modal_obj_edit.ubicacion_parte_electricos }</p>
+                                  
+                                  <ErrorMessage  name='sectors' component={() => (<p className='warn__password-user'>{errors.sectors}</p>)} />
+                                  <ErrorMessage  name='warehouses' component={() => (<p className='warn__password-user'>{errors.warehouses}</p>)} />
+                                  <ErrorMessage  name='racks' component={() => (<p className='warn__password-user'>{errors.racks}</p>)} />
+                                  <ErrorMessage  name='fila' component={() => (<p className='warn__password-user'>{errors.fila}</p>)} />
+                                  <ErrorMessage  name='columna' component={() => (<p className='warn__password-user'>{errors.columna}</p>)} />
+                                  
+                                  <div style={{ display:"grid", gridTemplateColumns:"repeat(2,1fr)", gap:"2rem", textAlign:"center" }}>
+
+                                    <div className="row_config">
+                                      <h2>Sector</h2>
+                                      <Field as="select" className="input_ubi" name='sectors'id="sectors" autofocus="true">
+                                        <option value={"none"}>#</option>
+                                          {
+                                            sct.map((item) => (
+                                              <>
+                                                <option value={item}>{item}</option>
+                                              </>
+                                            ))
+                                          }
+                                      </Field>
+                                    </div>
+
+                                    <div className="row_config">
+                                      <h2>Bodega</h2>
+                                      <Field as="select" className="input_ubi" name='warehouses'id="warehouses" autofocus="true">
+                                        <option value={"none"}>#</option>
+                                          {
+                                            bdgs.map((item) => (
+                                              <>
+                                                <option value={item}>{item}</option>
+                                              </>
+                                            ))
+                                          }
+                                      </Field>
+                                    </div>   
+
+                                    <div className="row_config">
+                                      <h2>Armario</h2>
+                                      <Field as="select" className="input_ubi" name='racks'id="racks" autofocus="true">
+                                        <option value={"none"}>#</option>
+                                          {
+                                            racks.map((item) => (
+                                              <>
+                                                <option value={item}>{item}</option>
+                                              </>
+                                            ))
+                                          }
+                                      </Field>
+                                    </div>
+
+                                    <div className="row_config">
+                                      <h2>Fila</h2>
+                                      <Field placeholder="" className="input_ubi" type="text" name='fila'id="fila"/>
+                                    </div>
+
+                                  </div> 
+
+                                  <div className="row_config">
+                                    <h2>Columna</h2>
+                                    <Field placeholder="" className="input_ubi" type="text" name='columna'id="columna"/>
+                                  </div>
+
+                                </div>
+
+                                {/* ----------- */}
                             <br />
                             <hr />
                             <br />
@@ -806,15 +909,6 @@ export const Electricos = ( { mdl , evt } ) => {
                                 id="cantidad_disponible_electricos"
                               />
                               </div>
-                              <p style={{ maxWidth:"30vh", color:"rgb(255, 203, 58)" }}>{ modal_obj_edit.ubicacion_parte_electricos }</p>
-                            <ErrorMessage  name='ubicacion_parte_electricos' component={() => (<p className='warn__password-user'>{errors.ubicacion_parte_electricos}</p>)} />
-                            <div className="input-container input_inventario">
-                              <Field 
-                                placeholder='Nuev@ Ubicacion'
-                                name='ubicacion_parte_electricos'
-                                id="ubicacion_parte_electricos"
-                              />
-                            </div>
                               
                             <div style={{ width:"100%",display:"flex",justifyContent:"center",gap:"10px" }}>
                               <Input type={"submit"} txt={"Actualizar"} style={"btn btn_invent"}/>
@@ -892,17 +986,18 @@ export const Electricos = ( { mdl , evt } ) => {
 
                     else if (!/^\d+$/.test(valores.cantidad_consumida_electricos)) { errors.cantidad_consumida_electricos = "Cant Cons. erroneo" }
                     
-                    else if (!valores.descripcion_parte_electricos.trim()) { errors.descripcion_parte_electricos = "Descripción erronea" }
+                    else if (!valores.sectors.trim() || valores.sectors === "#") { errors.sectors = "Sector erroneo" }
 
-                    else if (!valores.sectors.trim()) { errors.sectors = "Sector erroneo" }
+                    else if (!valores.warehouses.trim() || valores.warehouses === "#") { errors.warehouses = "Bodega erronea" }
 
-                    else if (!valores.warehouses.trim()) { errors.warehouses = "Bodega erronea" }
-
-                    else if (!valores.racks.trim()) { errors.racks = "Armario erroneo" }
+                    else if (!valores.racks.trim() || valores.racks === "#") { errors.racks = "Armario erroneo" }
 
                     else if (!valores.fila.trim()) { errors.fila = "Fila erronea" }
 
                     else if (!valores.columna.trim()) { errors.columna = "Columna erronea" }
+
+                    else if (!valores.descripcion_parte_electricos.trim()) { errors.descripcion_parte_electricos = "Descripción erronea" }
+
 
                     return errors;
                     
@@ -912,7 +1007,7 @@ export const Electricos = ( { mdl , evt } ) => {
 
                     let obj = {
 
-                      id_parte_electricos : valores.id_parte_electricos,
+                      id_parte_electricos : "",
                       nombre_parte_electricos: valores.nombre_parte_electricos,
                       imagen_parte_electricos: valores.imagen_parte_electricos,
                       tipo_parte_electricos: valores.tipo_parte_electricos,
@@ -921,6 +1016,7 @@ export const Electricos = ( { mdl , evt } ) => {
                       ubicacion_parte_electricos:`Sector ${valores.sectors} Bodega ${valores.warehouses} Armario ${valores.racks} Fila ${valores.fila} Columna ${valores.columna}`,
                       descripcion_parte_electricos: valores.descripcion_parte_electricos,
                       datasheet_parte_electricos: "",
+
                     }
                     
                     setloader_edit(true);
@@ -935,36 +1031,35 @@ export const Electricos = ( { mdl , evt } ) => {
 
                     }
 
-                    console.log(obj);
 
-                    // electricos_post( valores  ).then( (info) => {
+                    electricos_post( obj  ).then( (info) => {
 
-                    //   if (info.status === 202) {
+                      if (info.status === 202) {
                         
-                    //     setloader_edit(false);
+                        setloader_edit(false);
 
-                    //     setmodal_crear(false);
-                    //     refreshRequest();
-                    //     setimg_edit("");
-                    //     resetForm();
+                        setmodal_crear(false);  
+                        refreshRequest();
+                        setimg_edit("");
+                        resetForm();
 
-                    //   }else if (info.status === 403){
+                      }else if (info.status === 403){
 
-                    //     setmsj_desha_rqst(info.data);
-                    //     setloader_edit(false);
-                    //     setTimeout(() => { setmsj_desha_rqst("") }, 3500);
+                        setmsj_desha_rqst(info.data);
+                        setloader_edit(false);
+                        setTimeout(() => { setmsj_desha_rqst("") }, 3500);
 
-                    //   }else{
+                      }else{
 
-                    //     setmsj_desha_rqst("Hubo un error, intentalo mas tarde.");
-                    //     setloader_edit(false);
-                    //     setmodal_crear(false);
-                    //     setimg_edit("");
-                    //     refreshRequest();
-                    //     setTimeout(() => { window.location = "/principal"; }, 5000);
-                    //   }
+                        setmsj_desha_rqst("Hubo un error, intentalo mas tarde.");
+                        setloader_edit(false);
+                        setmodal_crear(false);
+                        setimg_edit("");
+                        refreshRequest();
+                        setTimeout(() => { window.location = "/principal"; }, 5000);
+                      }
 
-                    // } )
+                    } )
 
                   }}>
                       {({errors}) => (
@@ -1066,8 +1161,7 @@ export const Electricos = ( { mdl , evt } ) => {
 
 
                                 {/* ----------- */}
-                                
-                                <ErrorMessage  name='ubicacion_parte_electricos' component={() => (<p className='warn__password-user'>{errors.ubicacion_parte_electricos}</p>)} />
+  
                                 <div style={{ width:"30vh", height:"19vh",display:"flex", flexDirection:"column", alignItems:"center" }}>
 
                                   <h3>Ubicacion:</h3>
@@ -1082,7 +1176,8 @@ export const Electricos = ( { mdl , evt } ) => {
 
                                     <div className="row_config">
                                       <h2>Sector</h2>
-                                      <Field as="select" className="input_ubi" name='sectors'id="sectors">
+                                      <Field as="select" className="input_ubi" name='sectors'id="sectors" autofocus="true">
+                                        <option value={"none"}>#</option>
                                           {
                                             sct.map((item) => (
                                               <>
@@ -1095,7 +1190,8 @@ export const Electricos = ( { mdl , evt } ) => {
 
                                     <div className="row_config">
                                       <h2>Bodega</h2>
-                                      <Field as="select" className="input_ubi" name='warehouses'id="warehouses">
+                                      <Field as="select" className="input_ubi" name='warehouses'id="warehouses" autofocus="true">
+                                        <option value={"none"}>#</option>
                                           {
                                             bdgs.map((item) => (
                                               <>
@@ -1108,7 +1204,8 @@ export const Electricos = ( { mdl , evt } ) => {
 
                                     <div className="row_config">
                                       <h2>Armario</h2>
-                                      <Field as="select" className="input_ubi" name='racks'id="racks" size>
+                                      <Field as="select" className="input_ubi" name='racks'id="racks" autofocus="true">
+                                        <option value={"none"}>#</option>
                                           {
                                             racks.map((item) => (
                                               <>

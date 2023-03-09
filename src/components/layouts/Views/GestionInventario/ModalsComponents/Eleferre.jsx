@@ -7,6 +7,7 @@ import { VscSearch } from 'react-icons/vsc';
 import { Link } from 'react-router-dom';
 import { doc_del, doc_post } from '../../../../../helpers/api/DocsRequest';
 import { eleferre_del, eleferre_post, eleferre_put, getItemsEleferre, getItemsEleferreByGeneralId, getItemsEleferreByGeneralName, getItemsEleferreByType, getTypesItemsEleferre } from '../../../../../helpers/api/ElementosFerreteriaRequest';
+import { ubi_get } from '../../../../../helpers/api/UbiRequest';
 import { useSendImage } from '../../../../../helpers/image/useSendImage';
 import { Modal } from '../../../../pages/Modal/Modal';
 import { Button } from '../../../../ui/Buttons/Button';
@@ -19,6 +20,7 @@ export const Eleferre = ( { mdl , evt }  ) => {
   const [modal_detail, setmodal_detail] = useState(false);
 
   const [modal_crear, setmodal_crear] = useState(false);
+  const user = JSON.parse(localStorage.getItem("usuario"));
 
   const [modal_edit, setmodal_edit] = useState(false);
   const [modal_obj_edit, setmodal_obj_edit] = useState({});
@@ -33,6 +35,10 @@ export const Eleferre = ( { mdl , evt }  ) => {
   const [loader, setloader] = useState(false);
   const [items_eleferre, setitems_eleferre] = useState([]);
   const [val_request_eleferre, setval_request_eleferre] = useState(0);
+  const [ubi, setubi] = useState({});
+  const [sct, setsct] = useState([]);
+  const [bdgs, setbdgs] = useState([]);
+  const [racks, setracks] = useState([]);
   const [getAll, setgetAll] = useState(true);
 
   const [file, setfile] = useState(null);
@@ -332,6 +338,34 @@ export const Eleferre = ( { mdl , evt }  ) => {
         settypes(["Error al obtener tipos"])
 
       }
+
+      ubi_get(user.id).then(info => {
+
+        if (info.status === 202) {
+  
+          let arr = [];
+          setubi(info.data);
+  
+          arr = [];
+          for (let index = 1; index <= info.data.racks; index++) { arr.push(index); }
+          setracks(arr);
+  
+          arr = [];
+          for (let index = 1; index <= info.data.sectors; index++) { arr.push(index); }
+          setsct(arr);
+  
+          arr = [];
+          for (let index = 1; index <= info.data.warehouses; index++) { arr.push(index); }
+          setbdgs(arr);
+          
+        }else{
+  
+          setubi(["Error al obtener Datos de Inventario"])
+  
+        }
+  
+      });
+
     });
 
   }, [ getAll ])
@@ -601,9 +635,15 @@ export const Eleferre = ( { mdl , evt }  ) => {
                         nombre_parte_elementosferreteria: "",
                         imagen_parte_elementosferreteria: img_edit,
                         tipo_parte_elementosferreteria: "",
+                        
+                        sectors:"",
+                        warehouses:"",
+                        racks:"",
+                        fila:"",
+                        columna:"",
+
                         cantidad_disponible_elementosferreteria: "",
                         cantidad_consumida_elementosferreteria: "",
-                        ubicacion_parte_elementosferreteria: "",
                         descripcion_parte_elementosferreteria: "",
                         datasheet_parte_elementosferreteria: "",
                       }}
@@ -628,7 +668,15 @@ export const Eleferre = ( { mdl , evt }  ) => {
 
                         else if (!/^\d+$/.test(valores.cantidad_consumida_elementosferreteria)) { errors.cantidad_consumida_elementosferreteria = "Cant Cons. erroneo" }
                         
-                        else if (!valores.ubicacion_parte_elementosferreteria.trim()) { errors.ubicacion_parte_elementosferreteria = "Ubicación erronea" }
+                        else if (!valores.sectors.trim() || valores.sectors === "#") { errors.sectors = "Sector erroneo" }
+
+                        else if (!valores.warehouses.trim() || valores.warehouses === "#") { errors.warehouses = "Bodega erronea" }
+
+                        else if (!valores.racks.trim() || valores.racks === "#") { errors.racks = "Armario erroneo" }
+
+                        else if (!valores.fila.trim()) { errors.fila = "Fila erronea" }
+
+                        else if (!valores.columna.trim()) { errors.columna = "Columna erronea" }
 
                         else if (!valores.descripcion_parte_elementosferreteria.trim()) { errors.descripcion_parte_elementosferreteria = "Descripción erronea" }
                         
@@ -637,11 +685,25 @@ export const Eleferre = ( { mdl , evt }  ) => {
 
                       onSubmit={( valores, {resetForm} ) => {
 
-                        valores.id_parte_elementosferreteria = modal_obj_edit.id_parte_elementosferreteria;
-                        valores.imagen_parte_elementosferreteria = img_edit;
+                        let obj = {
+                          
+                          id_parte_elementosferreteria : "",
+                          nombre_parte_elementosferreteria: valores.nombre_parte_elementosferreteria,
+                          imagen_parte_elementosferreteria: valores.imagen_parte_elementosferreteria,
+                          tipo_parte_elementosferreteria: valores.tipo_parte_elementosferreteria,
+                          cantidad_disponible_elementosferreteria: valores.cantidad_disponible_elementosferreteria,
+                          cantidad_consumida_elementosferreteria: valores.cantidad_consumida_elementosferreteria,
+                          descripcion_parte_elementosferreteria: valores.descripcion_parte_elementosferreteria,
+                          datasheet_parte_elementosferreteria: valores.datasheet_parte_elementosferreteria,
+                          ubicacion_parte_elementosferreteria:`Sector ${valores.sectors} Bodega ${valores.warehouses} Armario ${valores.racks} Fila ${valores.fila} Columna ${valores.columna}`
+
+                        }
+
+                        obj.id_parte_elementosferreteria = modal_obj_edit.id_parte_elementosferreteria;
+                        obj.imagen_parte_elementosferreteria = img_edit;
                         setloader_edit(true);
 
-                        eleferre_put( valores, valores.id_parte_elementosferreteria ).then( (info) => {
+                        eleferre_put( obj, obj.id_parte_elementosferreteria ).then( (info) => {
 
                           if (info.status === 202) {
                             
@@ -747,7 +809,79 @@ export const Eleferre = ( { mdl , evt }  ) => {
                                 </div>
                               </div>
 
-                            } 
+                            }
+                            {/* ----------- */}
+                                
+                                <div style={{ width:"30vh", height:"19vh",display:"flex", flexDirection:"column", alignItems:"center" }}>
+
+                                  <h3>Ubicacion:</h3>
+                                  <p style={{ maxWidth:"30vh", color:"rgb(255, 203, 58)" }}>{ modal_obj_edit.ubicacion_parte_elementosferreteria }</p>
+                                  
+                                  <ErrorMessage  name='sectors' component={() => (<p className='warn__password-user'>{errors.sectors}</p>)} />
+                                  <ErrorMessage  name='warehouses' component={() => (<p className='warn__password-user'>{errors.warehouses}</p>)} />
+                                  <ErrorMessage  name='racks' component={() => (<p className='warn__password-user'>{errors.racks}</p>)} />
+                                  <ErrorMessage  name='fila' component={() => (<p className='warn__password-user'>{errors.fila}</p>)} />
+                                  <ErrorMessage  name='columna' component={() => (<p className='warn__password-user'>{errors.columna}</p>)} />
+                                  
+                                  <div style={{ display:"grid", gridTemplateColumns:"repeat(2,1fr)", gap:"2rem", textAlign:"center" }}>
+
+                                    <div className="row_config">
+                                      <h2>Sector</h2>
+                                      <Field as="select" className="input_ubi" name='sectors'id="sectors" autofocus="true">
+                                        <option value={"none"}>#</option>
+                                          {
+                                            sct.map((item) => (
+                                              <>
+                                                <option value={item}>{item}</option>
+                                              </>
+                                            ))
+                                          }
+                                      </Field>
+                                    </div>
+
+                                    <div className="row_config">
+                                      <h2>Bodega</h2>
+                                      <Field as="select" className="input_ubi" name='warehouses'id="warehouses" autofocus="true">
+                                        <option value={"none"}>#</option>
+                                          {
+                                            bdgs.map((item) => (
+                                              <>
+                                                <option value={item}>{item}</option>
+                                              </>
+                                            ))
+                                          }
+                                      </Field>
+                                    </div>   
+
+                                    <div className="row_config">
+                                      <h2>Armario</h2>
+                                      <Field as="select" className="input_ubi" name='racks'id="racks" autofocus="true">
+                                        <option value={"none"}>#</option>
+                                          {
+                                            racks.map((item) => (
+                                              <>
+                                                <option value={item}>{item}</option>
+                                              </>
+                                            ))
+                                          }
+                                      </Field>
+                                    </div>
+
+                                    <div className="row_config">
+                                      <h2>Fila</h2>
+                                      <Field placeholder="" className="input_ubi" type="text" name='fila'id="fila"/>
+                                    </div>
+
+                                  </div> 
+
+                                  <div className="row_config">
+                                    <h2>Columna</h2>
+                                    <Field placeholder="" className="input_ubi" type="text" name='columna'id="columna"/>
+                                  </div>
+
+                                </div>
+
+                                {/* ----------- */} 
                             <br />
                             <hr />
                             <br />
@@ -827,11 +961,17 @@ export const Eleferre = ( { mdl , evt }  ) => {
                     nombre_parte_elementosferreteria: "",
                     imagen_parte_elementosferreteria: img_edit,
                     tipo_parte_elementosferreteria: "",
+                    
+                    sectors:"",
+                    warehouses:"",
+                    racks:"",
+                    fila:"",
+                    columna:"",
+
                     cantidad_disponible_elementosferreteria: "",
                     cantidad_consumida_elementosferreteria: "",
-                    ubicacion_parte_elementosferreteria: "",
                     descripcion_parte_elementosferreteria: "",
-                    datasheet_parte_elementosferreteria: ""
+                    datasheet_parte_elementosferreteria: "",
                   }}
 
                   validate = {(valores) => {
@@ -854,7 +994,15 @@ export const Eleferre = ( { mdl , evt }  ) => {
 
                     else if (!/^\d+$/.test(valores.cantidad_consumida_elementosferreteria)) { errors.cantidad_consumida_elementosferreteria = "Cant Cons. erroneo" }
                     
-                    else if (!valores.ubicacion_parte_elementosferreteria.trim()) { errors.ubicacion_parte_elementosferreteria = "Ubicación erronea" }
+                    else if (!valores.sectors.trim() || valores.sectors === "#") { errors.sectors = "Sector erroneo" }
+
+                    else if (!valores.warehouses.trim() || valores.warehouses === "#") { errors.warehouses = "Bodega erronea" }
+
+                    else if (!valores.racks.trim() || valores.racks === "#") { errors.racks = "Armario erroneo" }
+
+                    else if (!valores.fila.trim()) { errors.fila = "Fila erronea" }
+
+                    else if (!valores.columna.trim()) { errors.columna = "Columna erronea" }
 
                     else if (!valores.descripcion_parte_elementosferreteria.trim()) { errors.descripcion_parte_elementosferreteria = "Descripción erronea" }
                     
@@ -862,20 +1010,34 @@ export const Eleferre = ( { mdl , evt }  ) => {
                   }}
 
                   onSubmit={( valores, {resetForm} ) => {
+
+                    let obj = {
+                          
+                      id_parte_elementosferreteria : "",
+                      nombre_parte_elementosferreteria: valores.nombre_parte_elementosferreteria,
+                      imagen_parte_elementosferreteria: valores.imagen_parte_elementosferreteria,
+                      tipo_parte_elementosferreteria: valores.tipo_parte_elementosferreteria,
+                      cantidad_disponible_elementosferreteria: valores.cantidad_disponible_elementosferreteria,
+                      cantidad_consumida_elementosferreteria: valores.cantidad_consumida_elementosferreteria,
+                      descripcion_parte_elementosferreteria: valores.descripcion_parte_elementosferreteria,
+                      datasheet_parte_elementosferreteria: valores.datasheet_parte_elementosferreteria,
+                      ubicacion_parte_elementosferreteria:`Sector ${valores.sectors} Bodega ${valores.warehouses} Armario ${valores.racks} Fila ${valores.fila} Columna ${valores.columna}`
+
+                    }
                     
                     setloader_edit(true);
 
                     if (img_edit === "") {
 
-                      valores.imagen_parte_elementosferreteria = "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Hammer.jpg/220px-Hammer.jpg";
+                      obj.imagen_parte_elementosferreteria = "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Hammer.jpg/220px-Hammer.jpg";
 
                     }else{
 
-                      valores.imagen_parte_elementosferreteria = img_edit;
+                      obj.imagen_parte_elementosferreteria = img_edit;
 
                     }
 
-                    eleferre_post( valores  ).then( (info) => {
+                    eleferre_post( obj  ).then( (info) => {
 
                       if (info.status === 202) {
                         
@@ -981,6 +1143,78 @@ export const Eleferre = ( { mdl , evt }  ) => {
                                   </div>
 
                                } 
+
+                                {/* ----------- */}
+                                
+                                <div style={{ width:"30vh", height:"19vh",display:"flex", flexDirection:"column", alignItems:"center" }}>
+
+                                  <h3>Ubicacion:</h3>
+                                  
+                                  <ErrorMessage  name='sectors' component={() => (<p className='warn__password-user'>{errors.sectors}</p>)} />
+                                  <ErrorMessage  name='warehouses' component={() => (<p className='warn__password-user'>{errors.warehouses}</p>)} />
+                                  <ErrorMessage  name='racks' component={() => (<p className='warn__password-user'>{errors.racks}</p>)} />
+                                  <ErrorMessage  name='fila' component={() => (<p className='warn__password-user'>{errors.fila}</p>)} />
+                                  <ErrorMessage  name='columna' component={() => (<p className='warn__password-user'>{errors.columna}</p>)} />
+                                  
+                                  <div style={{ display:"grid", gridTemplateColumns:"repeat(2,1fr)", gap:"2rem", textAlign:"center" }}>
+
+                                    <div className="row_config">
+                                      <h2>Sector</h2>
+                                      <Field as="select" className="input_ubi" name='sectors'id="sectors" autofocus="true">
+                                        <option value={"none"}>#</option>
+                                          {
+                                            sct.map((item) => (
+                                              <>
+                                                <option value={item}>{item}</option>
+                                              </>
+                                            ))
+                                          }
+                                      </Field>
+                                    </div>
+
+                                    <div className="row_config">
+                                      <h2>Bodega</h2>
+                                      <Field as="select" className="input_ubi" name='warehouses'id="warehouses" autofocus="true">
+                                        <option value={"none"}>#</option>
+                                          {
+                                            bdgs.map((item) => (
+                                              <>
+                                                <option value={item}>{item}</option>
+                                              </>
+                                            ))
+                                          }
+                                      </Field>
+                                    </div>   
+
+                                    <div className="row_config">
+                                      <h2>Armario</h2>
+                                      <Field as="select" className="input_ubi" name='racks'id="racks" autofocus="true">
+                                        <option value={"none"}>#</option>
+                                          {
+                                            racks.map((item) => (
+                                              <>
+                                                <option value={item}>{item}</option>
+                                              </>
+                                            ))
+                                          }
+                                      </Field>
+                                    </div>
+
+                                    <div className="row_config">
+                                      <h2>Fila</h2>
+                                      <Field placeholder="" className="input_ubi" type="text" name='fila'id="fila"/>
+                                    </div>
+
+                                  </div> 
+
+                                  <div className="row_config">
+                                    <h2>Columna</h2>
+                                    <Field placeholder="" className="input_ubi" type="text" name='columna'id="columna"/>
+                                  </div>
+
+                                </div>
+
+                                {/* ----------- */}
                                 
                                 <ErrorMessage  name='cantidad_disponible_elementosferreteria' component={() => (<p className='warn__password-user'>{errors.cantidad_disponible_elementosferreteria}</p>)} />
                                 <div className="input-container input_inventario">
@@ -999,16 +1233,6 @@ export const Eleferre = ( { mdl , evt }  ) => {
                                     placeholder='Cantidad consumida' 
                                     name='cantidad_consumida_elementosferreteria'
                                     id="cantidad_consumida_elementosferreteria"
-                                  />
-                                </div>
-                                
-                                <ErrorMessage  name='ubicacion_parte_elementosferreteria' component={() => (<p className='warn__password-user'>{errors.ubicacion_parte_elementosferreteria}</p>)} />
-                                <div className="input-container input_inventario">
-                                  <Field 
-                                    type='text'
-                                    placeholder='Ubicacion' 
-                                    name='ubicacion_parte_elementosferreteria'
-                                    id="ubicacion_parte_elementosferreteria"
                                   />
                                 </div>
                                 
