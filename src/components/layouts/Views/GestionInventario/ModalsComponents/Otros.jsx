@@ -701,8 +701,8 @@ export const Otros = ( { mdl , evt } ) => {
                           ubicacion_parte_otros:`Sector ${valores.sectors} Bodega ${valores.warehouses} Armario ${valores.racks} Fila ${valores.fila} Columna ${valores.columna}`
                         }
 
-                        obj.id_parte_otros = modal_edit.id_parte_otros;
-                        obj.imagen_parteotros = img_edit;
+                        obj.id_parte_otros = modal_obj_edit.id_parte_otros;
+                        obj.imagen_parte_otros = img_edit;
                         setloader_edit(true);
 
                         otros_put( obj, obj.id_parte_otros ).then( (info) => {
@@ -908,15 +908,6 @@ export const Otros = ( { mdl , evt } ) => {
                                 id="cantidad_disponible_otros"
                               />
                               </div>
-                              <p style={{ maxWidth:"30vh", color:"rgb(255, 203, 58)" }}>{ modal_obj_edit.ubicacion_parte_otros }</p>
-                            <ErrorMessage  name='ubicacion_parte_otros' component={() => (<p className='warn__password-user'>{errors.ubicacion_parte_otros}</p>)} />
-                            <div className="input-container input_inventario">
-                              <Field 
-                                placeholder='Nuev@ Ubicacion'
-                                name='ubicacion_parte_otros'
-                                id="ubicacion_parte_otros"
-                              />
-                            </div>
                               
                             <div style={{ width:"100%",display:"flex",justifyContent:"center",gap:"10px" }}>
                               <Input type={"submit"} txt={"Actualizar"} style={"btn btn_invent"}/>
@@ -1038,7 +1029,7 @@ export const Otros = ( { mdl , evt } ) => {
 
                     }
 
-                    otros_post( obj  ).then( (info) => {
+                    otros_post( obj ).then( (info) => {
 
                       if (info.status === 202) {
                         
@@ -1235,16 +1226,6 @@ export const Otros = ( { mdl , evt } ) => {
                                     placeholder='Cantidad consumida' 
                                     name='cantidad_consumida_otros'
                                     id="cantidad_consumida_otros"
-                                  />
-                                </div>
-                                
-                                <ErrorMessage  name='ubicacion_parte_otros' component={() => (<p className='warn__password-user'>{errors.ubicacion_parte_otros}</p>)} />
-                                <div className="input-container input_inventario">
-                                  <Field 
-                                    type='text'
-                                    placeholder='Ubicacion' 
-                                    name='ubicacion_parte_otros'
-                                    id="ubicacion_parte_otros"
                                   />
                                 </div>
                                 

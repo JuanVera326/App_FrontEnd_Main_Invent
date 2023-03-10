@@ -906,15 +906,6 @@ export const Eleferre = ( { mdl , evt }  ) => {
                                 id="cantidad_disponible_elementosferreteria"
                               />
                               </div>
-                              <p style={{ maxWidth:"30vh", color:"rgb(255, 203, 58)" }}>{ modal_obj_edit.ubicacion_parte_elementosferreteria }</p>
-                            <ErrorMessage  name='ubicacion_parte_elementosferreteria' component={() => (<p className='warn__password-user'>{errors.ubicacion_parte_elementosferreteria}</p>)} />
-                            <div className="input-container input_inventario">
-                              <Field 
-                                placeholder='Nuev@ Ubicacion'
-                                name='ubicacion_parte_elementosferreteria'
-                                id="ubicacion_parte_elementosferreteria"
-                              />
-                            </div>
                               
                             <div style={{ width:"100%",display:"flex",justifyContent:"center",gap:"10px" }}>
                               <Input type={"submit"} txt={"Actualizar"} style={"btn btn_invent"}/>

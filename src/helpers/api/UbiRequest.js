@@ -109,3 +109,20 @@ export const ubi_get = async( id ) => {
     }
 
 };
+
+export const ubi_get_general = async() => {
+
+    try {
+
+        const sendRequest = await axios.get(`${URL}/ubi`);
+        return sendRequest;
+
+    } catch (error) {
+
+        if ( error.response ) {
+            return error.response;
+        }
+
+    }
+
+};

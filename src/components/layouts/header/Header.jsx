@@ -8,6 +8,7 @@ export const Header = () => {
   const handleCloseSesion = () => {
 
     localStorage.removeItem("usuario");
+    localStorage.removeItem("ubicacion");
     window.location = "/";
 
   }

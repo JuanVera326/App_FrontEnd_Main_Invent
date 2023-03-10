@@ -5,10 +5,12 @@ import { auth_post } from '../../../helpers/api/Auth';
 import { useEffect, useState } from 'react';
 import "./HomeLogin.css";
 import "animate.css"
+import { ubi_get_general } from '../../../helpers/api/UbiRequest';
 
 export const Home = () => {
 
-  const [user, setuser] = useState({});
+  const [user, setuser] = useState(localStorage.setItem( "usuario", JSON.stringify({ rol:0 })));
+  const [ubicacion, setubicacion] = useState(localStorage.setItem( "ubicacion", JSON.stringify({ ubicacion : null })));
   const [msj_val, setmsj_val] = useState("");
   const [loader, setloader] = useState(false);
   const [val_state_request, setval_state_request] = useState(0);
@@ -33,14 +35,37 @@ export const Home = () => {
       };
   
       auth_post( auth ).then(info => {
+
+        console.log(info);
         
         if (info.status === 202) { 
+
           setuser(info.data); 
           setval_state_request(info.status); 
-        }else{ 
-          setval_state_request(info.status); 
-          setuser({}); setmsj_val(info.data); 
           setloader(false);
+
+          if ( info.data.rol === 1 || info.data.rol === 3 ) {
+            
+            ubi_get_general().then(info => {
+              let ubi = info.data[0];
+              localStorage.setItem( "ubicacion", JSON.stringify(ubi));
+            });
+
+          }
+
+        }else if (info.status === 403) {
+
+          setmsj_val(info.data);
+          setloader(false);
+          setval_state_request(info.status); 
+          
+        }else{ 
+
+          setval_state_request(info.status); 
+          setuser({ rol : 0 }); 
+          setmsj_val(info.data); 
+          setloader(false);
+
         }
   
       });
@@ -61,16 +86,13 @@ export const Home = () => {
   useEffect(() => {
 
     if (val_state_request === 202) { 
-
-      localStorage.setItem( "usuario", JSON.stringify(user) ); 
+       
+      localStorage.setItem( "usuario", JSON.stringify(user) );
       window.location = "/principal"; 
-      setloader(false);
 
     }
 
   }, [val_state_request])
-  
-
 
   return (
     <div className='home'>

@@ -698,7 +698,7 @@ export const Moddev = ( { mdl , evt } ) => {
                           ubicacion_parte_moddev :`Sector ${valores.sectors} Bodega ${valores.warehouses} Armario ${valores.racks} Fila ${valores.fila} Columna ${valores.columna}`
                         }
 
-                        obj.id_parte_moddev = modal_edit.id_parte_moddev;
+                        obj.id_parte_moddev = modal_obj_edit.id_parte_moddev;
                         obj.imagen_partemoddev = img_edit;
                         setloader_edit(true);
 

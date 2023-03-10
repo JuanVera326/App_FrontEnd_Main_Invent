@@ -886,14 +886,14 @@ export const Electronicos = ( { mdl , evt }  ) => {
                                 id="encampsulado_comp"
                               />
                             </div>
-                            <p style={{ maxWidth:"30vh", color:"rgb(255, 203, 58)" }}>{ modal_obj_edit.descripcion_comp }</p>
+                            <p style={{ maxWidth:"30vh", color:"rgb(255, 203, 58)" }}>{"Nuev@ Descripcion" }</p>
                             <ErrorMessage  name='nombre_comp' component={() => (<p className='warn__password-user'>{errors.descripcion_comp}</p>)} />
                             <div className="input-container input_inventario">
                               <Field 
                                 as="textarea"
                                 max="180"
-                                style={{ resize: "none", backgroundColor: "rgb(2, 71, 118)",borderRadius:"6px",width:"28vh",padding:"1rem", color:"color:rgb(223 222 223 / 1)" }} 
-                                placeholder='Nuev@ Descripcion' 
+                                style={{ resize: "none", backgroundColor: "rgb(104 104 104)",borderRadius:"6px",width:"28vh",padding:"1rem", color:"color:rgb(223 222 223 / 1)" }} 
+                                placeholder={modal_edit.ubicacion_comp} 
                                 name='descripcion_comp'
                                 id="descripcion_comp"
                               />
@@ -1328,16 +1328,6 @@ export const Electronicos = ( { mdl , evt }  ) => {
                               />
                             </div>
                             
-                            <ErrorMessage  name='cantidad_disponible_comp' component={() => (<p className='warn__password-user'>{errors.cantidad_disponible_comp}</p>)} />
-                            <div className="input-container input_inventario">
-                              <Field 
-                                type='text'
-                                placeholder='Cantidad disponible' 
-                                name='cantidad_disponible_comp'
-                                id="cantidad_disponible_comp"
-                              />
-                            </div>
-                            
                                   {/* ----------- */}
                                 
                                 <div style={{ width:"30vh", height:"19vh",display:"flex", flexDirection:"column", alignItems:"center" }}>
@@ -1410,6 +1400,28 @@ export const Electronicos = ( { mdl , evt }  ) => {
 
                                 {/* ----------- */}
 
+                                <ErrorMessage  name='descripcion_comp' component={() => (<p className='warn__password-user'>{errors.descripcion_comp}</p>)} />
+                                <div className="input-container input_inventario">
+                                <Field 
+                                  as="textarea"
+                                  max="180"
+                                  style={{ resize: "none", backgroundColor: "rgb(104, 104, 104)",borderRadius:"6px",width:"28vh",padding:"1rem", color:"color:rgb(223 222 223 / 1)" }} 
+                                  placeholder='Descripcion' 
+                                  name='descripcion_comp'
+                                  id="descripcion_comp"
+                                />
+                                </div>
+                                
+                            
+                            <ErrorMessage  name='cantidad_disponible_comp' component={() => (<p className='warn__password-user'>{errors.cantidad_disponible_comp}</p>)} />
+                            <div className="input-container input_inventario">
+                              <Field 
+                                type='text'
+                                placeholder='Cantidad disponible' 
+                                name='cantidad_disponible_comp'
+                                id="cantidad_disponible_comp"
+                              />
+                            </div>
                             
                             <ErrorMessage  name='cantidad_consumida_comp' component={() => (<p className='warn__password-user'>{errors.cantidad_consumida_comp}</p>)} />
                             <div className="input-container input_inventario">
