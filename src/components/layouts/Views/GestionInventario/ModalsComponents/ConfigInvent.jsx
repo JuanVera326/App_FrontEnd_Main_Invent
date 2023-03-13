@@ -17,13 +17,13 @@ export const ConfigInvent = () => {
     const [input_sectors, setinput_sectors] = useState(null);
     const [input_warehouses, setinput_warehouses] = useState(null);
     const [input_racks, setinput_racks] = useState(null);
-    const [getubi, setgetubi] = useState(null);
+    const [getubi, setgetubi] = useState(false);
 
     useEffect(() => { 
 
         ubi_get(user.id).then(info => { 
 
-            if (info.status !== 202) { setfind("No hay Ubicacion Registrada"); setprev_ubi(""); }
+            if (info.status === 404) { setfind("No hay Ubicacion Registrada"); setprev_ubi(""); }
             else { setprev_ubi(info.data); setfind(true); }
 
         }); 
@@ -43,6 +43,7 @@ export const ConfigInvent = () => {
         }else if (config_action === 3) {
 
             setmodal_random(true);
+            setgetubi(!getubi);
 
         }
     }, [config_action]);
@@ -125,6 +126,7 @@ export const ConfigInvent = () => {
 
                 setgetubi(!getubi);
                 setmodal_random(false);
+                localStorage.setItem( "ubicacion", JSON.stringify(obj) )
                 
             }else{
 
@@ -147,7 +149,7 @@ export const ConfigInvent = () => {
             
             <div style={{ display:"flex", justifyContent:"center", width:"100%",zIndex:"100000",position:"absolute",marginTop:"30px" }}>
                 
-                { (!find) && <h1>{ find }</h1> }
+                { (!!find) && <h1>{ find }</h1> }
 
             </div>
 

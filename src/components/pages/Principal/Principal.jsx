@@ -21,23 +21,68 @@ export const Principal = () => {
 
   const [user_data, setuser_data] = useState({});
   const [button_comp, setbutton_comp] = useState("home");
-  const [config_space_invent, setconfig_space_invent] = useState(null);
+  const [config_space_invent, setconfig_space_invent] = useState(false);
   const [modal_alert, setmodal_alert] = useState(false);
-  const [ubi, setubi] = useState(localStorage.getItem("ubicacion"));
+  const [getAll, setgetAll] = useState(false);
 
-  useEffect(() => { ( user_data.rol === 1 ) && !!ubi.ubicacion === null  ? setconfig_space_invent(true) : setconfig_space_invent(false); }, [ user_data ]);  
-  useEffect(() => { if ( (button_comp === "inv_gest") && config_space_invent === false ){ setmodal_alert(true); }else{ setmodal_alert(false) } }, [button_comp]);
-  useEffect(() => { if ( (!modal_alert && button_comp === "inv_gest") && user_data.rol === 1 ){ setbutton_comp("invent_config"); }else if (!modal_alert && user_data.rol === 3){ window.location = "/principal"; } }, [modal_alert]);
+  useEffect(() => {
+
+    if (( user_data.rol === 1 || user_data.rol === 3 )) {
+
+      let ubi = (localStorage.getItem("ubicacion"));
+
+      if ((ubi === '{}')) {
+
+        setconfig_space_invent(true);
+
+      }else{
+
+        setconfig_space_invent(false); 
+  
+      }
+
+    }
+
+  }, [getAll]);  
+
+
+  useEffect(() => { 
+
+    if ( config_space_invent === true && button_comp === "inv_gest" ){ 
+
+      setmodal_alert(true); 
+
+    }else{ 
+      
+      setmodal_alert(false) 
+
+    } 
+
+  }, [button_comp]);
+
+  useEffect(() => { 
+
+    if ( (!modal_alert && button_comp === "inv_gest") && user_data.rol === 1 ){ 
+
+      setbutton_comp("invent_config"); 
+
+    }else if (!modal_alert && user_data.rol === 3){
+
+      window.location = "/principal"; 
+
+    } 
+
+  }, [modal_alert]);
 
   useEffect(() => { 
 
     let user = JSON.parse(localStorage.getItem("usuario"));
     !!user && setuser_data(user);
-    
+
   }, []);
     
   return (
-    <div className='animate__animated animate__fadeIn'>
+    <div className='animate__animated animate__fadeIn' onLoad={ () => { setgetAll(!getAll); } }>
         { 
         ( user_data.rol === 0 ) 
           ? 
@@ -63,7 +108,7 @@ export const Principal = () => {
                       <ul>
                         
                         <li><Link onClick={ () => { setbutton_comp( "home" ) } } className={ ` a_principal ${( button_comp === "home" ) && "a_principal_active" } ` }><AiOutlineHome/> Inventario</Link></li>
-                        { ( user_data.rol === 1 ) && <li><Link onClick={ () => { setbutton_comp( "usuarios_gest" ); console.log(button_comp); } } className={ ` a_principal ${( button_comp === "usuarios_gest" ) && "a_principal_active" } ` }><TbUserSearch/>Gestion usuarios</Link></li> }
+                        { ( user_data.rol === 1 ) && <li><Link onClick={ () => { setbutton_comp( "usuarios_gest" ); } } className={ ` a_principal ${( button_comp === "usuarios_gest" ) && "a_principal_active" } ` }><TbUserSearch/>Gestion usuarios</Link></li> }
                         { ( user_data.rol === 2 || user_data.rol === 3 ) && <li><Link onClick={ () => { setbutton_comp( "perfil" ) } } className={ ` a_principal ${( button_comp === "perfil" ) && "a_principal_active" } ` }><ImProfile/> Perfil</Link></li> }
                         { ( user_data.rol === 1 || user_data.rol === 3 ) && <li><Link onClick={ () => { setbutton_comp( "inv_gest" ) } } className={ ` a_principal ${( button_comp === "inv_gest" ) && "a_principal_active" } ` }><MdOutlineInventory/>Gestion inventario</Link></li> }
                         { ( user_data.rol === 1 ) && <li><Link onClick={ () => { setbutton_comp( "invent_config" ) } } className={ ` a_principal ${( button_comp === "invent_config" ) && "a_principal_active" } ` }><AiOutlineSetting/>Configuracion Inventario</Link></li> }

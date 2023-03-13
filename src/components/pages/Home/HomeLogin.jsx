@@ -10,7 +10,8 @@ import { ubi_get_general } from '../../../helpers/api/UbiRequest';
 export const Home = () => {
 
   const [user, setuser] = useState(localStorage.setItem( "usuario", JSON.stringify({ rol:0 })));
-  const [ubicacion, setubicacion] = useState(localStorage.setItem( "ubicacion", JSON.stringify({ ubicacion : null })));
+  const [prev_user, setprev_user] = useState({});
+  const [ubicacion, setubicacion] = useState(localStorage.setItem( "ubicacion", JSON.stringify({})));
   const [msj_val, setmsj_val] = useState("");
   const [loader, setloader] = useState(false);
   const [val_state_request, setval_state_request] = useState(0);
@@ -35,23 +36,13 @@ export const Home = () => {
       };
   
       auth_post( auth ).then(info => {
-
-        console.log(info);
         
         if (info.status === 202) { 
 
           setuser(info.data); 
+          setprev_user(info.data);
           setval_state_request(info.status); 
           setloader(false);
-
-          if ( info.data.rol === 1 || info.data.rol === 3 ) {
-            
-            ubi_get_general().then(info => {
-              let ubi = info.data[0];
-              localStorage.setItem( "ubicacion", JSON.stringify(ubi));
-            });
-
-          }
 
         }else if (info.status === 403) {
 
@@ -86,9 +77,29 @@ export const Home = () => {
   useEffect(() => {
 
     if (val_state_request === 202) { 
-       
-      localStorage.setItem( "usuario", JSON.stringify(user) );
-      window.location = "/principal"; 
+
+      if ( prev_user.rol === 1 || prev_user.rol === 3 ) {
+            
+        ubi_get_general().then(info => {
+  
+          if (info.data.lenght === 0) {
+  
+            let ubi = info.data[0];
+            localStorage.setItem( "ubicacion", JSON.stringify(ubi) );
+            localStorage.setItem( "usuario", JSON.stringify(user) );
+            window.location = "/principal";
+  
+          }else{ 
+
+            localStorage.setItem( "ubicacion", JSON.stringify({}) ); 
+            localStorage.setItem( "usuario", JSON.stringify(user) );
+            window.location = "/principal"; 
+
+          }
+          
+        });
+  
+      }
 
     }
 
