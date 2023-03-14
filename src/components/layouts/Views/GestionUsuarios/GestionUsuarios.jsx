@@ -420,7 +420,7 @@ export const GestionUsuarios = () => {
                             cargo: "",
                             imagen: "",
                             edad: "",
-                            rol: 2,
+                            rol: modal_obj_edit.rol,
                             password: "",
                             correo: modal_obj_edit.correo,
                             estado: modal_obj_edit.estado
@@ -451,10 +451,11 @@ export const GestionUsuarios = () => {
                             
                             setloader_edit(true);
                             valores.imagen = img_edit;
+                            console.log(valores);
 
                             usuariosPut( valores, valores.id ).then( (info) => {
 
-                              if (info.status == 202) {
+                              if (info.status === 202) {
                                 
                                 setloader_edit(false);
                                 setmodal_edit(false);

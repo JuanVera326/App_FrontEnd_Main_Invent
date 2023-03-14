@@ -36,6 +36,7 @@ export const Home = () => {
       };
   
       auth_post( auth ).then(info => {
+        console.log(info);
         
         if (info.status === 202) { 
 
@@ -137,7 +138,7 @@ export const Home = () => {
                     <div className="box">
                         <form onSubmit={handleAuth}>
                           <div className="input-container">
-                          { ( !!loader ) && <h1 class="loader" /> }
+                          { ( !!loader ) && <h1 className="loader" /> }
                             <Input type={"text"} id="email"/>
                             <label>Email</label>		
                           </div>
