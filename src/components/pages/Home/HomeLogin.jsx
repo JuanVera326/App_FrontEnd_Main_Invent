@@ -82,8 +82,10 @@ export const Home = () => {
       if ( prev_user.rol === 1 || prev_user.rol === 3 ) {
             
         ubi_get_general().then(info => {
+
+          console.log(info);
   
-          if (info.data.lenght === 0) {
+          if (info.status === 200) {
   
             let ubi = info.data[0];
             localStorage.setItem( "ubicacion", JSON.stringify(ubi) );
@@ -101,6 +103,9 @@ export const Home = () => {
         });
   
       }
+
+      localStorage.setItem( "usuario", JSON.stringify(user) );
+      window.location = "/principal"; 
 
     }
 
