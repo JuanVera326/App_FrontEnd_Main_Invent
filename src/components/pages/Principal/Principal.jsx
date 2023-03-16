@@ -7,7 +7,7 @@ import { AiOutlineSetting } from "react-icons/ai";
 import { ImProfile } from "react-icons/im";
 import { TbUserSearch } from "react-icons/tb";
 import { MdOutlineInventory } from "react-icons/md";
-import { Exception } from '../Not Found/Exception';
+import { Exception } from '../Unautorized/Exception';
 import { GestionInventario } from "../../layouts/Views/GestionInventario/GestionInventario";
 import { GestionUsuarios } from "./../../layouts/Views/GestionUsuarios/GestionUsuarios";
 import { Inventario } from "./../../layouts/Views/Inventario/Inventario";

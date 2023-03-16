@@ -3,9 +3,9 @@ import { Button } from '../../ui/Buttons/Button';
 import { Input } from '../../ui/Input/Input';
 import { auth_post } from '../../../helpers/api/Auth';
 import { useEffect, useState } from 'react';
+import { ubi_get_general } from '../../../helpers/api/UbiRequest';
 import "./HomeLogin.css";
 import "animate.css"
-import { ubi_get_general } from '../../../helpers/api/UbiRequest';
 
 export const Home = () => {
 
