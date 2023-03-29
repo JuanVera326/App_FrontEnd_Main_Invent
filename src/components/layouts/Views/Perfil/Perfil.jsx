@@ -178,6 +178,7 @@ export const Perfil = () => {
                                 imagen: "",
                                 edad: "",
                                 rol: 2,
+                                cargo: profile_obj.cargo,
                                 password: "",
                                 correo: profile_obj.correo,
                                 estado: profile_obj.estado
@@ -208,7 +209,7 @@ export const Perfil = () => {
 
                                 usuariosPut( valores, valores.id ).then( (info) => {
 
-                                  if (info.status == 202) {
+                                  if (info.status === 202) {
                                     
                                     setloader_edit(false);
                                     setmodal_edit(false);

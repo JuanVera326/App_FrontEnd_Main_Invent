@@ -254,9 +254,9 @@ export const Inventario = ( { user } ) => {
   const refreshRequest = () => { setgetAll(!getAll); }
 
   useEffect(() => {
-
+    
+    setloader(true);
     getItemsElectricos().then((info) => {
-      setloader(true);
       if (info.status === 200) {
         setval_request_electricos(info.status);
         setitems_electricos( info.data );
@@ -267,7 +267,6 @@ export const Inventario = ( { user } ) => {
     });
 
     getItemsElectronicos().then((info) => {
-      setloader(true);
       if (info.status === 200) {
         setval_request_electronicos(info.status);
         setitems_electronicos( info.data );
@@ -278,7 +277,6 @@ export const Inventario = ( { user } ) => {
     });
 
     getItemsEleferre().then((info) => {
-      setloader(true);
       if (info.status === 200) {
         setval_request_eleferre(info.status);
         setitems_eleferre( info.data );
@@ -289,7 +287,6 @@ export const Inventario = ( { user } ) => {
     });
 
     getItemsModdev().then((info) => {
-      setloader(true);
       if (info.status === 200) {
         setval_request_moddev(info.status);
         setitems_moddev( info.data );
@@ -300,7 +297,6 @@ export const Inventario = ( { user } ) => {
     });
 
     getItemsOtros().then((info) => {
-      setloader(true);
       if (info.status === 200) {
         setval_request_otros(info.status);
         setitems_otros( info.data );
@@ -309,7 +305,7 @@ export const Inventario = ( { user } ) => {
         setval_request_otros(info.status);
       }
     });
-
+    
   }, [ getAll ])
   
   return (
@@ -359,7 +355,7 @@ export const Inventario = ( { user } ) => {
                         <p>{ item.id_parte_electricos }</p>
                       </div>
                       <hr />
-                      <p>{ item.nombre_parte_electricos }</p>
+                      <p className='p_card'>{ item.nombre_parte_electricos }</p>
                       <hr />
                       <div className="txt">
                         <h3>Tipo:</h3>
@@ -445,7 +441,7 @@ export const Inventario = ( { user } ) => {
                       <p>{ item.id_Comp }</p>
                     </div>
                     <hr />
-                    <p>{ item.nombre_comp }</p>
+                    <p className='p_card'>{ item.nombre_comp }</p>
                     <hr />
                     <div className="txt">
                       <h3>Tipo:</h3>
@@ -537,7 +533,7 @@ export const Inventario = ( { user } ) => {
                     <p>{ item.id_parte_elementosferreteria }</p>
                   </div>
                   <hr />
-                  <p>{ item.nombre_parte_elementosferreteria }</p>
+                  <p className='p_card'>{ item.nombre_parte_elementosferreteria }</p>
                   <hr />
                   <div className="txt">
                     <h3>Tipo:</h3>
@@ -623,7 +619,7 @@ export const Inventario = ( { user } ) => {
                     <p>{ item.id_parte_moddev }</p>
                   </div>
                   <hr />
-                  <p>{ item.nombre_partemoddev }</p>
+                  <p className='p_card'>{ item.nombre_partemoddev }</p>
                   <hr />
                   <div className="txt">
                     <h3>Tipo:</h3>
@@ -709,7 +705,7 @@ export const Inventario = ( { user } ) => {
                     <p>{ item.id_parte_otros }</p>
                   </div>
                   <hr />
-                  <p>{ item.nombre_parte_otros }</p>
+                  <p className='p_card'>{ item.nombre_parte_otros }</p>
                   <hr />
                   <div className="txt">
                     <h3>Tipo:</h3>

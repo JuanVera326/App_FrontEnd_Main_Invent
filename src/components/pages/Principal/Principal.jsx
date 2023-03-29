@@ -19,6 +19,7 @@ import "./Principal.css"
 
 export const Principal = () => {
 
+  const [trigger_user, settrigger_user] = useState(JSON.parse(localStorage.getItem("usuario")));
   const [user_data, setuser_data] = useState({});
   const [button_comp, setbutton_comp] = useState("home");
   const [config_space_invent, setconfig_space_invent] = useState(false);
@@ -74,12 +75,12 @@ export const Principal = () => {
 
   }, [modal_alert]);
 
-  useEffect(() => { 
+  useEffect(() => {
+    
+    setuser_data(JSON.parse(localStorage.getItem("usuario")));
 
-    let user = JSON.parse(localStorage.getItem("usuario"));
-    !!user && setuser_data(user);
-
-  }, []);
+  }, [trigger_user])
+  
     
   return (
     <div className='animate__animated animate__fadeIn' onLoad={ () => { setgetAll(!getAll); } }>

@@ -451,7 +451,6 @@ export const GestionUsuarios = () => {
                             
                             setloader_edit(true);
                             valores.imagen = img_edit;
-                            console.log(valores);
 
                             usuariosPut( valores, valores.id ).then( (info) => {
 
@@ -462,6 +461,7 @@ export const GestionUsuarios = () => {
                                 refreshRequest();
                                 setimg_edit("");
                                 resetForm();
+                                modal_obj_edit.id === 1 ? window.location = "/" : setmodal_edit(false);
 
                               }else{
 
@@ -524,6 +524,17 @@ export const GestionUsuarios = () => {
                                     id="edad"
                                   />
                                 </div>
+
+                                <p>{ modal_obj_edit.correo }</p>
+                                <ErrorMessage  name='correo' component={() => (<p className='warn__password-user'>{errors.correo}</p>)} />
+                                <div className="input-container input_inventario">
+                                  <Field 
+                                    type='text'
+                                    placeholder='Nuevo Correo' 
+                                    name='correo'
+                                    id="correo"
+                                  />
+                                </div>
                                 
                                 <ErrorMessage  name='password' component={() => (<p className='warn__password-user'>{errors.password}</p>)} />
                                 <div className="input-container input_inventario">
@@ -544,6 +555,12 @@ export const GestionUsuarios = () => {
                                   <div className="cont_buttons_desha">
                                     <h2 style={{ color:"rgb(26 200 252)" }}>{ msj_desha_rqst }</h2>
                                   </div>
+                                }
+                                {
+                                  ( modal_obj_edit.rol === 1 ) && 
+                                    <div style={{ width:"100%",display:"flex",justifyContent:"center",alignItems:"center"}}>
+                                      <p style={{ width:"450px", textAlign:"center",marginTop:"10px",fontSize:"20px",color:"#20b832" }}>Por seguridad al Actualizar sus datos tendra que volver a inicar sesion una vez envie los datos.</p>
+                                    </div>
                                 }
                         
                               </Form> 
@@ -612,9 +629,18 @@ export const GestionUsuarios = () => {
                           }}
 
                           onSubmit={( valores, {resetForm} ) => {
-
-                            valores.imagen = img_edit;
+                            
                             setloader_edit(true);
+
+                            if (img_edit === "") {
+
+                              valores.imagen = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/2048px-User_icon_2.svg.png";
+        
+                            }else{
+        
+                              valores.imagen = img_edit;
+        
+                            }
 
                             usuariosPost( valores ).then( (info) => {
                               if (info.status == 202) {

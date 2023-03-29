@@ -94,7 +94,7 @@
 	background-color:rgb(48, 173, 31);
 	outline: none;
     border: 0;
-    color: #686868;
+    color: #fdfdfd;
 	padding:10px 20px;
 	text-transform:uppercase;
 	border-radius:6px;
@@ -196,17 +196,3 @@
     transition: 0.2s;
     background-color:rgb(20 20 20 / 29%) ;
   }
-
-  /* ------------Design Responsive--------- */
-
-/* @media only screen and (min-width:768px)  and (max-width: 1920px){
-
-    .principal_view {
-        width: 100vh;
-        height: 50vh;
-    }
-    .box{
-      height: 21vh;
-
-    }
-}  */
