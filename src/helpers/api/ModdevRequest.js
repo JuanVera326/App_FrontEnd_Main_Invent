@@ -90,12 +90,12 @@ export const getTypesItemsModdev= async() => {
 
 };
 
-export const moddev_put = async( obj , id , doc ) => {
+export const moddev_put = async( obj , id ) => {
 
     try {
         
         const sendRequest = await axios({
-            url : `${URL}/moddev/${id}/${KEY}/${doc}`,
+            url : `${URL}/moddev/${id}/${KEY}`,
             method : 'PUT',
             headers : {
                 "Content-Type":"application/json",
