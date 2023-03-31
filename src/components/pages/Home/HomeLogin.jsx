@@ -36,7 +36,6 @@ export const Home = () => {
       };
   
       auth_post( auth ).then(info => {
-        console.log(info);
         
         if (info.status === 202) { 
 
@@ -154,7 +153,7 @@ export const Home = () => {
                           <div className="btn_cont_login">
                             <Button text={"Entrar"} type={"submit"} style={"btn"}/>
                             <img className='img2' src={main_invent_images("./images/home/logoSena.png")} alt="logoSena"/>
-                            <p style={{color:"rgb(31 136 173)", fontSize:"13px"}}>{msj_val}</p>
+                            <p className='p_msj_val' style={{color:"rgb(31 136 173)", fontSize:"13px"}}>{msj_val}</p>
                           </div>
                         </form>	
                       </div> 

@@ -121,11 +121,10 @@ export const Electronicos = ( { mdl , evt }  ) => {
           obj_file_toUpadate.ubicacion_comp
         };
 
-        electronicos_post( new_item,new_item.id_Comp ).then((info) => {  
+        electronicos_post( new_item,new_item.id_Comp,"{}" ).then((info) => {  
           
           if (info.status === 202) {
 
-            console.log(info);
             setloader_edit(false); 
             setmodal_file(false);
             setgetAll(!getAll);
@@ -201,11 +200,10 @@ export const Electronicos = ( { mdl , evt }  ) => {
 
       };
 
-      electronicos_put( new_item,new_item.id_Comp ).then((info) => {  
+      electronicos_put( new_item,new_item.id_Comp,"{}" ).then((info) => {  
         
         if (info.status === 202) {
 
-          console.log(info);
           setloader_edit(false); 
           setmodal_file(false);
           setgetAll(!getAll);

@@ -90,12 +90,12 @@ export const getTypesItemsElectricos = async() => {
 
 };
 
-export const electricos_put = async( obj , id ) => {
+export const electricos_put = async( obj , id , doc) => {
 
     try {
         
         const sendRequest = await axios({
-            url : `${URL}/electricos/${id}/${KEY}`,
+            url : `${URL}/electricos/${id}/${KEY}/${doc}`,
             method : 'PUT',
             headers : {
                 "Content-Type":"application/json",

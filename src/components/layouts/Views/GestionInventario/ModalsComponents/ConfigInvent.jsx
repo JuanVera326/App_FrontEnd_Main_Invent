@@ -221,12 +221,6 @@ export const ConfigInvent = () => {
             (!!modal_random) &&
             <Modal close={setmodal_random}>
 
-                <div style={{zIndex:"10000"}}>
-
-                    <h1>{config_action}</h1>
-
-                </div>
-
                 {
                     (config_action === 1) &&
 

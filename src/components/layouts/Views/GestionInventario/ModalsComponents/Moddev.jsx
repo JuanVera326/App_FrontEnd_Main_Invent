@@ -106,11 +106,10 @@ export const Moddev = ( { mdl , evt } ) => {
 
         };
 
-        moddev_put( new_item,new_item.id_parte_moddev ).then((info) => {  
+        moddev_put( new_item,new_item.id_parte_moddev,"{}" ).then((info) => {  
           
           if (info.status === 202) {
 
-            console.log(info);
             setloader_edit(false); 
             setmodal_file(false);
             setgetAll(!getAll);
@@ -174,11 +173,10 @@ export const Moddev = ( { mdl , evt } ) => {
 
       };
 
-      moddev_put( new_item,new_item.id_parte_moddev ).then((info) => {  
+      moddev_put( new_item,new_item.id_parte_moddev,"{}" ).then((info) => {  
         
         if (info.status === 202) {
 
-          console.log(info);
           setloader_edit(false); 
           setmodal_file(false);
           setgetAll(!getAll);

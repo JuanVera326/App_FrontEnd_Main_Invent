@@ -106,11 +106,10 @@ export const Otros = ( { mdl , evt } ) => {
 
         };
 
-        otros_put( new_item,new_item.id_parte_otros ).then((info) => {  
+        otros_put( new_item,new_item.id_parte_otros,"{}" ).then((info) => {  
           
           if (info.status === 202) {
 
-            console.log(info);
             setloader_edit(false); 
             setmodal_file(false);
             setgetAll(!getAll);
@@ -175,11 +174,10 @@ export const Otros = ( { mdl , evt } ) => {
 
       };
 
-      otros_put( new_item,new_item.id_parte_otros ).then((info) => {  
+      otros_put( new_item,new_item.id_parte_otros,"{}" ).then((info) => {  
         
         if (info.status === 202) {
 
-          console.log(info);
           setloader_edit(false); 
           setmodal_file(false);
           setgetAll(!getAll);

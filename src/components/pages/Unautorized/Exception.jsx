@@ -10,7 +10,7 @@ export const Exception = () => {
 
             <div style={{ backgroundColor:"#30ac1f",borderRadius:"6px",height:"50vh",width:"70vh",display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center" }}>
 
-                <h1 style={{ color:"white",fontSize:"25rem" }}>
+                <h1 className='forbidden'>
 
                     403
 

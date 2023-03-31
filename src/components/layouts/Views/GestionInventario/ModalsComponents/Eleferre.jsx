@@ -105,11 +105,10 @@ export const Eleferre = ( { mdl , evt }  ) => {
 
         };
 
-        eleferre_put( new_item,new_item.id_parte_elementosferreteria ).then((info) => {  
+        eleferre_put( new_item,new_item.id_parte_elementosferreteria,"{}" ).then((info) => {  
           
           if (info.status === 202) {
 
-            console.log(info);
             setloader_edit(false); 
             setmodal_file(false);
             setgetAll(!getAll);
@@ -173,11 +172,10 @@ export const Eleferre = ( { mdl , evt }  ) => {
 
       };
 
-      eleferre_put( new_item,new_item.id_parte_elementosferreteria ).then((info) => {  
+      eleferre_put( new_item,new_item.id_parte_elementosferreteria,"{}" ).then((info) => {  
         
         if (info.status === 202) {
 
-          console.log(info);
           setloader_edit(false); 
           setmodal_file(false);
           setgetAll(!getAll);

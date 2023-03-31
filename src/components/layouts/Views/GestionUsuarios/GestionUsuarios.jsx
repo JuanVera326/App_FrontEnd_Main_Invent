@@ -52,7 +52,7 @@ export const GestionUsuarios = () => {
 
         searchUsus(input_search_usuarios);
         
-      }else if (input_search_usuarios == ""){
+      }else if (input_search_usuarios === ""){
 
         refreshRequest();
 
@@ -370,7 +370,7 @@ export const GestionUsuarios = () => {
                         ( !!loader_desha )
                         ?
                           <>
-                              <span className="loader"></span>
+                              <span className="loader loader_desha_gest"></span>
                           </>
                         : 
                           ( !!msj_desha_rqst )
@@ -401,7 +401,7 @@ export const GestionUsuarios = () => {
                         <h1>Actualizar usuario</h1>
                           
                           {
-                            ( !!loader_edit ) && <span className='loader'></span>
+                            ( !!loader_edit ) && <span className='loader loader_gest_usuarios'></span>
                           }
                           <div className="image_edit animate__animated animate__fadeInRight">
                             <div className="cont_img_details" title='Sube tu imagen' onClick={ () => { myWidgetUser.open(); } }>
@@ -559,7 +559,7 @@ export const GestionUsuarios = () => {
                                 {
                                   ( modal_obj_edit.rol === 1 ) && 
                                     <div style={{ width:"100%",display:"flex",justifyContent:"center",alignItems:"center"}}>
-                                      <p style={{ width:"450px", textAlign:"center",marginTop:"10px",fontSize:"20px",color:"#20b832" }}>Por seguridad al Actualizar sus datos tendra que volver a inicar sesion una vez envie los datos.</p>
+                                      <p className='p_info_usu'>Por seguridad al Actualizar sus datos tendra que volver a inicar sesion una vez envie los datos.</p>
                                     </div>
                                 }
                         

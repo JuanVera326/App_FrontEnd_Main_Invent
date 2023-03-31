@@ -823,7 +823,7 @@ export const Inventario = ( { user } ) => {
                           </div>
 
                           <div className="contain_detail">
-                            <h3>{modal_obj.data_sht}</h3>
+                          <Link className='btn btn_invent'  style={{ fontSize:"13px",width:"20vh" }} onClick={ () => { console.log(modal_obj.data_sht + ""); } } >Ver PDF</Link>
                           </div>
                       </div>
 

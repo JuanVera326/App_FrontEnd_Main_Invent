@@ -60,7 +60,6 @@ export const Electricos = ( { mdl , evt } ) => {
     formData.set("file" , file[0]);
 
     doc_post( formData,obj_file_toUpadate.nombre_parte_electricos,obj_file_toUpadate.id_parte_electricos ).then( info => {
-
       if (info.status === 202) {
 
         setloader_edit(true);
@@ -105,8 +104,8 @@ export const Electricos = ( { mdl , evt } ) => {
 
         };
 
-        electricos_put( new_item,new_item.id_parte_electricos ).then((info) => {  
-          
+        electricos_put( new_item, new_item.id_parte_electricos, "{}" ).then((info) => {
+
           if (info.status === 202) {
 
             console.log(info);
@@ -177,7 +176,6 @@ export const Electricos = ( { mdl , evt } ) => {
         
         if (info.status === 202) {
 
-          console.log(info);
           setloader_edit(false); 
           setmodal_file(false);
           setgetAll(!getAll);

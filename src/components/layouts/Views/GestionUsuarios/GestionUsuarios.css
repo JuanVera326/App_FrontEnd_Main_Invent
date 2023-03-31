@@ -128,3 +128,41 @@
     cursor:pointer;
     transition:0.2s;
 }
+.p_info_usu{
+    width:450px;
+    text-align:center;
+    margin-top:10px;
+    font-size:20px;
+    color:#20b832;
+}
+.loader_gest_usuarios{
+    right: -25px;
+    top: -45px;
+    color: #ffffff;
+    font-size: 20px;
+    text-indent: -9999em;
+    overflow: hidden;
+    width: 1em;
+    height: 1em;
+    border-radius: 50%;
+    position: absolute;
+    z-index: 10;
+    transform: translateZ(0);
+    animation: mltShdSpin 1.7s infinite ease, round 1.7s infinite ease;
+    
+}
+.loader_desha_gest{
+    right: -25px;
+    top: -45px;
+    color: #ffffff;
+    font-size: 20px;
+    text-indent: -9999em;
+    overflow: hidden;
+    width: 1em;
+    height: 1em;
+    border-radius: 50%;
+    position: absolute;
+    z-index: 10;
+    transform: translateZ(0);
+    animation: mltShdSpin 1.7s infinite ease, round 1.7s infinite ease;
+}

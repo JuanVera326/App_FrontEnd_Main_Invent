@@ -88,12 +88,12 @@ export const getTypesItemsEleferre= async() => {
 
 };
 
-export const eleferre_put = async( obj , id ) => {
+export const eleferre_put = async( obj , id , doc ) => {
 
     try {
         
         const sendRequest = await axios({
-            url : `${URL}/eleferre/${id}/${KEY}`,
+            url : `${URL}/eleferre/${id}/${KEY}/${doc}`,
             method : 'PUT',
             headers : {
                 "Content-Type":"application/json",
