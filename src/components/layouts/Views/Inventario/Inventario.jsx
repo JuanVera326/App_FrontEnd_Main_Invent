@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { getItemsElectricos, getItemsElectricosByGeneralId, getItemsElectricosByGeneralName, getItemsElectricosByType } from '../../../../helpers/api/ElectricosRequests';
 import { getItemsElectronicos, getItemsElectronicosByGeneralId, getItemsElectronicosByGeneralName, getItemsElectronicosByType } from '../../../../helpers/api/ElectronicosRequests';
 import { getItemsEleferre, getItemsEleferreByGeneralId, getItemsEleferreByGeneralName, getItemsEleferreByType } from '../../../../helpers/api/ElementosFerreteriaRequest';
@@ -9,6 +9,7 @@ import { Input } from '../../../ui/Input/Input';
 import { VscSearch } from "react-icons/vsc";
 import { HiOutlineRefresh } from "react-icons/hi";
 import { Modal } from '../../../pages/Modal/Modal';
+import { get_doc } from '../../../../helpers/api/DocsRequest';
 import "./Inventario.css"
 
 export const Inventario = ( { user } ) => {
@@ -17,6 +18,7 @@ export const Inventario = ( { user } ) => {
   const [getAll, setgetAll] = useState(false);
   const [modal, setmodal] = useState(false);
   const [modal_obj, setmodal_obj] = useState({});
+  const [doc, setdoc] = useState(null);
 
   const [input_search_electricos, setinput_search_electricos] = useState("");
   const [items_electricos, setitems_electricos] = useState([]);
@@ -823,7 +825,7 @@ export const Inventario = ( { user } ) => {
                           </div>
 
                           <div className="contain_detail">
-                          <Link className='btn btn_invent'  style={{ fontSize:"13px",width:"20vh" }} onClick={ () => { console.log(modal_obj.data_sht + ""); } } >Ver PDF</Link>
+                          <Link className='btn btn_invent'  style={{ fontSize:"13px",width:"20vh" }} onClick={ () => { get_doc(modal_obj.data_sht).then(info => { setdoc(info.data); window.open(`/pdf:${doc}`); })}}>Ver PDF</Link>
                           </div>
                       </div>
 

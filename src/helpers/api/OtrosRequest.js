@@ -89,12 +89,12 @@ export const getTypesItemsOtros= async() => {
 
 };
 
-export const otros_put = async( obj , id ) => {
+export const otros_put = async( obj , id , doc ) => {
 
     try {
         
         const sendRequest = await axios({
-            url : `${URL}/otros/${id}/${KEY}`,
+            url : `${URL}/otros/${id}/${KEY}/${doc}`,
             method : 'PUT',
             headers : {
                 "Content-Type":"application/json",

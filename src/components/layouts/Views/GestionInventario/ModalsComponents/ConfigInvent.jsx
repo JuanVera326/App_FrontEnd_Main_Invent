@@ -147,7 +147,7 @@ export const ConfigInvent = () => {
         <h1 style={{ marginLeft:"2rem", color:" rgb(0, 0, 0)" }}>{ "Configuracion de Inventario" }</h1>
         <div className='config_invent'>
             
-            <div style={{ display:"flex", justifyContent:"center", width:"100%",zIndex:"100000",position:"absolute",marginTop:"30px" }}>
+            <div style={{ display:"flex", justifyContent:"center", width:"85%",zIndex:"100000",position:"absolute",marginTop:"30px" }}>
                 
                 { (!!find) && <h1>{ find }</h1> }
 

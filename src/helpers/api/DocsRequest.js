@@ -61,3 +61,20 @@ export const doc_del = async( id ) => {
     }
 
 };
+
+export const get_doc = async( id ) => {
+
+    try {
+
+        const sendRequest = await axios.get(`${URL}/files/${id}`);
+        return sendRequest;
+
+    } catch (error) {
+
+        if ( error.response ) {
+            return error.response;
+        }
+
+    }
+
+};

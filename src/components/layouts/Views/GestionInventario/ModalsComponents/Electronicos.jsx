@@ -121,10 +121,9 @@ export const Electronicos = ( { mdl , evt }  ) => {
           obj_file_toUpadate.ubicacion_comp
         };
 
-        electronicos_post( new_item,new_item.id_Comp,"{}" ).then((info) => {  
+        electronicos_put( new_item,new_item.id_Comp,"{}" ).then((info) => {  
           
           if (info.status === 202) {
-
             setloader_edit(false); 
             setmodal_file(false);
             setgetAll(!getAll);
@@ -671,9 +670,12 @@ export const Electronicos = ( { mdl , evt }  ) => {
                            </div>
                        </div>
                        <div className="row">
-                         <div className="name_detail">
-                             <h4 className='modal_object_text'>DT-SHEET: </h4>
-                           </div>
+                          <div className="name_detail">
+                            <h4 className='modal_object_text'>DT-SHEET: </h4>
+                          </div>
+                          <div className="contain_detail">
+                            <Link className='btn btn_invent'  style={{ fontSize:"13px",width:"20vh" }} onClick={ () => { console.log(modal_obj.data_sht + ""); } } >Ver PDF</Link>
+                          </div>
                        </div>
                      </div>
 
@@ -700,7 +702,7 @@ export const Electronicos = ( { mdl , evt }  ) => {
 
                         <div className='img_edit_cont_1'>
                           <div className="img_regist">
-                            <div className="cont_img_details" title='Sube tu imagen Pinout' onClick={ () => { myWidgetElectronicos.open(); setimg_select_item(2); } }>
+                            <div className="cont_img_details img_create_item" title='Sube tu imagen Pinout' onClick={ () => { myWidgetElectronicos.open(); setimg_select_item(2); } }>
                               <img src={ img_pinout_edit } className="img_card"/>
                             </div>
                           </div>
@@ -708,7 +710,7 @@ export const Electronicos = ( { mdl , evt }  ) => {
 
                         <div className='img_edit_cont_1'>
                           <div className="img_regist">
-                            <div className="cont_img_details" title='Sube tu imagen Esquematico' onClick={ () => { myWidgetElectronicos.open(); setimg_select_item(1); } }>
+                            <div className="cont_img_details img_create_item" title='Sube tu imagen Esquematico' onClick={ () => { myWidgetElectronicos.open(); setimg_select_item(1); } }>
                               <img src={ img_esque_edit } className="img_card"/>
                             </div>
                           </div>
@@ -943,7 +945,7 @@ export const Electronicos = ( { mdl , evt }  ) => {
 
                             {/* ----------- */}
                                 
-                                <div style={{ width:"30vh", height:"19vh",display:"flex", flexDirection:"column", alignItems:"center" }}>
+                                <div className='cont_ubi'>
 
                                   <h3>Ubicacion:</h3>
                                   <p style={{ maxWidth:"30vh", color:"rgb(255, 203, 58)" }}>{ modal_obj_edit.ubicacion_comp }</p>
@@ -954,7 +956,7 @@ export const Electronicos = ( { mdl , evt }  ) => {
                                   <ErrorMessage  name='fila' component={() => (<p className='warn__password-user'>{errors.fila}</p>)} />
                                   <ErrorMessage  name='columna' component={() => (<p className='warn__password-user'>{errors.columna}</p>)} />
                                   
-                                  <div style={{ display:"grid", gridTemplateColumns:"repeat(2,1fr)", gap:"2rem", textAlign:"center" }}>
+                                  <div className='responsive_class_ubi'>
 
                                     <div className="row_config">
                                       <h2>Sector</h2>
@@ -1062,7 +1064,7 @@ export const Electronicos = ( { mdl , evt }  ) => {
 
                 <Modal close={ setmodal_crear }>
                     <div className="animate__animated animate__fadeInRight cont_crear_item" style={{ zIndex:"10000" }} >
-                      <h1 style={{ width:"100%",display:"flex",justifyContent:"center",gap:"10px", color:"rgb(255, 203, 58)", marginTop:"45px" }}>Crear item Electrico</h1>
+                      <h1 style={{ width:"100%",display:"flex",justifyContent:"center",gap:"10px", color:"rgb(255, 203, 58)" }}>Crear item Electrico</h1>
 
 
                           {
@@ -1213,14 +1215,14 @@ export const Electronicos = ( { mdl , evt }  ) => {
 
                                         ?
                                           <div className="img_regist">
-                                            <div className="cont_img_details" title='Sube tu imagen' onClick={ () => { myWidgetElectronicos.open(); setimg_select_item(2); } }>
+                                            <div className="cont_img_details img_create_item" title='Sube tu imagen' onClick={ () => { myWidgetElectronicos.open(); setimg_select_item(2); } }>
                                               <img src={ img_pinout } className="img_card"/>
                                             </div>
                                           </div>
 
                                         :
                                           <div id='img_rsg' title='Subir imagen Pinout' onClick={ () => { myWidgetElectronicos.open(); setimg_select_item(2); } }>
-                                              <FaFileUpload fontSize={"140px"}/>
+                                              <FaFileUpload fontSize={"140px"} className='file_image_create'/>
                                           </div>
                                       }
                                     </div>
@@ -1233,14 +1235,14 @@ export const Electronicos = ( { mdl , evt }  ) => {
 
                                         ?
                                           <div className="img_regist">
-                                            <div className="cont_img_details" title='Sube tu imagen' onClick={ () => { myWidgetElectronicos.open(); setimg_select_item(1); } }>
+                                            <div className="cont_img_details img_create_item" title='Sube tu imagen' onClick={ () => { myWidgetElectronicos.open(); setimg_select_item(1); } }>
                                               <img src={ img_esque } className="img_card"/>
                                             </div>
                                           </div>
 
                                         :
                                           <div id='img_rsg' title='Subir imagen Esquematico' onClick={ () => { myWidgetElectronicos.open(); setimg_select_item(1); } }>
-                                              <FaFileUpload fontSize={"140px"}/>
+                                              <FaFileUpload fontSize={"140px"} className='file_image_create'/>
                                           </div>
                                       }
                                     </div>
@@ -1328,7 +1330,7 @@ export const Electronicos = ( { mdl , evt }  ) => {
                             
                                   {/* ----------- */}
                                 
-                                <div style={{ width:"30vh", height:"19vh",display:"flex", flexDirection:"column", alignItems:"center" }}>
+                                <div className='cont_ubi'>
 
                                   <h3>Ubicacion:</h3>
                                   
@@ -1338,7 +1340,7 @@ export const Electronicos = ( { mdl , evt }  ) => {
                                   <ErrorMessage  name='fila' component={() => (<p className='warn__password-user'>{errors.fila}</p>)} />
                                   <ErrorMessage  name='columna' component={() => (<p className='warn__password-user'>{errors.columna}</p>)} />
                                   
-                                  <div style={{ display:"grid", gridTemplateColumns:"repeat(2,1fr)", gap:"2rem", textAlign:"center" }}>
+                                  <div className='responsive_class_ubi'>
 
                                     <div className="row_config">
                                       <h2>Sector</h2>

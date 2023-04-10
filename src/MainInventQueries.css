@@ -323,9 +323,11 @@
         background-color: rgb(104, 104, 104);
         width: 29vh;
         height: 79vh;
+        overflow-y: scroll;
     }
     .form_cont_edit_users h1{
         font-size: 20px;
+        text-align: center;
     }
     .form1 .input-container input{
         width: 30vh;
@@ -442,5 +444,89 @@
     .p_msj_val{
         width: 11rem;
         text-align: center;
+    }
+    .cont_crear_item .input-container input{
+        width: 40vh;
+    }
+    .cont_crear_item h1{
+        font-size: 20px;
+        margin-top: 20px;
+    }
+    .cont_crear_item{
+        overflow-y: scroll;
+        padding-bottom: 2rem;
+    }
+    .type_selector p{
+        font-size: 10px;
+    }
+    #text_type_selector {
+        cursor: pointer;
+        text-indent: -9999px;
+        width: 50px;
+        height: 25px;
+        background: grey;
+        display: block;
+        border-radius: 100px;
+        position: relative;
+    }
+    #text_type_selector:after {
+        content: '';
+        position: absolute;
+        top: 3px;
+        left: 5px;
+        width: 20px;
+        height: 20px;
+        background: #fff;
+        border-radius: 90px;
+        transition: 0.2s;
+    }
+    .cont_ubi h3{
+        font-size: 10px;
+    }
+    .cont_ubi .row_config h2{
+        font-size: 10px;
+    }
+    .responsive_class_ubi{
+        display: flex;
+    }
+    .input_ubi {
+        width: 3rem;
+        height: 2rem;
+        font-size: 20px;
+        background-color: rgb(165 164 164);
+        border: none;
+        border-radius: 6px;
+        color: #1adf27;
+        text-align: center;
+    }
+    .cont_ubi{
+        width: 30vh;
+        height: 13vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;    
+    }
+    .file_image_create{
+        font-size: 110px;
+    }
+    .img_create_item {
+        width: 135px;
+        height: 135px;
+    }
+    .cont_icons_elecronicos{
+    }
+    .form2 {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-top: 15px;
+    }
+    .modal_object_text{
+        margin-top: 150px;
+    }
+    .row .modal_object_text{
+        margin-top: 10px;
     }
 }

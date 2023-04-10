@@ -87,12 +87,12 @@ export const getTypesItemsElectronicos = async() => {
 
 };
 
-export const electronicos_put = async( obj , id ) => {
+export const electronicos_put = async( obj , id , doc) => {
 
     try {
         
         const sendRequest = await axios({
-            url : `${URL}/electronicos/${id}/${KEY}`,
+            url : `${URL}/electronicos/${id}/${KEY}/${doc}`,
             method : 'PUT',
             headers : {
                 "Content-Type":"application/json",
