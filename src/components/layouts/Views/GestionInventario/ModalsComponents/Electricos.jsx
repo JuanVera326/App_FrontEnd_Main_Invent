@@ -9,7 +9,7 @@ import { useSendImage } from '../../../../../helpers/image/useSendImage';
 import { Modal } from '../../../../pages/Modal/Modal';
 import { Input } from '../../../../ui/Input/Input';
 import { Button } from '../../../../ui/Buttons/Button';
-import { doc_del, doc_post } from '../../../../../helpers/api/DocsRequest';
+import { doc_del, doc_post, get_doc } from '../../../../../helpers/api/DocsRequest';
 import { FaFileUpload } from 'react-icons/fa';
 import { ubi_get } from '../../../../../helpers/api/UbiRequest';
 import "./Components.css";
@@ -479,8 +479,8 @@ export const Electricos = ( { mdl , evt } ) => {
                                                                                 tipo : item.tipo_parte_electricos,
                                                                                 cant_disp : item.cantidad_disponible_electricos,
                                                                                 cont_cons : item.cantidad_consumida_electricos, 
-                                                                                ubicacion : item.ubicacion_parte_electricos
-
+                                                                                ubicacion : item.ubicacion_parte_electricos,
+                                                                                data_sht : item.datasheet_parte_electricos
                                                                               }
                                                                               setmodal_obj(obj_item);
 
@@ -597,7 +597,26 @@ export const Electricos = ( { mdl , evt } ) => {
                           <h4 className='modal_object_text'>DT-SHEET: </h4>
                         </div>
                         <div className="contain_detail">
-                          <Link className='btn btn_invent'  style={{ fontSize:"13px",width:"20vh" }} onClick={ () => { console.log(modal_obj.data_sht + ""); } } >Ver PDF</Link>
+                          <Link className='btn btn_invent'  style={{ fontSize:"13px",width:"20vh" }} onClick={ () => { 
+                             
+                            get_doc(modal_obj.data_sht).then(info => { 
+
+                              let binary = atob(info.data.file.replace(/\s/g, ''));
+                              let len = binary.length;
+                              let buffer = new ArrayBuffer(len);
+                              let view = new Uint8Array(buffer);
+
+                              for (var i = 0; i < len; i++) {
+                                  view[i] = binary.charCodeAt(i);
+                              }
+
+                              const blob = new Blob([view], { type: 'application/pdf' });
+                              const url = URL.createObjectURL(blob);
+
+                              window.open(url,"_blank");
+                            })
+                            
+                            } } >Ver PDF</Link>
                         </div>
                        </div>
                      </div>

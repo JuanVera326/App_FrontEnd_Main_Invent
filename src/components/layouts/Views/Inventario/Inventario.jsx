@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { getItemsElectricos, getItemsElectricosByGeneralId, getItemsElectricosByGeneralName, getItemsElectricosByType } from '../../../../helpers/api/ElectricosRequests';
 import { getItemsElectronicos, getItemsElectronicosByGeneralId, getItemsElectronicosByGeneralName, getItemsElectronicosByType } from '../../../../helpers/api/ElectronicosRequests';
 import { getItemsEleferre, getItemsEleferreByGeneralId, getItemsEleferreByGeneralName, getItemsEleferreByType } from '../../../../helpers/api/ElementosFerreteriaRequest';
@@ -820,12 +820,33 @@ export const Inventario = ( { user } ) => {
                       </div>
 
                       <div className="row">
-                        <div className="name_detail">
+                          <div className="name_detail">
                             <h4 className='modal_object_text'>DT-SHEET: </h4>
                           </div>
 
                           <div className="contain_detail">
-                          <Link className='btn btn_invent'  style={{ fontSize:"13px",width:"20vh" }} onClick={ () => { get_doc(modal_obj.data_sht).then(info => { setdoc(info.data); window.open(`/pdf:${doc}`); })}}>Ver PDF</Link>
+
+                            <Link className='btn btn_invent'  style={{ fontSize:"13px",width:"20vh" }} onClick={ () => { 
+
+                              get_doc(modal_obj.data_sht).then(info => { 
+
+                                let binary = atob(info.data.file.replace(/\s/g, ''));
+                                let len = binary.length;
+                                let buffer = new ArrayBuffer(len);
+                                let view = new Uint8Array(buffer);
+
+                                for (var i = 0; i < len; i++) {
+                                    view[i] = binary.charCodeAt(i);
+                                }
+
+                                const blob = new Blob([view], { type: 'application/pdf' });
+                                const url = URL.createObjectURL(blob);
+
+                                window.open(url,"_blank");
+                              })
+
+                            }}>Ver PDF</Link>
+
                           </div>
                       </div>
 

@@ -5,7 +5,7 @@ import { HiOutlineRefresh } from 'react-icons/hi';
 import { IoMdEye } from 'react-icons/io';
 import { VscSearch } from 'react-icons/vsc';
 import { Link } from 'react-router-dom';
-import { doc_del, doc_post } from '../../../../../helpers/api/DocsRequest';
+import { doc_del, doc_post, get_doc } from '../../../../../helpers/api/DocsRequest';
 import { eleferre_del, eleferre_post, eleferre_put, getItemsEleferre, getItemsEleferreByGeneralId, getItemsEleferreByGeneralName, getItemsEleferreByType, getTypesItemsEleferre } from '../../../../../helpers/api/ElementosFerreteriaRequest';
 import { ubi_get } from '../../../../../helpers/api/UbiRequest';
 import { useSendImage } from '../../../../../helpers/image/useSendImage';
@@ -480,8 +480,8 @@ export const Eleferre = ( { mdl , evt }  ) => {
                                                                                 tipo : item.tipo_parte_elementosferreteria,
                                                                                 cant_disp : item.cantidad_disponible_elementosferreteria,
                                                                                 cont_cons : item.cantidad_consumida_elementosferreteria, 
-                                                                                ubicacion : item.ubicacion_parte_elementosferreteria
-
+                                                                                ubicacion : item.ubicacion_parte_elementosferreteria,
+                                                                                data_sht : item.datasheet_parte_elementosferreteria
                                                                               }
                                                                               setmodal_obj(obj_item);
 
@@ -598,7 +598,26 @@ export const Eleferre = ( { mdl , evt }  ) => {
                              <h4 className='modal_object_text'>DT-SHEET: </h4>
                           </div>
                           <div className="contain_detail">
-                            <Link className='btn btn_invent'  style={{ fontSize:"13px",width:"20vh" }} onClick={ () => { console.log(modal_obj.data_sht + ""); } } >Ver PDF</Link>
+                            <Link className='btn btn_invent'  style={{ fontSize:"13px",width:"20vh" }} onClick={ () => { 
+                              
+                              get_doc(modal_obj.data_sht).then(info => { 
+
+                                let binary = atob(info.data.file.replace(/\s/g, ''));
+                                let len = binary.length;
+                                let buffer = new ArrayBuffer(len);
+                                let view = new Uint8Array(buffer);
+
+                                for (var i = 0; i < len; i++) {
+                                    view[i] = binary.charCodeAt(i);
+                                }
+
+                                const blob = new Blob([view], { type: 'application/pdf' });
+                                const url = URL.createObjectURL(blob);
+
+                                window.open(url,"_blank");
+                              })
+                            
+                            } } >Ver PDF</Link>
                           </div>
                        </div>
                      </div>
