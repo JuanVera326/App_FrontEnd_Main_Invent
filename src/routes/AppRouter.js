@@ -4,11 +4,14 @@ import { Home } from '../components/pages/Home/HomeLogin';
 import { Principal } from '../components/pages/Principal/Principal';
 
 export const AppRouter = () => {
+  //const font = "";  //To Develop
+  const font = "/Main-Invent";  //To Production
+
   return (
     <BrowserRouter>
         <Routes>
-            <Route path='/' element={<Home />}/>
-            <Route path='/principal' element={<Principal />}/>
+            <Route path={font} element={<Home />}/>
+            <Route path={font + "/principal"} element={<Principal />}/>
         </Routes>
     </BrowserRouter>
   )
