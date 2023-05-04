@@ -69,7 +69,7 @@ export const Principal = () => {
 
     }else if (!modal_alert && user_data.rol === 3){
 
-      window.location = "/principal"; 
+      window.location = "http://desktop-jfi9mo7/Main-Invent/principal"; 
 
     } 
 

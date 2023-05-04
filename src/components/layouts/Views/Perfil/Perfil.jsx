@@ -36,7 +36,7 @@ export const Perfil = () => {
 
       }else{
 
-        setTimeout(() => { window.location = "/principal"; }, 1000);
+        setTimeout(() => { window.location = "http://desktop-jfi9mo7/Main-Invent/principal"; }, 1000);
 
       }
 
@@ -224,7 +224,7 @@ export const Perfil = () => {
                                     setmodal_edit(false);
                                     setimg_edit("");
                                     refreshRequest();
-                                    setTimeout(() => { window.location = "/principal"; }, 3500);
+                                    setTimeout(() => { window.location = "http://desktop-jfi9mo7/Main-Invent/principal"; }, 3500);
                                   }
 
                                 } )

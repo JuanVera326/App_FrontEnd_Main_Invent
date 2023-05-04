@@ -89,13 +89,13 @@ export const Home = () => {
             let ubi = info.data[0];
             localStorage.setItem( "ubicacion", JSON.stringify(ubi) );
             localStorage.setItem( "usuario", JSON.stringify(user) );
-            window.location = "/principal";
+            window.location = "http://desktop-jfi9mo7/Main-Invent/principal";
   
           }else{ 
 
             localStorage.setItem( "ubicacion", JSON.stringify({}) ); 
             localStorage.setItem( "usuario", JSON.stringify(user) );
-            window.location = "/principal"; 
+            window.location = "http://desktop-jfi9mo7/Main-Invent/principal"; 
 
           }
           
@@ -104,7 +104,7 @@ export const Home = () => {
       }
 
       localStorage.setItem( "usuario", JSON.stringify(user) );
-      window.location = "/principal"; 
+      window.location = "http://desktop-jfi9mo7/Main-Invent/principal"; 
 
     }
 

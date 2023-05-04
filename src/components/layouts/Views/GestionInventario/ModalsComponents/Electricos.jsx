@@ -116,7 +116,7 @@ export const Electricos = ( { mdl , evt } ) => {
 
             setloader_edit(false);
             setnameFile("Hubo un error, por favor intente mas tarde.")
-            setTimeout(() => { window.location = "/principal"; }, 3500);
+            setTimeout(() => { window.location = "http://desktop-jfi9mo7/Main-Invent/principal"; }, 3500);
 
        }})
       }
@@ -184,7 +184,7 @@ export const Electricos = ( { mdl , evt } ) => {
 
           setloader_edit(false);
           setnameFile("Hubo un error, por favor intente mas tarde.")
-          setTimeout(() => { window.location = "/principal"; }, 3500);
+          setTimeout(() => { window.location = "http://desktop-jfi9mo7/Main-Invent/principal"; }, 3500);
 
      }})
     })
@@ -214,7 +214,7 @@ export const Electricos = ( { mdl , evt } ) => {
               setmsj_desha_rqst("Hubo un error, Intente mas tarde.")
               setloader_desha(false);
               setimg_edit("");
-              setTimeout(() => { window.location = "/principal"; }, 3500);
+              setTimeout(() => { window.location = "http://desktop-jfi9mo7/Main-Invent/principal"; }, 3500);
       
             }
             console.log(info);
@@ -226,7 +226,7 @@ export const Electricos = ( { mdl , evt } ) => {
           setmsj_desha_rqst("Hubo un error, Intente mas tarde.")
           setloader_desha(false);
           setimg_edit("");
-          setTimeout(() => { window.location = "/principal"; }, 3500);
+          setTimeout(() => { window.location = "http://desktop-jfi9mo7/Main-Invent/principal"; }, 3500);
   
         }
   
@@ -249,7 +249,7 @@ export const Electricos = ( { mdl , evt } ) => {
           setmsj_desha_rqst("Hubo un error, Intente mas tarde.")
           setloader_desha(false);
           setimg_edit("");
-          setTimeout(() => { window.location = "/principal"; }, 3500);
+          setTimeout(() => { window.location = "http://desktop-jfi9mo7/Main-Invent/principal"; }, 3500);
   
         }
         console.log(info);
@@ -1075,7 +1075,7 @@ export const Electricos = ( { mdl , evt } ) => {
                         setmodal_crear(false);
                         setimg_edit("");
                         refreshRequest();
-                        setTimeout(() => { window.location = "/principal"; }, 5000);
+                        setTimeout(() => { window.location = "http://desktop-jfi9mo7/Main-Invent/principal"; }, 5000);
                       }
 
                     } )
