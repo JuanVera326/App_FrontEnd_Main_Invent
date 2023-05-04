@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const URL = "http://localhost:9090/api";
+const URL = "https://83d6-152-200-157-110.ngrok-free.app/api";  //Production
+// const URL = "http://localhost:9090/api"; //LocalHost
 const KEY = "bWF0aWFzLm1hL25zZnc=";
 
 export const getItemsUsuarios = async() => {
