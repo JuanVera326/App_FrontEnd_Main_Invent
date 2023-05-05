@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const URL = "https://47ff-152-200-157-110.ngrok-free.app/api";  //Production
-// const URL = "http://localhost:9090/api"; //LocalHost
+//const URL = "https://47ff-152-200-157-110.ngrok-free.app/api";  //Production
+const URL = "http://127.0.0.1:9090/api"; //LocalHost
 const KEY = "bWF0aWFzLm1hL25zZnc=";
 
 export const getItemsElectronicos = async() => {
