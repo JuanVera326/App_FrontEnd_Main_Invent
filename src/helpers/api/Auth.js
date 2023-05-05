@@ -1,5 +1,5 @@
 import axios from "axios";
-const URL = "https://6d13-152-200-157-110.ngrok-free.app/api";  //Production
+const URL = "https://47ff-152-200-157-110.ngrok-free.app/api";  //Production
 // const URL = "http://localhost:9090/api"; //LocalHost
 
 export const auth_post = async( obj ) => {
@@ -11,6 +11,7 @@ export const auth_post = async( obj ) => {
             method : 'POST',
             headers : {
                 "Content-Type":"application/json",
+                "ngrok-skip-browser-warning" : ""   //Production
             },
             data : obj
             
