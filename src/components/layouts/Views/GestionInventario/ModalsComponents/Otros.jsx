@@ -118,7 +118,10 @@ export const Otros = ( { mdl , evt } ) => {
 
             setloader_edit(false);
             setnameFile("Hubo un error, por favor intente mas tarde.")
-            setTimeout(() => { window.location = "http://desktop-jfi9mo7/Main-Invent/principal"; }, 3500);
+            setTimeout(() => { 
+              //window.location = "/principal"; //Tests
+              window.location = "http://desktop-jfi9mo7/Main-Invent/principal"; // Production 
+            }, 3500);
 
        }})
       }
@@ -187,7 +190,10 @@ export const Otros = ( { mdl , evt } ) => {
 
           setloader_edit(false);
           setnameFile("Hubo un error, por favor intente mas tarde.")
-          setTimeout(() => { window.location = "http://desktop-jfi9mo7/Main-Invent/principal"; }, 3500);
+          setTimeout(() => { 
+            //window.location = "/principal"; //Tests
+              window.location = "http://desktop-jfi9mo7/Main-Invent/principal"; // Production 
+          }, 3500);
 
      }})
     })
@@ -217,7 +223,10 @@ export const Otros = ( { mdl , evt } ) => {
               setmsj_desha_rqst("Hubo un error, Intente mas tarde.")
               setloader_desha(false);
               setimg_edit("");
-              setTimeout(() => { window.location = "http://desktop-jfi9mo7/Main-Invent/principal"; }, 3500);
+              setTimeout(() => { 
+                //window.location = "/principal"; //Tests
+              window.location = "http://desktop-jfi9mo7/Main-Invent/principal"; // Production 
+              }, 3500);
       
             }
             console.log(info);
@@ -229,7 +238,10 @@ export const Otros = ( { mdl , evt } ) => {
           setmsj_desha_rqst("Hubo un error, Intente mas tarde.")
           setloader_desha(false);
           setimg_edit("");
-          setTimeout(() => { window.location = "http://desktop-jfi9mo7/Main-Invent/principal"; }, 3500);
+          setTimeout(() => { 
+            //window.location = "/principal"; //Tests
+              window.location = "http://desktop-jfi9mo7/Main-Invent/principal"; // Production 
+          }, 3500);
   
         }
   
@@ -252,7 +264,10 @@ export const Otros = ( { mdl , evt } ) => {
           setmsj_desha_rqst("Hubo un error, Intente mas tarde.")
           setloader_desha(false);
           setimg_edit("");
-          setTimeout(() => { window.location = "http://desktop-jfi9mo7/Main-Invent/principal"; }, 3500);
+          setTimeout(() => { 
+            //window.location = "/principal"; //Tests
+              window.location = "http://desktop-jfi9mo7/Main-Invent/principal"; // Production 
+          }, 3500);
   
         }
         console.log(info);
@@ -1074,7 +1089,10 @@ export const Otros = ( { mdl , evt } ) => {
                         setimg_edit("");
                         refreshRequest();
                         console.log(info);
-                        setTimeout(() => { window.location = "http://desktop-jfi9mo7/Main-Invent/principal"; }, 5000);
+                        setTimeout(() => { 
+                          //window.location = "/principal"; //Tests
+              window.location = "http://desktop-jfi9mo7/Main-Invent/principal"; // Production 
+                        }, 5000);
                       }
 
                     } )

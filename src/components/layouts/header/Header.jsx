@@ -9,7 +9,8 @@ export const Header = () => {
 
     localStorage.removeItem("usuario");
     localStorage.removeItem("ubicacion");
-    window.location = "/";
+    // window.location = "/"; //Tests
+    window.location = "http://desktop-jfi9mo7/Main-Invent/";  //Production
 
   }
 
